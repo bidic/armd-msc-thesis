@@ -1,0 +1,49 @@
+Photoplotter Info File: D:/Program Files/EAGLE-4.13v2/projects/po6030k/final/ts.gpi
+
+ Date              : 2009-06-01 07:38:44 
+ Plotfile          : D:/Program Files/EAGLE-4.13v2/projects/po6030k/final/ts.gts
+ Apertures         : generated: 
+ Device            : Gerber photoplotter with RS-274-X aperture generation
+
+Parameter settings:
+
+ Emulate Apertures : no
+ Emulate Thermal   : no
+ Emulate Annulus   : no
+ Tolerance Draw  + :  0.00 %
+ Tolerance Draw  - :  0.00 %
+ Tolerance Flash + :  0.00 %
+ Tolerance Flash - :  0.00 %
+ Rotate            : no
+ Mirror            : no
+ Optimize          : yes
+ Auto fit          : yes
+ OffsetX           : 0inch
+ OffsetY           : 0inch
+
+Plotfile Info:
+
+ Coordinate Format : 2.4
+ Coordinate Units  : Inch
+ Data Mode         : Absolute
+ Zero Suppression  : None
+ End Of Block      : *
+
+Apertures used:
+
+ Code     Shape     Size                  used
+
+ D10      round     0.3230inch               1
+ D11      round     0.1340inch               4
+ D12      rectangle 0.0171inch x 0.0710inch    24
+ D13      octagon   0.0680inch              20
+ D14      rectangle 0.0297inch x 0.0552inch     5
+ D15      rectangle 0.0867inch x 0.0671inch    14
+ D16      rectangle 0.0671inch x 0.0848inch     8
+ D17      rectangle 0.0552inch x 0.0297inch    10
+ D18      rectangle 0.0671inch x 0.0867inch    10
+ D19      rectangle 0.0848inch x 0.0671inch     4
+ D20      square    0.0671inch               2
+ D21      rectangle 0.0867inch x 0.0710inch     2
+ D22      octagon   0.0476inch              24
+

@@ -1,0 +1,42 @@
+Drill Station Info File: D:/Program Files/EAGLE-4.13v2/projects/PLYTA_GLOWNA/final/d.dri
+
+ Date              : 2009-06-01 15:24:57 
+ Drills            : generated
+ Device            : Excellon drill station
+
+Parameter settings:
+
+ Tolerance Drill + :  0.00 %
+ Tolerance Drill - :  0.00 %
+ Rotate            : no
+ Mirror            : no
+ Optimize          : yes
+ Auto fit          : yes
+ OffsetX           : 0inch
+ OffsetY           : 0inch
+ Layers            : Drills Holes
+
+Drill File Info:
+
+ Data Mode         : Absolute
+ Units             : 1/1000 Inch
+
+Drills used:
+
+ Code  Size       used
+
+ T01   0.1260inch     4
+ T02   0.0400inch   170
+ T03   0.0320inch    39
+ T04   0.0354inch     5
+ T05   0.1496inch     1
+ T06   0.0440inch     1
+ T07   0.0360inch    30
+ T08   0.0240inch    43
+ T09   0.0236inch    79
+
+Total number of drills: 372
+
+Plotfiles:
+
+ D:/Program Files/EAGLE-4.13v2/projects/PLYTA_GLOWNA/final/d.nc
