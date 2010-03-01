@@ -1,0 +1,53 @@
+Photoplotter Info File: D:/Program Files/EAGLE-4.13v2/projects/PLYTA_GLOWNA/final/bs.gpi
+
+ Date              : 2009-06-01 15:24:57 
+ Plotfile          : D:/Program Files/EAGLE-4.13v2/projects/PLYTA_GLOWNA/final/bs.gbs
+ Apertures         : generated: 
+ Device            : Gerber photoplotter with RS-274-X aperture generation
+
+Parameter settings:
+
+ Emulate Apertures : no
+ Emulate Thermal   : no
+ Emulate Annulus   : no
+ Tolerance Draw  + :  0.00 %
+ Tolerance Draw  - :  0.00 %
+ Tolerance Flash + :  0.00 %
+ Tolerance Flash - :  0.00 %
+ Rotate            : no
+ Mirror            : no
+ Optimize          : yes
+ Auto fit          : yes
+ OffsetX           : 0inch
+ OffsetY           : 0inch
+
+Plotfile Info:
+
+ Coordinate Format : 2.4
+ Coordinate Units  : Inch
+ Data Mode         : Absolute
+ Zero Suppression  : None
+ End Of Block      : *
+
+Apertures used:
+
+ Code     Shape     Size                  used
+
+ D10      round     0.1340inch               4
+ D11      octagon   0.0680inch             160
+ D12      octagon   0.0600inch               5
+ D13      round     0.1080inch               1
+ D14      octagon   0.1080inch               1
+ D15      oval      0.1189inch x 0.0634inch     5
+ D16      round     0.1576inch               1
+ D17      oval      0.1280inch x 0.0680inch     8
+ D18      round     0.0830inch               1
+ D19      octagon   0.0830inch               1
+ D20      octagon   0.0930inch               1
+ D21      oval      0.1120inch x 0.0600inch    32
+ D22      oval      0.0640inch x 0.1200inch    28
+ D23      oval      0.1200inch x 0.0640inch     2
+ D24      round     0.0480inch              43
+ D25      octagon   0.0476inch              71
+ D26      square    0.0476inch               8
+
