@@ -9,6 +9,7 @@
 \usepackage{cite}
 
 \geometry{hmargin={2cm, 2cm}, height=10.0in}
+%\includeonly{introduction}
 
 \begin{document}
 
@@ -63,8 +64,8 @@
 \rightline{Kraków, ?? czerwca 2010}
 \begin{center}
 {\bf Tematyka pracy magisterskiej i praktyki dyplomowej
-Jana Nowaka,
-studenta V roku studiów kierunku fizyka techniczna, specjalności fizyka komputerowa}\\
+Łukasza Hanusiaka,
+studenta V roku studiów kierunku informatyka stosowana, informatyka w nauce i technice}\\
 \end{center}
 
 Temat pracy magisterskiej:
@@ -99,7 +100,7 @@ Miejsce praktyki dyplomowej:    & WFiIS AGH, Kraków\\
 
 
 \noindent
-Termin oddania w dziekanacie: ?? czerwca 20??\\[1cm]
+Termin oddania w dziekanacie: ?? czerwca 2010\\[1cm]
 
 \begin{center}
 \begin{tabular}{lcr}
@@ -119,9 +120,20 @@ Na kolejnych dwóch stronach proszę dołączyć kolejno recenzje pracy popełni
 
 \newpage
 \tableofcontents
-\newpage
-\section{Wstęp}
-joke~\cite{KmakMScThesis2009}
+
+\include{introduction}
+
+\include{analysis}
+
+\include{software}
+
+\include{hardware}
+
+\include{summary}
+
+\include{sources}
+
+Cite Test~\cite{KmakMScThesis2009}
 \newpage
 
 \bibliography{bibliography}{}
