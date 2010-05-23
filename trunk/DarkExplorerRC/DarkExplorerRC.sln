@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DarkExplorerRC", "DarkExplorerRC\DarkExplorerRC.csproj", "{38C25D39-4146-4415-B56B-20A072288DA9}"
 EndProject
+Project("{B900F1C2-3D47-4FEC-85B3-04AAF18C3634}") = "DarkExplorerRCCab", "DarkExplorerRCCab\DarkExplorerRCCab.vddproj", "{163D4239-536D-431F-B15F-333C9B7495C4}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -19,6 +21,8 @@ Global
 		{38C25D39-4146-4415-B56B-20A072288DA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38C25D39-4146-4415-B56B-20A072288DA9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{38C25D39-4146-4415-B56B-20A072288DA9}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{163D4239-536D-431F-B15F-333C9B7495C4}.Debug|Any CPU.ActiveCfg = Debug
+		{163D4239-536D-431F-B15F-333C9B7495C4}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
