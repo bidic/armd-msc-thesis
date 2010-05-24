@@ -15,10 +15,12 @@ public class Controller
 {
 	private BTConnection btconn;
 	private int towerPosition;
+	private boolean ledState;
 
 	public Controller() throws IOException 
 	{
 		this.towerPosition = 100;
+		this.ledState = false;
 		
 		btconn = BTConnection.getInstance();
 		try
@@ -29,6 +31,16 @@ public class Controller
 		{				
 			throw e;
 		}
+	}
+	
+	public int getTowerPosition()
+	{
+		return towerPosition;
+	}
+	
+	public boolean isLenOn()
+	{
+		return ledState;
 	}
 	
 	public void stopEngines() throws IOException
@@ -69,14 +81,18 @@ public class Controller
 		btconn.writeBtData('b',255);
 	}
 	
-	public void ledOn() throws IOException
+	public void ledSwitch() throws IOException
 	{
-		btconn.writeBtData('d',1);
-	}
-	
-	public void ledOff() throws IOException
-	{
-		btconn.writeBtData('d',0);
+		if(ledState)
+		{
+			btconn.writeBtData('d',0);
+			ledState = false;
+		}
+		else
+		{
+			btconn.writeBtData('d',1);
+			ledState = true;
+		}
 	}
 	
 	public void moveTowerUp() throws IOException
@@ -86,7 +102,6 @@ public class Controller
 
 		btconn.writeBtData('w',1);
 		btconn.writeBtData('s',towerPosition);
-		//btconn.WriteBtData('w',0);
 	}
 	
 	public void moveTowerDown() throws IOException
@@ -96,6 +111,41 @@ public class Controller
 
 		btconn.writeBtData('w',1);
 		btconn.writeBtData('s',towerPosition);
-		//btconn.WriteBtData('w',0);
+	}
+	
+	public void towerPowerOff() throws IOException
+	{
+		btconn.writeBtData('w',0);
+	}
+	
+	private byte[] getImage(char cmd, int nrOfPackets) throws IOException
+	{
+		byte data[] = new byte[nrOfPackets * 3200];
+
+		for(int i = 0; i < nrOfPackets; i++)
+		{
+			btconn.writeBtData(cmd,i);
+			btconn.readBtData(data, i*3200, 3200);
+		}
+		
+
+		for (int left=0, right=data.length-1; left<right; left++, right--) 
+		{
+		    byte temp = data[right]; 
+		    data[right]  = data[left]; 
+		    data[left] = temp;
+		}
+
+		return data;
+	}
+	
+	public byte[] getImageFullRes() throws IOException
+	{
+		return getImage('f',20);
+	}
+	
+	public byte[] getImageHalfRes() throws IOException
+	{
+		return getImage('p',5);
 	}
 }
