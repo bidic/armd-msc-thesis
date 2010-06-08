@@ -1,0 +1,26 @@
+
+W przypadku instalowania sterowników do Windowsa 7:
+
+Tak jak zosta³o to przedstawione w instrukcji dla XP podczas instalacji urzadzenia wykrywane s¹ 3 sk³adniki dla których 3razy podaje sie scie¿kê dostêpu do katalogu ze sterownikami.
+
+W przypadku instalacji na windows7 nale¿y zaobserwoaæ nazwê instalowanego aktuanie ska³dnika i wybrac odpowiedni katalog ze sterownikiem.
+
+Dla sk³adników "USB JTAG ADAPTER" i  "*urz¹dzenie kompozytowe*" nale¿y podaæ katalog: "...\2 TriTon utility 64\driver\driver_Win7\libusb-win32_ft2232_driver-100223"
+
+Natomiast dla sk³adnika "*wirtulany port COM*" - nale¿y wska¿ac sterownik w : "\2 TriTon utility 64\driver\driver_Win7\ftdi"
+
+
+
+
+W przypadku instalowania Jtaga na Linuksie:
+
+jedyne co mogê zaoferowaæ to sposoby postêpowania zawarte na stronach:
+
+http://www.openhardware.net/Embedded_ARM/OpenOCD_JTAG/
+http://forum.pcstrefa.com/viewtopic.php?t=125
+
+w opisach pliku *.CFG przedstawionych na wskazanych forach nale¿y zmodyfkowaæ parametry:
+
+   ft2232_device_desc 	"Triton JTAG A"
+   ft2232_layout 	turtelizer2
+   ft2232_vid_pid 	0x0403 0xbdc8
