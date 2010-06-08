@@ -1,0 +1,35 @@
+# 
+   halt 
+   wait_halt 			# dla telnet'a i ram uzyj "halt" oraz "wait_halt"
+   sleep 20			# bylo 200
+
+   armv4_5 core_state arm 	
+
+   #sleep 200
+   #poll
+   arm7_9  write_xpsr 0x13 cpsr	# zmiana cpsr=SVC, uwaga: na bit I,F,T
+   #sleep 200
+
+
+# Konfiguracja zegara (petli PLL) 
+#
+mww 0xfffffd44 0x00008000	# disable watchdog
+mww 0xfffffd08 0xa5000001	# enable user reset
+mww 0xfffffc20 0x00000601	# CKGR_MOR : enable the main oscillator
+sleep 10
+mww 0xfffffc2c 0x00481c0e 	# CKGR_PLLR: 96.1097 MHz
+sleep 10
+mww 0xfffffc30 0x00000007	# PMC_MCKR : MCK = PLL / 2 ~= 48 MHz
+sleep 10
+mww 0xffffff60 0x003c0100	# MC_FMR: flash mode (FWS=1,FMCN=60)
+sleep 100
+
+
+# Sciezka do pliku *.bin ktorym programujemy pocesor
+#===========================================================================================================
+load_binary C:\aa.bin 0x200000
+#===========================================================================================================
+
+   resume 0x200000 		# restart
+shutdown
+
