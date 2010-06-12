@@ -121,22 +121,38 @@ Na kolejnych dwóch stronach proszę dołączyć kolejno recenzje pracy popełni
 \newpage
 \tableofcontents
 
-\include{introduction}
+\newpage
+\part{Wstęp teoretyczny}
+\include{ch01_introduction/s01_introduction}
+\include{ch01_introduction/s02_history_of_robotics}
+\include{ch01_introduction/s03_robots_build}
+\include{ch01_introduction/s04_classification_of_robots}
 
-\include{analysis}
+\newpage
+\part{Dark Explorer pod lupą}
+\include{ch02_analysis/s01_hardware}
+\include{ch02_analysis/s02_software}
 
-\include{software}
-\include{software/windows_mobile_platform}
-\subsection{Środowisko rozwojowe}
-\subsection{Środowisko uruchomieniowe}
+\newpage
+\part{Platforma do rozwoju oprogramowania}
+\include{ch03_software/s01_windows}
+\include{ch03_software/s02_linux}
+\include{ch03_software/s03_windows_mobile}
 
-\include{hardware}
+\newpage
+\part{Rozwój platformy robota mobilnego}
+\include{ch04_development/s01}
 
-\include{summary}
+\newpage
+\part{Podsumowanie}
+\include{ch05_summary/s01_software_tests}
+\include{ch05_summary/s02_hardware_tests}
+\include{ch05_summary/s03_summary}
 
-\include{sources}
+\newpage
+\part{Kod źródłowy}
 
-Cite Test~\cite{website:robotyka-pl}
+%Cite Test~\cite{website:robotyka-pl}
 \newpage
 
 \bibliography{bibliography}{}
