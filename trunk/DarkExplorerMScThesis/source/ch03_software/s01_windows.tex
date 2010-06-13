@@ -1,3 +1,83 @@
 \section{Platforma PC dla systemu Windows}
 \subsection{Środowisko tworzenia oprogramowania}
 \subsection{Środowisko tworzenia programu sterującego}
+Pierwszym krokiem do przygotowania środowiska rozwojowego umożliwiającego
+rozwijanie oprogramowania sterującego robotem jest instalacja sterowników
+wymaganych przez system Windows do obsługi interfejsu JTAG za pomocą którego
+odbywa się proces wgrywania przygotowanego oprogramowania do pamięci robota.
+Kolejnym wymaganym krokiem jest instalacja i konfiguracja narzędzi
+umożliwiających stworzenie pliku binarnego umożliwiającego uruchomienie
+przygotowanej na platformie sprzętowej robota. Ostatnim etapem przygotowań jest
+instalacja oprogramowania umożliwiającego programowanie układu za pomocą
+wspomnianego interfejsu JTAG oraz debugowanie aplikacji w trakcie jej działania.
+\subsubsection{Instalacja WinARM}
+Do kompilacji kodu źródłowego oprogramowania zajmującego się sterowaniem
+podzespołami robota wykorzystany został zestaw narzędzi znany pod nazwą WinARM.
+WinARM jest zestawem narzędzi umożliwiających tworzenie oprogramowania dla
+kontrolerów opartych na platformie ARM. W odróżnieniu od innych dostępnych
+obecnie narzędzi środowisko WinARM nie wymaga dodatkowej instalacji środowiska
+MinGW czy też Cygwina. Wszystkie potrzebne narzędzia dostarczane są w ramach
+środowiska WinARM. Narzędzia WinARM pomyślnie przeszła testy z kontrolerami Atmel
+AT91SAM7S64, AT91SAM7S256, AT91RM9200 ARM7TDMI oraz Philips LPC2106, Philips
+LPC2129, Philips LPC2138, Philips LPC2148. Narzędzia dostarczane w ramach
+środowiska WinARM kompilatory i narzędzia powinny prawidłowo współpracować ze
+wszystkimi mikrokontrolerami opartymi o architekturę ARM(-TDMI/Thumb
+itp.).\newline \newline Instalację środowiska WinARM należy rozpocząć od pobrania
+archiwum z najnowszą wersją narzędzi ze strony
+\url{http://gandalf.arubi.uni-kl.de/avr_projects/arm_projects/}. W chwili pisania
+pracy dostępna była wersja środowiska WinARM w wersji 20060606. Po zakończeniu
+procesu pobierania, archiwum należy rozpakować w taki sposób aby wszystkie
+podstawowe narzędzia dostępne były w katalogu \url{C:\WinARM\bin}. Umieszczenie
+katalogu z narzędziami WinARM w innej lokalizacji jest również możliwe, ale może
+wymagać wykonania dodatkowych operacji konfiguracyjnych w celu zapewnienia
+poprawności działania wszystkich narzędzi. Aby udostępnić narzędzia WinARM z
+linii poleceń systemu Windows konieczne jest dodanie do zmiennej systemowej PATH
+następujących wartości \url{C:\WinARM\bin;C:\WinARM\utils\bin;}.
+\subsubsection{Instalacja sterowników programatora}
+Programowanie oraz debugowanie aplikacji robota może zostać zrealizowane za
+pomocą dowolnego programatora kompatybilnego z interfejsem JTAG. Programatory
+oparte o interfejs LPT nie wymagają dodatkowej konfiguracji w systemie Windows.
+Nieco inaczej wygląda sytuacja z programatorami opartymi o interfejs USB które
+wymagają przed pierwszym użyciem zainstalowania sterowników umożliwiających
+prawidłowe rozpoznanie programatora przez system. Jednym z bardziej popularnych
+programatorów USB jest TriTon JTAG. TriTon JTAG to interfejs JTAG przeznaczony
+dla procesorów zbudowanych w oparciu o rdzeń ARM podłączany do komputera za
+pomocą portu USB. TriTon JTAG posiada standardowe 20 pinowe złącze JTAG wraz z
+wyprowadzeniami sygnałów RxD i TxD interfejsu UART. TriTon JTAG współpracuje z
+OpenOCD, pozwalając na programowanie oraz debugowanie działającej aplikacji.
+Urządzenie oparte jest o układ FT2232 który umożliwa jego współprace także z
+innymi środowiskami rozwoju oprogramowania dla platformy ARM wspierającymi
+wspomniany układ. \newline \newline Instalację sterowników do programatora należy
+rozpocząć od pobrania sterowników do układu FT2232 ze strony
+\url{http://www.ethernut.de/en/download/}. Na stronie dostępne są sterowniki
+przeznaczone dla systemów Windows 2000, XP, Server 2003, Vista oraz Server 2008.
+Po rozpakowaniu archiwum ze sterownikami należy za pomocą interfejsu USB
+podłączyć programator do komputera. Po wykryciu system Windows trzykrotnie
+poprosi o podanie ścieżki do sterowników do urządzeń Triton JTAG, Triton USB
+RS232 Adapter oraz USB Serial Port. Należy wtedy skazać ścieżkę do katalogu w
+którym rozpakowane zostały sterowniki pobrane ze strony wspomnianej wcześniej.
+Po poprawnym zakończeniu instalacji w Menadżerze urządzeń systemu Windows
+windoczne będą następujące elementy
+\begin{itemize}
+  \item Triton USB JTAG Adapter,
+  \item Triton USB RS232 Adapter,
+  \item Triton JTAG
+\end{itemize}
+\subsubsection{Instalacja Open On-Chip Debugger}
+OpenOCD zostało zapoczątkowane przez Dominika Rath w ramach pracy dyplomowej
+relizowanej na uniwersytecie w Augsburg. Od tamtego czasu OpenOCD bardzo się
+rozwinęło i urosło do rozmiarów aktywnego projektu open-sourcowego wspieranego
+przez programistów z całego świata. Celem OpenOCD jest dostarczenie
+uniwersalnego narzędzia umożliwiającego debugowanie i programowanie systemów
+wbudowanych. \newline \newline
+Strona projektu OpenOCD dostępna jest pod adresem
+\url{http://openocd.berlios.de/web/}. Dostępne są tam zarówno źródła jak i
+dokumentacja do projektu. Niestety w chwili pisania pracy magisterskiej autorzy
+nie udostępniali wersji skompilowanej dla systemu Windows. Dlatego też użyta
+została niezależna wersja OpenOCD z przygotowanym instalatorem dla systemu
+Windows. Instalator OpenOCD dla Windows jest do pobrania ze strony
+\url{http://www.ethernut.de/en/download/}. Po uruchomieniu instalatora wybieramy
+lokalizację docelową w której OpenOCD ma zostać zainstalowane. Po zakończeniu
+instalacji konieczne jest uzupełnienie wartości zmiennej systemowej PATH ścieżką
+do miejsca instalacji OpenOCD, domyślnie \url{C:\ethernut\nut\tools\win32}.
+
