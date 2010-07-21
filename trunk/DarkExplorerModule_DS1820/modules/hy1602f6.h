@@ -12,34 +12,13 @@
 #include <at91sam7s256/AT91SAM7S256.h>
 #include <pio/pio.h>
 #include <delay.h>
-#include <de_pio.h>
 
-#include "de_pio.h"
-
-#include <math.h>
-
-#include <aic/aic.h>
-#include <pmc/pmc.h>
-#include <pit/pit.h>
-#include <dbgu/dbgu.h>
-#include <twi/twi.h>
-#include <utility/math.h>
-#include <utility/assert.h>
-#include <utility/trace.h>
-#include <drivers/async/async.h>
-#include <drivers/twi/twid.h>
-
-#define SHORT_DELAY 300		// us przy 8MHz
-#define LONG_DELAY 3000		// ms przy 8MHz
-#define	IN	0
+#define DEFAULT_LCD_PINS   {0xff, AT91C_BASE_PIOA, AT91C_ID_PIOA, PIO_OUTPUT_0, PIO_DEFAULT}
+#define SHORT_DELAY 300
+#define LONG_DELAY 3000
 #define	OUT	1
+#define	IN	0
 
-#define PINS_LCD   {0xff, AT91C_BASE_PIOA, AT91C_ID_PIOA, PIO_OUTPUT_0, PIO_DEFAULT}
-//#define PIN_LCD_D5   {0x1 << 1, AT91C_BASE_PIOA, AT91C_ID_PIOA, PIO_OUTPUT_0, PIO_DEFAULT}
-//#define PIN_LCD_D6   {0x1 << 2, AT91C_BASE_PIOA, AT91C_ID_PIOA, PIO_OUTPUT_0, PIO_DEFAULT}
-//#define PIN_LCD_D7   {0x1 << 3, AT91C_BASE_PIOA, AT91C_ID_PIOA, PIO_OUTPUT_0, PIO_DEFAULT}
-//#define PIN_LCD_RS   {0x1 << 4, AT91C_BASE_PIOA, AT91C_ID_PIOA, PIO_OUTPUT_0, PIO_DEFAULT}
-//#define PIN_LCD_EN   {0x1 << 5, AT91C_BASE_PIOA, AT91C_ID_PIOA, PIO_OUTPUT_0, PIO_DEFAULT}
 
 // Wyświetlacz podłączony według następującej konfiguracji
 // D4-A0; D5-A1; D6-A2; D7-A3; RS-A4; EN-A5
@@ -63,7 +42,6 @@ void HY1602F6_SetPosition(unsigned char  x,unsigned char y);
 void HY1602F6_Clear(void);
 void HY1602F6_Print(const char *s);
 void HY1602F6_PrintChar(char ch);
-void HY1602F6_Configure(const Pin *pins);
-void HY1602F6_DefaultInit();
+void HY1602F6_Configure();
 
 #endif /* HY1602F6_H_ */

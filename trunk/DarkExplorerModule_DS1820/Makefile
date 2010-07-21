@@ -107,9 +107,10 @@ VPATH += $(BOARDS)/$(BOARD) $(BOARDS)/$(BOARD)/$(CHIP)
 C_OBJECTS = main.o 
 C_OBJECTS += delay.o hy1602f6.o
 #C_OBJECTS += peripherals.o rozpoznawanie.o utils.o
-C_OBJECTS += async.o twid.o
+#C_OBJECTS += async.o twid.o
+#C_OBJECTS += twi.o cp15.o pwmc.o usart.o aic.o
 C_OBJECTS += stdio.o math.o string.o
-C_OBJECTS += pit.o dbgu.o pio.o aic.o twi.o pmc.o cp15.o pwmc.o usart.o
+C_OBJECTS += pit.o dbgu.o pio.o pmc.o
 C_OBJECTS += board_memories.o board_lowlevel.o
 
 # Objects built from Assembly source files
