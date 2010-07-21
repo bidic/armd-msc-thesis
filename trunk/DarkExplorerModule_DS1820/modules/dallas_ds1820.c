@@ -1,96 +1,92 @@
-#include "AT91SAM7S256.h"
-#include "lib_AT91SAM7S256.h"
+/*
+ * dallas_ds1820.c
+ *
+ *  Created on: Jul 21, 2010
+ *      Author: lhanusiak
+ */
+
 #include "dallas_ds1820.h"
-#include "delay.h"
 
-#define WIRE(bit) if (bit) AT91F_PIO_SetOutput(AT91C_BASE_PIOA, PIO_PA8); else AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, PIO_PA8);
-
-void wire_init(void)
-{
-    // PIN as output
-    AT91F_PIO_Enable(AT91C_BASE_PIOA, PIO_PA8);
-    wire_out();
+void DS1820_SwitchPinState(unsigned short int bit) {
+	Pin ds1820_output_pin[] = { DS1820_OUTPUT_PIN };
+	if (bit) {
+		PIO_Set(ds1820_output_pin);
+	} else {
+		PIO_Clear(ds1820_output_pin);
+	}
 }
 
-void wire_out(void)
-{
-    // PIN as output
-    AT91F_PIO_OutputEnable(AT91C_BASE_PIOA, PIO_PA8);
-    AT91F_PIO_SetOutput(AT91C_BASE_PIOA, PIO_PA8);
+void DS1820_ConfigureOutput(void) {
+	Pin ds1820_output_pin[] = { DS1820_OUTPUT_PIN };
+	PIO_Configure(ds1820_output_pin, 1);
 }
 
-void wire_in(void)
-{
-    // PIN as input
-    AT91F_PIO_OutputDisable(AT91C_BASE_PIOA, PIO_PA8);
+void DS1820_ConfigureInput(void) {
+	Pin ds1820_input_pin[] = { DS1820_INPUT_PIN };
+	PIO_Configure(ds1820_input_pin, 1);
 }
 
-unsigned char wire_reset(void)
-{
-    unsigned short int present;
+unsigned char DS1820_Reset(void) {
+	unsigned short int present;
 
-    wire_out();
-    WIRE(0);
-    delay(700);
-    WIRE(1);
-    wire_in();
-    delay(80);
-    present = AT91F_PIO_IsInputSet(AT91C_BASE_PIOA, PIO_PA8);
-    delay(400);
-    wire_out();
+	DS1820_ConfigureOutput();
+	DS1820_SwitchPinState(0);
+	delay(700);
+	DS1820_SwitchPinState(1);
+	DS1820_ConfigureInput();
+	delay(80);
 
-    return !present;
+	Pin ds1820_input_pin[] = { DS1820_INPUT_PIN };
+	present = PIO_Get(ds1820_input_pin);
+
+	delay(400);
+	DS1820_ConfigureOutput();
+
+	return !present;
 }
 
-void wire_tx(unsigned char bit)
-{
-    wire_out();
-    WIRE(0);
+void DS1820_TX(unsigned char bit) {
+	DS1820_ConfigureOutput();
+	DS1820_SwitchPinState(0);
 
-    if (bit&1)
-    {
-        delay(10);
-        WIRE(1);
-        delay(80);
-    }
-    else
-    {
-        delay(80);
-        WIRE(1);
-        delay(10);
-    }
+	if (bit & 1) {
+		delay(10);
+		DS1820_SwitchPinState(1);
+		delay(80);
+	} else {
+		delay(80);
+		DS1820_SwitchPinState(1);
+		delay(10);
+	}
 }
 
-void wire_send(unsigned char data)
-{
-    unsigned char l;
-    l = 8;
+void DS1820_Send(unsigned char data) {
+	unsigned char l;
+	l = 8;
 
-    do
-    {
-        wire_tx(data&1);
-        data>>=1;
-    }
-    while (--l);
+	do {
+		DS1820_TX(data & 1);
+		data >>= 1;
+	} while (--l);
 }
 
-unsigned char wire_rx(void)
-{
-    unsigned short int bit;
+unsigned char DS1820_RX(void) {
+	unsigned short int bit;
 
-    wire_out();
-    delay(50);
-    WIRE(0);
-    delay(10);
-    WIRE(1);
-    wire_in();
-    delay(10);
+	DS1820_ConfigureOutput();
+	delay(50);
+	DS1820_SwitchPinState(0);
+	delay(10);
+	DS1820_SwitchPinState(1);
+	DS1820_ConfigureInput();
+	delay(10);
 
-    bit = AT91F_PIO_IsInputSet(AT91C_BASE_PIOA, PIO_PA8);
-    if (!bit)
-    {
-        delay(100);
-    }
-    wire_out();
-    return (bit)?1:0;
+	Pin ds1820_input_pin[] = { DS1820_INPUT_PIN };
+	bit = PIO_Get(ds1820_input_pin);
+
+	if (!bit) {
+		delay(100);
+	}
+	DS1820_ConfigureOutput();
+	return (bit) ? 1 : 0;
 }
