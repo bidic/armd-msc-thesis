@@ -1,0 +1,71 @@
+\section{Lokalizcja twarzy na obrazie}
+
+W ciągu ostatnich lat obserwuje się bardzo dynamiczny rozwój biometrii.
+Aplikacje analizujące biometryczne cechy użytkowników znalazły swoje
+zastosowanie miedzy innymi w systemach zabezpieczeń i monitoringu, robotyce,
+kopmuterach przenośnych, aparatach i kamerach cyfrowych czy nawet w nowoczesnych
+telefonach komórkowych. Pośród szeregu cech które mogą zostać poddane analizie
+szczególnym zainteresowaniem cieszy się lokalizacja ludzkiej twarzy. Systemy
+posiadające możliwość zlokalizowania na obrazie twarzy od pewnego czasu
+towarzyszą nam w życiu codziennym. Niemniej jednak większość istniejących
+algorytmów pozwalających na rozwiązanie problemu lokalizacji twarzy jest dosyć
+skomplikowana i ma bardzo konkretne wymagania zarówno co do platformy sprzętowej
+jak i jakości obrazu który będzie poddawany analizie. Dlatego też stworzenie
+implementacji dla platformy o bardzo ograniczonych zasobach obliczeniowych i
+pamięciowych jest nielada wyzwaniem. Celem niniejszego rozdziału jest
+przedstawienie podstawowych rodzajów algorytmów lokalizacji twarzy wskazanie ich
+wad oraz zalet. W kolejnym podrodziale znajduje się szczegółowy opis stworzonej
+implementacji algorytmu zastosowanego w realizowanej pracy magisterskiej.
+
+
+Applications based on human face detection have been
+significantly developed recently—surveillance systems,
+digital monitoring, intelligent robots, notebook, PC cameras,
+digital cameras, 3G cell phones, and the like. These
+applications consequently play an important role in our daily
+life. Nevertheless, the algorithms of the applications are quite
+complicated and hard to meet real-time requirements of
+specific frame-rate.
+Over the past decade, many approaches for improving the
+performance of human face detection have been proposed,
+which are categorized into to main types (1) Knowledge-based
+method: This method is aimed at finding invariant features of
+a face within a complex environment, thereby localizing the
+position of the face. Relationships among the features
+helpfully determine whether a human face appears in an image
+or not [1]. (2)Feature invariant approaches: Invariant features,
+unresponsive to different positions, brightness, and viewpoints,
+are utilized in this approach to detect human faces. A
+statistical model is usually built up for describing the relations
+among face features and the presence of the detected faces.
+Such face features, for instance, are Facial Features [2],
+Texture [3], and Skin Color [4]. (3)Template matching
+method: A template cohering with human face features is used
+to perform a pattern-matching operation based on the template
+and an input image. Shape template [5] and Active Shape
+Model [6] are common examples of this method.
+(4)Appearance-based method: This method, such as Eigen
+face [7], Neural Network [8], and Hidden Markov Model [9],
+employs a series of face images to train and establish a face
+model for the face detection. In general, method (2), (3), and
+(4) are more complex than method (1); yet the more features
+are used in method (1), the more complicated it is.
+In this paper, a complexity-reduced algorithm for detecting
+human faces in real-time is proposed. This algorithm, on the
+strength of Knowledge-based method with minimum features,
+adopts the geometric characteristics of skin and hair color to
+detect human faces. In addition, this algorithm is able to be
+expectedly transplanted to an embedded system, like the
+developing pet robot
+\subsection{Algorytmy}
+\subsection{Implementacja}
+Implementacja modułu do lokalizacji twarzy na obrazie pobranym z kamery
+robota została w całości oparata o algorytm zaproponowany przez Yao-Jiunn Chen,
+Yen-Chun Lin w artykule zatytułowanym 'Simple Face-detection Algorithm Based on
+Minimum Facial Features'. 
+Pierwszym krokiem na drodze do zlokalizowania twarzy na obrazie jest akwizycja
+danych z kamery. Przesłany z kamery obraz automatycznie jest poddawany
+podstawowej korekcji mającej na celu znormalizownie balansu bieli oraz
+dopasowanie ostrości. Tak przygotowany obraz poddawany jest binaryzacji. Celem
+wspomnianego procesu jest odnalezienie na obrazie obszarów będących w kolorze
+skóry oraz 
