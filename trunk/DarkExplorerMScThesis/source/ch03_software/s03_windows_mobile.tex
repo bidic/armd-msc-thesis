@@ -1,7 +1,7 @@
 \section{Platforma mobilna (Windows Mobile 6.1)}
 
-Mobilne urządzenia prznośne z dnia na dzień zyskują na popularności. Każdego dnia
-spotykamy się z nimi w domu, w pracy czy spacerując po parku. Z całą pewnością
+Mobilne urządzenia przenośne z dnia na dzień zyskują na popularności. Każdego
+dnia spotykamy się z nimi w domu, w pracy czy spacerując po parku. Z całą pewnością
 można stwierdzić, iż większa część społeczeństwa obecnie jest w posiadaniu
 telefonu komórkowego, komputera przenośnego czy też jakiegoś innego urządzenia
 mobilnego. Wszystkie z wspomnianych urządzeń posiadają dedykowaną platformę
@@ -29,12 +29,12 @@ powszechnie znane przez środowiska twórców oprogramowania.
 Firma Microsoft wypuściła po raz pierwszy na światło dzienne swoją platformę
 mobilną w latach 90-tych. Natomiast w roku 2002 pojawiła się pierwsza platforma
 Windows CE.NET. Zapoczątkowało to popularyzację urządzeń Pocket PC opartych o
-system Windows CE 3.0 oraz późniejsze wersje. Dalszy rozwój bezprzewodkowych
+system Windows CE 3.0 oraz późniejsze wersje. Dalszy rozwój bezprzewodowych
 technologi telekomunikacyjnych pozwolił na integracje telefonu z komputerem
 osobistym. Wspomniane urządzenia Pocket PC z 2002 roku wspierały między innymi
 standard GSM, GPRS, bluetooth oraz umożliwiały użytkownikom dostęp do sieci
 bezprzewodowych. W między czasie rozwojowi ulegały urządzenia typu SmartPhone
-które koncepcyjnie były bardzo zbliżone do Pocket PC jednkaże były one bardziej
+które koncepcyjnie były bardzo zbliżone do Pocket PC jednakże były one bardziej
 zbliżone do telefonu niż komputera osobistego. Podstawową różnicą pomiędzy
 Smartphone i Pocket PC jest fakt iż urządzenia Pocket PC posiadają ekran
 dotykowy, a Smartphone wyposażone są jedynie w przyciski umożliwiające sterowanie
@@ -43,314 +43,91 @@ oraz wspierało inne standardy i technologie.
 
 W chwili obecnej większość urządzeń Pocket PC oraz Smartphone działają w oparciu
 o system Windows Mobile 5 oraz Windows Mobile 6. Nowoczesne urządzenia Pocket PC
-wyposażone są w procesor o taktowaniue 500-600 MHz oraz od 64-128 MB pamięci RAM.
+wyposażone są w procesor o taktowaniu 500-600 MHz oraz od 64-128 MB pamięci RAM.
 Najnowsze urządzenia z tej grupy wyposażane są w 1 GHz procesor oraz 512 MB
 pamięci.
+\subsubsection{Modele aplikacji}
+Istnieje klika modeli rozwoju aplikacji dla Windows Mobile, a wybór docelowego
+modelu został pozostawiony programiście. Pierwszy z nich służy do tworzenia
+aplikacji w kodzie natywnym. Aplikacje pisane zgodnie z tym modelem cechują się
+wysoką wydajnością, bezpośrednim dostępem do sprzęu oraz małym zużyciem zasobów.
+Do rozwoju tego rodzaju aplikacji korzysta się z reguły ze środowiska do
+rozwijania aplikacji z użyciem Embeded Visual C++. Główną wadą tego modelu jest
+niska przenośność pomiędzy różnymi platformami zwłaszcza jeżeli aplikacja
+korzysta z urządzeń specyficznych dla danego modelu urządzenia. Docelowo więc za
+pomocą tego modelu tworzy się biblioteki i narzędzia ułatwiających tworzenie
+bardziej skomplikowanych aplikacji. Jeżeli więc insteresuje nas tworzenie
+wysokopoziomowych aplikacji z GUI, skierowanych bezpośrednio do użytkowników,
+zaleca się tworzenie tego typu aplikacji za pomocą kodu zarządzalnego z użyciem
+takich języków jak C\# czy Visual Basic. Rozwijanie aplikacji w oparciu o kod
+zarządzalny pozwala na stworzenie programu który będzie mógł w pełni
+wykorzystywać możliwości oferowane przez Microsoft .NET Compact Framework.
+Umożliwia to programiście tworzenie rozproszonych systemów mobilnych pracujących
+zarówno w modelu ze stałym połączeniem jak i bez. Sport aczęść narzędzi
+dostępnych w ramach .NET Compact Framework jest również wykorzystywana do rozwoju
+aplikacji na komputery stacjonarne. Biblioteka została zaprojektowana docelowo na
+urządzenia o ograniczonych zasobach co w połączeniu z możliwościami języków z
+rodziny .NET oraz integracją z Visual Studio daje nam profesjonalny zestaw
+narzędzi do tworzenia aplikacji mobilnych.
+\\
+Trzecim modelem tworzenia programów pod Windows Mobile jest wykorzystywanie kodu
+serwera do pracy z wieloma różnymi typami urządzeń poprzez jeden wspólny kod
+bazowy i model cienkiego klienta. Oczywiście tego typu podejście ma sens jedynie
+gdy możemy zagwarantować stabilny kanał komunikacyjny pomiędzy urządzeniem
+klienta, a serwerem. Każdy z przedstawionych modeli idalnie sprawdza się jeżeli
+tylko wprawidłowy sposób wybierzemy model najbardziej odpowiadający potrzebom
+naszej aplikacji.
 
-Development Tools
-
-There are a few models of development of applications for Windows Mobile:
-
-Win32 API MFC .NET Compact Framework.
-
-Microsoft Co gives developers all necessary tools for development of applications
-for PDA, Pocket PC; and Smartphone.
-
-Here are some advices about different code type choosing.
-
-Use Native Code for achieving the burst performance, direct work with hardware,
-and also for minimization of system resource requirements. Use Managed Code for
-development of GUI-oriented applications which main requirements are development
-and market deployment terms. Managed Code is also good for the easy work with
-web-services. Use Server-Side Code for work with different devices through a
-single code base, and also if wide stable communication channel with a device is
-present.
-
-Below are the reviews of present development tools for PDAs, Pocket PCs and
-Smartphones.
-
-eMbedded Visual C++ 4.0
-
-Microsoft eMbedded Visual C++ 4.0 development environment is meant to create
-applications for devices with Windows CE .NET 4.2 operating system and also (with
-package of updates SP3) for PDA and Smartphones on the Windows Mobile 2003 Second
-Edition platform. The development environment eMbedded Visual C++ 4.0 is good for
-creation of native code for mobile and inbuilt devices with Windows CE .NET 4.2
-OS. It allows developer to perform Just-In-Time Debugging for diagnostics of
-unhandled exceptions, Attach-to the process for the extended debugging of
-processes, and also interaction with an emulator.
-
-Visual Studio .NET and SDP functions
-
-SDP (Smart Device Programming) functions of the integrated environment of
-development Visual Studio .NET 2003 (2005, 2008) allow to create applications,
-that uses possibilities of Microsoft .NET Compact Framework platform. Thus a
-developer can create the distributed mobile data-processing systems, workings
-both in scenarios with connection and without permanent connection. Vast class
-library of .NET Compact Framework platform makes application development much
-quicker than with traditional development tools.
-
-Visual Studio .NET lets create applications for the Pocket PC 2002 devices and
-(with proper SDKs) Pocket PC 2003, 2005 and Smartphone 2003, 2005, applying the
-same tools as those used for the development of applications for desktop PCs.
-Library .NET Compact Framework is installed together with Visual Studio .NET.
-This library is specially developed for devices with the limited resources.
-Developers can also use new languages C\# and Visual Basic .NET for applications
-for mobile and inbuilt devices. They are good in workings with web-services and
-ADO.NET technologies.
-
-Control elements of ASP .NET Mobile Controls extend SDP functions and .NET
-Compact Framework platform. They give opportunities to use possibilities of .NET
-Compact Framework and Visual Studio .NET for development of mobile
-web-applications due to the data delivery to various mobile devices by means of
-ASP.NET technology. This approach allows to create single mobile web-application
-in the Visual Studio .NET environment, that will automatically perform data
-rendering for displaying on various devices: mobile phones, smartphones, PDA,
-Pocket PC. The integrated development environment makes it possible to create
-mobile web-applications simply by dragging control elements on forms.
-
-ASP.NET System sets no components on a client device. For adaptation of
-formatting under concrete browsers server logic is used. It generates information
-in the formats of Wireless Markup Language (WML), HTML, and Compact HTML (cHTML).
-
- 2. Building Windows Mobile Applications for Windows Mobile devices using MS
- Visual Studio .NET
-
-Visual Studio development environment together with Compact Framework enable to
-develop applications using a vast graphic interface, databases, archiving and
-encrypting tools,  USB, Serial, Bluetooth, and also wireless network connections
-and telephony. All of these is provided by SDK as well as libraries and heading
-files from Platform Builder.
-
-2.1 User Interface
-
-Due to the presence of good designer in VS and SDK we can easily develop GUI for
-mobile applications just the same as for Desktop applications. The only
-difference is in sets of  graphic components for Desktop systems and for Windows
-Mobile. There is also difference between components of Smartphone and Pocket PC
-versions caused by that Pocket PC has a touch screen and SmartPhone has not.
-Therefore development of interface for SmartPhone is more complex. One should
-take it into account when developing software for both platforms.
-
-Here we should also mention that software built for Pocket PC won’t start on the
-SmartPhone platform while the opposite situation is possible – till the moment
-when some special Smartphone function is called.
-
-It is naturally that many graphic components as well as majority of functions
-from full-size Framework were taken away from Windows Mobile SDK to reduce the
-size of the SDK on the device side. Only the most needful elements were left. But
-the productivity and volumes of memory are increasing so the number of function
-included in SDK becomes greater. So the difference between Compact Framework 1.0
-and 2.0 is enormous. Version 1.0 was very limited.
-
-In general the development of GUI with Compact Framework on C\# is similar to
-the development of the common Win32 application on $C\#$.
-
-It is also possible to develop a graphic interface using assembling of the 3D
-rendering-engines. They are such as GAPI (Game API), OPENGL ES (Embedded System),
-OPENVG (Vector Graphics), and other projects. Certainly it is rather labor
-intensive process as far as it is very important to write an optimal code because
-of the relatively low  productivity of mobile devices.
-
-2.2 Communications
-
-To date mobile devices have a wide range of communicational options. They have an
-access to the wireless high-speed network using 802.11 WiFi Connection standard.
-They also use IrDa, Bluetooth, and USB host/client functionality. While the usage
-of Irda is gradually getting less protocols and standards of Bluetooth, WiFi,
-Edge, GSM, and also USB are used quit often.
-
-Microsoft Company provides such APIs:
-
-ActiveSync API provides functionality for work with services of synchronization,
-file filters, etc. Bluetooth API provides functionality for wireless access to
-mobile and peripheral devices. Connection Manager API serves for the automation
-of connection process, network connection management. Devices are using
-Connection Manager to establish connection and also to inform about the supposed
-connection (for example Internet). Object Exchange (OBEX) API provides
-functionality for work with effective, compact binary protocol just suitable for
-devices with the limited possibilities. Remote API (RAPI) provides functions for
-management and remote call of methods on the device side. Such functions are
-available: access to the register, files, databases and different configurations
-of device from the Desktop-system. The most important option is Remote Procedure
-Call when we simply call the method «CeRapiInvoke()» on the Desktop side,
-transmit the name of DLL on the device side and the name of function in this DLL
-and then just call this method. Pocket Outlook Object Model API provides
-functions for work with the objects of Pocket Outlook. It provides interfaces for
-synchronization and access to the objects: Task, Calendar, Contacts. Telephony
-API (TAPI) includes: Assisted API Extended API Phone API SIM Manager API Short
-Messages Service (SMS) API Telephony Service Provider (TSP) API Wireless
-Application Protocol (WAP)  API.
-
-Also mobile devices have possibility to work with Serial (USB) ports. There are a
-few COM-ports in many devices. Usually the first 3-5 of them are reserved for
-IrDa, Bluetooth, SerialPort and others. Other ports are available to for user.
-Some devices have USB-Host functionality in other words they are USB On-The-Go
-(OTG) devices which can serve both as USB Client and USB Host. For this purpose
-device should have necessary Hardware and Software (Device Driver).
-
-Device Driver is a driver which is an intermediate layer between the driver of
-HOST and  level of applications. Such driver provides «Stream Interface Driver»
-and must contain such functions as:
-
-XXX\_Init XXX\_Open XXX\_Close XXX\_Write XXX\_Read XXX\_IOControl
-
-Here “XXX” is replaced with «prefix» (for example «COM», «DSK»).
-
-This prefix registers in the registry when a driver registers in the system. More
-detailed information about Device Driver Interface can be obtained from MSDN.
-
-Also a developer can use such APIs not concerning communicational ones:
-
-Device Configuration API File and Application Management API Game API Home Screen
-API HTML Control API MIDI API Shell API Speech Recognizer API Vibrate API Voice
-Recorder Control API. 2.3 P/Invoke and Native Interop
-
-As far as Compact Framework contains basic functions and methods from complete
-
-Framework we have such functionality as:
-
-XML Serialization Cryptography Security Reflection Interop Services et al.
-
-Certainly Platform Invoke calls are accessible. For this purpose – as well as in
-complete Framework – we use functions and attributes from namespace
-System.Runtime.InteropServices and DllImport attribute for description of
-functions which will be called from non-managed code.
-
-However the functionality of these methods is limited. So Marshal class has
-PtrToStructure, GetComInterfaceForObject, Copy() and Read() functions but, for
-example, there is no such function as GetDelegateForFunctionPointer() in it. So
-it is impossible to make Marshaling just with Delegate. The
-GetFunctionPointerForDelegate function is available only. If we want to transmit
-a pointer to the function from Managed code we should get its FunctionPointer and
-only after that transmit it to the unmanaged code for subsequent call of it from
-there. Also we can not transmit some objects because Compact Framework can not
-count SizeOf() for some objects. Therefore frequently we have to transmit  data
-of Blitable types only and arrays of these types (Int, byte, char, but not bool),
- and transmit and receive  classes and structures by means of IntPtr. Certainly
-it is explained by aspiration to increase the performance. It is therefore
-recommended to use primary types for Marshaling and «GCHandle» class for storing
-an object in the process memory and to make this memory «visible» for unmanaged
-code
-
-Certainly the performance of P/Invoke calls from C\# application in C++ DLL is
-almost twice less than the performance of method calls between C++ DLLs. However
-the performance of devices grows and it becomes possible to use such calls.
-
-2.4 Debugging
-
-MS Visual Studio enables to make debugging of applications under
-
-Windows Mobile just the same as for Desktop applications. We have Emulator,
-Device Emulator Manager and other to functionality such as Breakpoints, Threads,
-Watches panel etc.
-
-However to make Debug using Native and Managed code simultaneously is impossible.
-Therefore it is possible to start either C++ projects or Managed ones. It’s also
-so for «Attach to process». There is a possibility of attaching to the processes
-on the device side (or emulator side). ActiveSync is required to provide
-communication between a device and the system, it is installed with SDK. An
-emulator also can be connected to the computer by means of ActiveSync. We obtain
-almost complete emulation of Windows Mobile devices. Here are both SmartPhone and
-Pocket PC (or Pocket PC Phone Edition) emulators. However only one Windows Mobile
-device can be connected to the computer at one time moment. Therefore Debug on
-two devices simultaneously which for example interact in some way is rather
-difficult. Certainly we talk only about Debug of applications developed by us but
-not about applications and services of the system. For such debugging we need the
-complete built of the system created by means of Platform Builder (in the last
-versions of Platform Builder it’s included in Visual Studio). We can also create
-our own SDK for Visual Studio and Windows CE platform.
-
-An emulator also enables to emulate connection with the GSM network and GPS
-support. It makes possible to test and develop large spectrum of applications
-without having a physical device in hands.
-
-Talking about Debug with IDA we should mention that version 5.1 already has the
-possibility to perform Debug by means of this interactive disassembler with the
-use of their plugin which is installed on a device.
-
-With SDK appearance such option as «Deploy» appears in Visual Studio environment.
-Now there is «Deploy» item in project context menu additionally to “Build”,
-“Clean”, “Debug”. After you choose this item DLL or EXE file built by current
-configuration is transmitted to the device. Also new column appears in
-Configuration Manager where not only «Build» in some configuration option is
-available but also «Deploy». Deployment of .NET projects transmits not only the
-unit but also those builds that are depended on it (Dependencies).
-
-3. Deployment and installation
-
-Development of applications for Windows Mobile supposes also their assembling and
-creation of installation package. For this purpose there is such concept as
-?abinet (.cab) file in Windows Mobile. It is a common archive but it is a
-installation package also (a sort of MSI package). It is assembled by means of
-Cab Wizard (cabwiz.exe) from MS VisualStudio (or from a command line). This
-utility creates processor dependent «.cab» file. WinCEApplicationManager
-transmits and starts CAB on a device, so user can install the application using
-instructions appearing on device screen. It is also possible to create the
-project of MSI Installation which includes CAB file by means of Visual Studio.
-This built package will be started on user computer and then transmit ?AB
-installation on a device to continue installation process.
-
-There is special Uninstall Manager on the device side. One should attach
-configuration INI-file to CAB file. This INI file includes settings to manage
-installation process such as path, shortcut name to create, minimal OS version to
-install the application and others written in special syntax. It is also possible
-to include your own DLL into CAB-file to widen installation options. This DLL
-contains such functions as «Installer\_AfterInstall»,
-«Installer\_BeforeInstall», «Installer\_AfterUnInstall»,
-«Installer\_BeforeUnInstall», code in these functions will be executed on the
-device side in the certain moments of installation or uninstallation process.
-
-When developing CAB installation it is possible to attach files, different
-resources, built units, add information to the registry. They are designated as
-«Project Output. That’s why there is no need to reset anything after CAB-file
-creation: it will collect all included projects and files and assemble in an
-archive.
-
-4. Security Model for Windows Mobile 5 and Windows Mobile 6
-
-Devices based on Windows Mobile receive, send and analyze potentially important
-information which should be protected from unsafe applications. To protect device
-the starting of unknown applications is disabled, the access to some API is
-restricted and some registry parts changing is forbidden. Units can be marked as
-Trusted and Untrusted and system uses this information to prevent starting of
-unauthorized applications and limit their access to the system. Also the access
-to the system by means of RAPI (Remote API) through ActiveSync can be restricted.
-Security Certificates Security Rights are used for the executable units (EXE,
-DLL) and for CAB-files.
-
-Protection Against Threats and Risks
-
-The followings options help to protect devices:
-
-Strict password protection. PIN code protection. Devices corrupt deleted
-information to prevent access to it (WM 6). Devices corrupt deleted information
-on memory cards to prevent access to it (WM 6). Storages encryption and Advanced
-Encryption Standard for SSL (WM 6). Own certificates usage. Detecting a device
-via Bluetooth can be protected (WM 6 Smartphone). 2 layer system of application
-starting (One-tier and Two-tier access). No support of macros, therefore viruses
-can make much harm.
-
-The start of applications is based on Permissions. Windows Mobile devices use
-such models:
-
-Privileged Normal Blocked
-
-Privileged applications have the widest access. They can access any API, write in
-the protected areas of registry and have the complete access to the system.
-
-Most applications have Normal model. They do not have access to the trusted API
-and do not have the complete control of the system.
-
-Application can not be started at all if it has “Blocked” status. It means that
-it’s not signed with the proper certificate or user forbade the start by the
-proper warning of the system.
-
-Analogical situation is with Cab-files. The executable units with Normal status
-can start Privileged DLL but then they will work as Normal. However Privileged
-executable units can not start the units having Normal status.
-
-Written by Eugene Kordin, Apriorit specialist.
+\subsubsection{Graficzny interfejs użytkownika}
+Dzięki wygodnemu systemowi projektowania GUI
+dostępnego w Visual Studio tworzenie interfejsu
+użytkownika dla platformy mobilnej jest niemal tak proste jak w przypadku
+tradycyjnych aplikacji. 
 
 \subsection{Środowisko rozwojowe}
+Tworzenie aplikacji działających na urządzeniach pod kontrolą systemu Windows
+Mobile jest niemal tak samo proste jak tworzenie zwykłych aplikacji na komputery
+stacjonarne. Niemniej jednak do stworzenia w pełni funkcjonalnego środowiska
+rozwojowego konieczne jest przejście przez klika kroków przygotowawczych
+związanych z instalacją potrzebnych aplikacji narzędziowych. \\
+\\
+Przed rozpoczęciem przygody z tworzeniem aplikacji dla systemu Windows Mobile
+konieczne jest zainstalowanie Microsoft Visual Studio. Zaleca się aby Visual
+Studio było w wersji 2005 lub 2008. Niestety narzędzia umożliwiające rozwijanie
+aplikacji mobilnych nie są poprawnie wykrywane przez Visual Studio 2010 oraz
+poprzednie wydania w wersji Express. Dlatego też koniecznością jest instalacja
+środowiska w wersji Standard lub Professional. Każda z tych wersji może zostać
+pobrana w wersji czasowej ze stron firmy Microsoft lub w wersji pełnej z MSDNAA.
+Visual Studio posłuży nam nie tylko do edycji kodu aplikacji ale pozwoli również
+w prosty sposób budować, debugować oraz przygotować instalator finalnej wersji
+aplikacji. Po poprawnym zainstalowaniu środowiska rozwojowego konieczne jest
+pobranie i zainstalowanie dostępnych paczek serwisowych dostępnych dla wybranej
+wersji Visual Studio. Pozwoli to uniknąć nieprzyjemnych niespodzianek podczas
+instalacji bibliotek narzędziowych i późniejszej pracy.\\
+\\
+Jeżeli posiadamy już zainstalowaną kopię Visual Studio możemy przystąpić do
+instalacji narzędzi pomocniczych które pomogą nam w tworzeniu aplikacji.
+Pierwszą niezbędną biblioteką jest .NET Compact Framework 2.0 SP1. Jest to
+zestaw narzędzi wykorzystywanych do uruchamiania aplikacji na platformach
+opartych o Windows Mobile. Aby ułatwić sobie proces budowania, debugowania i
+uruchamiania aplikacji na urządzeniu konieczne jest zainstalowanie w systemie
+Windows ActiveSync. Dzięki ActiveSync możliwe stanie się uruchamianie
+projektowanej aplikacji, bezpośrednio z IDE, nie tylko na prawdziwym urządzeniu
+ale również emulatorze. \\
+\\
+Ostatnim, ale i zarazem najważniejszym krokiem jest instalacja Windows Mobile
+SDK. Na stronach firmy Microsoft dostępne są dwie wersje SDK, Standard oraz
+Professional. Wersja Standard zawiera w sobie tylko wsparcie dla urządzeń z
+Windows Mobile Classic lub Standard natomiast wersja Professional obejmuje
+wszystkie dostępne środowiska. Wybór SDK można sprowadzić do następującej
+zasady. Jeżeli zamierzamy tworzyć oprogramowanie dla urządzeń Smartphone bez
+ekranu dotykowego w zupełności wystarczy nam wersja standardowa. Jeżeli
+natomiast planujemy napisane aplikacje uruchamiać na PocketPC lub dotykowych
+smartphonach będziemy potrzebować bibliotek systemu Windows Mobile Classic lub
+Professional, tak więc konieczne jest użycie SDK w wersji Professional. Tak jak
+w przypadku Visual Studio, również tutaj zaleca się instalację wszystkich
+dostępnych na stronie producenta aktualizacji i poprawek. Jest to szczególnie
+istotne podczas pracy z emulatorami urządzeń. Po zrealizowaniu tych kroków
+otrzymujemy w pełni funkcjonalne środowisko do rozwoju aplikacji mobilnych dla
+urządzeń smartphone.
 \subsection{Środowisko uruchomieniowe}
