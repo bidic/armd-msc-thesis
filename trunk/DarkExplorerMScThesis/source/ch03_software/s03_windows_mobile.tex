@@ -50,20 +50,20 @@ pamięci.
 Istnieje klika modeli rozwoju aplikacji dla Windows Mobile, a wybór docelowego
 modelu został pozostawiony programiście. Pierwszy z nich służy do tworzenia
 aplikacji w kodzie natywnym. Aplikacje pisane zgodnie z tym modelem cechują się
-wysoką wydajnością, bezpośrednim dostępem do sprzęu oraz małym zużyciem zasobów.
-Do rozwoju tego rodzaju aplikacji korzysta się z reguły ze środowiska do
+wysoką wydajnością, bezpośrednim dostępem do sprzętu oraz małym zużyciem
+zasobów. Do rozwoju tego rodzaju aplikacji korzysta się z reguły ze środowiska do
 rozwijania aplikacji z użyciem Embeded Visual C++. Główną wadą tego modelu jest
 niska przenośność pomiędzy różnymi platformami zwłaszcza jeżeli aplikacja
 korzysta z urządzeń specyficznych dla danego modelu urządzenia. Docelowo więc za
 pomocą tego modelu tworzy się biblioteki i narzędzia ułatwiających tworzenie
-bardziej skomplikowanych aplikacji. Jeżeli więc insteresuje nas tworzenie
+bardziej skomplikowanych aplikacji. Jeżeli więc interesuje nas tworzenie
 wysokopoziomowych aplikacji z GUI, skierowanych bezpośrednio do użytkowników,
 zaleca się tworzenie tego typu aplikacji za pomocą kodu zarządzalnego z użyciem
 takich języków jak C\# czy Visual Basic. Rozwijanie aplikacji w oparciu o kod
 zarządzalny pozwala na stworzenie programu który będzie mógł w pełni
 wykorzystywać możliwości oferowane przez Microsoft .NET Compact Framework.
 Umożliwia to programiście tworzenie rozproszonych systemów mobilnych pracujących
-zarówno w modelu ze stałym połączeniem jak i bez. Sport aczęść narzędzi
+zarówno w modelu ze stałym połączeniem jak i bez. Spora część narzędzi
 dostępnych w ramach .NET Compact Framework jest również wykorzystywana do rozwoju
 aplikacji na komputery stacjonarne. Biblioteka została zaprojektowana docelowo na
 urządzenia o ograniczonych zasobach co w połączeniu z możliwościami języków z
@@ -74,15 +74,37 @@ Trzecim modelem tworzenia programów pod Windows Mobile jest wykorzystywanie kod
 serwera do pracy z wieloma różnymi typami urządzeń poprzez jeden wspólny kod
 bazowy i model cienkiego klienta. Oczywiście tego typu podejście ma sens jedynie
 gdy możemy zagwarantować stabilny kanał komunikacyjny pomiędzy urządzeniem
-klienta, a serwerem. Każdy z przedstawionych modeli idalnie sprawdza się jeżeli
-tylko wprawidłowy sposób wybierzemy model najbardziej odpowiadający potrzebom
+klienta, a serwerem. Każdy z przedstawionych modeli idealnie sprawdza się jeżeli
+tylko w prawidłowy sposób wybierzemy model najbardziej odpowiadający potrzebom
 naszej aplikacji.
 
 \subsubsection{Graficzny interfejs użytkownika}
 Dzięki wygodnemu systemowi projektowania GUI
 dostępnego w Visual Studio tworzenie interfejsu
 użytkownika dla platformy mobilnej jest niemal tak proste jak w przypadku
-tradycyjnych aplikacji. 
+tradycyjnych aplikacji, a jedyną różnicą jest ilość i rodzaj dostępnych
+kontrolek. Różnice te wynikają z faktu iż niektóre urządzenia mobilne posiadają
+ekrany dotykowe, a inne nie. Co za tym idzie, rozwój interfejsu użytkownika
+staje się bardziej skomplikowany zwłaszcza jeżeli interesuje nas rozwój
+aplikacji wspólnej dla obydwóch platform sprzętowych. W tym miejscu nie może
+zabraknąć informacji, że oprogramowanie zbudowane dla PocketPC nie uruchomi się
+na urządzeniach SmartPhone natomiast sytuacja odwrotna jest możliwa do momentu w
+którym aplikacja nie zacznie korzystać ze specyficznych funkcji SmartPhone.
+Naturalnym stanem rzeczy wydaje się fakt, iż wiele funkcji i komponentów
+graficznych znanych z aplikacji desktopowych zostało usunięte z bibliotek
+Windows Mobile, aby zapewnić jej wydajność i niewielki rozmiar. Dlatego też
+pozostawiono tylko niezbędne, najprostsze komponenty. Ponieważ wydajność  i
+zasoby pamięciowe urządzeń stale rosną, również ilość narzędzi dostępnych w SDK
+jest systematycznie zwiększana, a co za tym idzie różnice pomiędzy kolejnymi
+wersjami .NET Compact Framework są bardzo duże. Dlatego też posiadanie jak
+najbardziej aktualnej wersji SDK ma niebagatelne znaczenie dla wygody tworzenia
+aplikacji. Podsumowując rozwój GUI dla platformy mobilnej nie różni się bardzo
+od tworzenia interfejsu użytkownika dla aplikacji dekstopowej. Istnieje również
+możliwość rozwijania GUI w oparciu o silniki 3D. W chwili obecnych dostępne są
+takie rozwiązania jak GAPI (Game API), OpenGL ES (Embeded Systems), Open VG
+(Vector Grapics). Jednakże rozwój takich aplikacji jest niezwykle trudny gdyż
+wymaga od programisty tworzenie maksymalnie optymalnego kodu, ze względu na
+ograniczone możliwości niektórych urządzeń. 
 
 \subsection{Środowisko rozwojowe}
 Tworzenie aplikacji działających na urządzeniach pod kontrolą systemu Windows
