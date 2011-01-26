@@ -82,9 +82,9 @@ void PWM_Configure()
 //  AT91F_PMC_EnablePeriphClock ( AT91C_BASE_PMC, 1 << AT91C_ID_PWMC );
 
   PWMC_ConfigureChannel(0,0x6 << 0 ,0x1 << 8,0x1 << 9 | 0x0 << 10);
-  PWMC_ConfigureChannel(1,0x6 << 0 ,0x1 << 8,0x1 << 9 | 0x0 << 10);
-  PWMC_ConfigureChannel(2,0x6 << 0 ,0x1 << 8,0x1 << 9 | 0x0 << 10);
-  PWMC_ConfigureChannel(3,0x6 << 0 ,0x1 << 8,0x1 << 9 | 0x0 << 10);
+//  PWMC_ConfigureChannel(1,0x6 << 0 ,0x1 << 8,0x1 << 9 | 0x0 << 10);
+//  PWMC_ConfigureChannel(2,0x6 << 0 ,0x1 << 8,0x1 << 9 | 0x0 << 10);
+//  PWMC_ConfigureChannel(3,0x6 << 0 ,0x1 << 8,0x1 << 9 | 0x0 << 10);
 //  //wylaczenie wszystkich kanalow przed zmiana konfiguracji
 //  AT91C_BASE_PWMC->PWMC_DIS = (AT91C_PWMC_CHID0 | AT91C_PWMC_CHID1 | AT91C_PWMC_CHID2 | AT91C_PWMC_CHID3);
 //
@@ -122,13 +122,13 @@ void PWM_Configure()
 //  AT91C_BASE_PWMC->PWMC_CH[3].PWMC_CDTYR = 2;
 
   //KONFIGURACJA WYPROWADZENIA PA11, PA12, PA13, PA14
-  AT91F_PIO_CfgPeriph(AT91C_BASE_PIOA, 0, (AT91C_PA11_PWM0 | AT91C_PA12_PWM1 | AT91C_PA13_PWM2 | AT91C_PA14_PWM3) );
+  AT91F_PIO_CfgPeriph(AT91C_BASE_PIOA, 0, (AT91C_PA11_PWM0 /*| AT91C_PA12_PWM1 | AT91C_PA13_PWM2 | AT91C_PA14_PWM3*/) );
 
   //Uruchomienie wszystkich kana��w PWM
   PWMC_EnableChannel(0);
-  PWMC_EnableChannel(1);
-  PWMC_EnableChannel(2);
-  PWMC_EnableChannel(3);
+//  PWMC_EnableChannel(1);
+//  PWMC_EnableChannel(2);
+//  PWMC_EnableChannel(3);
 //  AT91C_BASE_PWMC->PWMC_ENA = (AT91C_PWMC_CHID0 | AT91C_PWMC_CHID1 | AT91C_PWMC_CHID2 | AT91C_PWMC_CHID3);
 
 }

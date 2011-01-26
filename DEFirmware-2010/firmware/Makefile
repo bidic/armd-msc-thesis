@@ -45,7 +45,7 @@ BOARD = at91sam7s-ek
 # TRACE_LEVEL_ERROR      2
 # TRACE_LEVEL_FATAL      1
 # TRACE_LEVEL_NO_TRACE   0
-TRACE_LEVEL = 4
+TRACE_LEVEL = 3
 
 # Optimization level, put in comment for debugging
 OPTIMIZATION = -O3
@@ -79,12 +79,12 @@ OBJCOPY = $(CROSS_COMPILE)objcopy
 
 # Flags
 INCLUDES = -I$(AT91LIB)/boards/$(BOARD) -I$(AT91LIB)/peripherals 
-INCLUDES += -I$(AT91LIB)/components -I$(AT91LIB) -I.
+INCLUDES += -I$(AT91LIB)/components -I$(AT91LIB) -I. -I$(AT91LIB)/memories
 
 CFLAGS = -Wall -mlong-calls -ffunction-sections
-CFLAGS += -g $(OPTIMIZATION) $(INCLUDES) -D$(CHIP) -DTRACE_LEVEL=$(TRACE_LEVEL)
-ASFLAGS = -g $(OPTIMIZATION) $(INCLUDES) -D$(CHIP) -D__ASSEMBLY__
-LDFLAGS = -g $(OPTIMIZATION) -nostartfiles -Wl,--gc-sections -lm
+CFLAGS += $(OPTIMIZATION) $(INCLUDES) -D$(CHIP) -DTRACE_LEVEL=$(TRACE_LEVEL)
+ASFLAGS = $(OPTIMIZATION) $(INCLUDES) -D$(CHIP) -D__ASSEMBLY__
+LDFLAGS = $(OPTIMIZATION) -nostartfiles -Wl,--gc-sections -lm
 
 #-------------------------------------------------------------------------------
 #		Files
@@ -95,15 +95,18 @@ PERIPH = $(AT91LIB)/peripherals
 BOARDS = $(AT91LIB)/boards
 UTILITY = $(AT91LIB)/utility
 DRV = $(AT91LIB)/drivers
+MEMO = $(AT91LIB)/memories
 
 VPATH += $(DRV)/async $(DRV)/twi
+VPATH += $(MEMO) $(MEMO)/spi-flash
 VPATH += $(UTILITY)
 VPATH += $(PERIPH)/dbgu $(PERIPH)/pio $(PERIPH)/aic $(PERIPH)/twi $(PERIPH)/pmc
-VPATH += $(PERIPH)/cp15 $(PERIPH)/pit $(PERIPH)/pwmc $(PERIPH)/usart
+VPATH += $(PERIPH)/cp15 $(PERIPH)/pit $(PERIPH)/pwmc $(PERIPH)/usart $(PERIPH)/spi
 VPATH += $(BOARDS)/$(BOARD) $(BOARDS)/$(BOARD)/$(CHIP)
 
 # Objects built from C source files
 C_OBJECTS = main.o lcd.o
+C_OBJECTS += at45d.o at45.o spi.o spid.o
 C_OBJECTS += peripherals.o rozpoznawanie.o utils.o
 C_OBJECTS += async.o twid.o
 C_OBJECTS += stdio.o math.o string.o

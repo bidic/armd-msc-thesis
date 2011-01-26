@@ -53,8 +53,8 @@
 #define PWM4        PIO_PA14
 #define VSYNC       PIO_PA25
 #define HSYNC       PIO_PA26
-#define MCLK        PIO_PA27
-#define CAM_D7      PIO_PA21
+#define MCLK        PIO_PA21
+#define CAM_D7      PIO_PA27
 #define CAM_D6      PIO_PA20
 #define CAM_D5      PIO_PA19
 #define CAM_D4      PIO_PA18
