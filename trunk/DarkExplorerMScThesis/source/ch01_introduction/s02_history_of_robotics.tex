@@ -1,5 +1,5 @@
 \section{Historia i rozwój robotyki}
-Robotyka jest stosunkowo młodą dziedziną nauki łączącą różne gałęzie nauk
+Robotyka jest stosunkowo młodą dziedziną łączącą różne gałęzie nauk
 technicznych i nie tylko. Do pełnego zrozumienia zagadnień współczesnej robotyki
 oraz budowy i zastosowań robotów konieczna jest niejednokrotnie rozległa wiedza
 na temat elektroniki, mechaniki, inżynierii przemysłowej, matematyki oraz
@@ -10,7 +10,7 @@ współczesnej robotyki. Nie należy zapominać również o tym, że rozwój in�
 wytwarzania oraz automatyki przemysłowej pozwala na nieustanny rozwój robotyki z
 którą mamy do czynienia w przemyśle w dniu dzisiejszym.\\
 \\
-Pojęcie ``Robot'' w literaturze pojawił się po raz pierwszy w sztuce czeskiego
+Pojęcie ``Robot'' w literaturze pojawiło się po raz pierwszy w sztuce czeskiego
 pisarza Karel'a Capka w roku 1920. Termin ``robot'' oznacza w języku czeskim
 pracę lub służbę przymusową. Nieco ponad 20 lat później, amerykański uczony i
 pisarz Isaac Assimov w jednym ze swoich opowiadań po raz pierwszy używa słowa
@@ -18,7 +18,7 @@ robotyka. W kolejnych latach Assimov w swojej twórczości niejednokrotnie wraca
 do problemu robotyki skutkiem czego jest wydanie w 1950 roku zbioru opowiadań
 pod tytułem ``Ja, robot''. Jako ciekawostkę można dodać, że w wydanym w 1942
 roku opowiadaniu pod tytułem ``Zabawa w berka'', Assimove wprowadza trzy prawa
-robotyki, według których zdaniem autora powinny być programowane roboty.
+robotyki według których, zdaniem autora, powinny być programowane roboty \cite{Runaround}.
 \begin{description}
 \item[Prawo pierwsze] \hfill \\
 Robot nie może zranić istoty ludzkiej, ani przez zaniedbanie narazić człowieka
@@ -33,11 +33,24 @@ pierwszym i drugim.
 Nieco później, Isaac Assimov, jako uzupełnienie i prawo nadrzędne dodaje prawo
 zerowe o następującym brzmieniu ``Robot nie może szkodzić ludzkości, ani przez zaniedbanie narazić ludzkości na
 szkodę''. Oprócz wspomnianych powyżej podstawowych praw, zdefiniowano również
-inne prawa wynikające z prowadzonych badań w tej dziedzinie i rozwoju robotyki.\\
+inne prawa wynikające z prowadzonych w tej dziedzinie badań i rozwoju
+robotyki.
+\newpage
+Takim sposobem urządzenie mechaniczne wykonujące zadania w sposób automatyczny
+otrzymało miano ``robota''.\cite{website:asimo-pl} Operacje wykonywane przez robota mogą być
+bezpośrednio kontrolowane przez człowieka na podstawie przygotowanego wcześniej
+programu zawierającego zestaw reguł które umożliwiają robotowi wykonywanie
+określonych czynności. Możliwość wyręczenia człowieka przez maszynę w
+wykonywaniu monotonych, złożonych i powtarzalnych czynności, niejednoktornie
+z dużo większą wydajnością i precyzją, była jednym z podstawowych bodźców
+który sprzyjał rozowojowi robotyki już od samego jej początku. Pojęcię robot
+używane jest również w stosunku do autonomicznie działających urządzeń
+pobierających informację z otocznia za pomocą różnego rodzaju czujników,
+nazywanych sensorami oraz oddziałujących na swoje otoczenie. \\
 \\
 Dzięki gwałtownemu rozwojowi techniki w czasie II wojny światowej w roku 1956
 GC. Devol i JF. Engelberger zainspirowani twórczością Assimov'a zaprojektowali i
-stworzyli pierwszy w dziejach ludzkości działający egzemplarz robota.
+stworzyli pierwszy w dziejach ludzkości działający egzemplarz robota\cite{website:robotyka-pl}.
 Engelberger założył firmę pod nazwą ``Unimation'' zajmującą się automatyzacją,
 pierwszym robotem stworzonym przez firmę Engelbergera był robot nazwany
 ``Unimate''. Został on zainstalowany w fabryce General Motors w Trenton gdzie
@@ -50,11 +63,11 @@ zdefiniowało robota jako wielofunkcyjny, programowalny manipulator
 zaprojektowany do przenoszenia materiałów, narzędzi, części urządzeń poprzez
 serię programowalnych ruchów wykonywanych w celu realizacji różnych zadań.
 W myśl wspomnianej definicji jedną z podstawowych cech robota jest jego
-progrmowalność i możliwość dostosowywania się do zmiennych warunków środowiska
+programowalność i możliwość dostosowywania się do zmiennych warunków środowiska
 pracy. \\
 Pierwsze roboty projektowano z myślą o zastosowaniu ich do realizacji
 elementarnych zadań związanych z przenoszeniem elementów z jednego punktu do
-drugiego. Program pracy robota miał więc charakter sekewencji operacji
+drugiego. Program pracy robota miał więc charakter sekwencji operacji
 prowadzących do realizacji określonego przez programistę zadania. W miarę
 rozwoju technicznego, stawiane przed robotami zadania wymusiły użycie przez
 konstruktorów czujników które pozwalały na zwiększenie poziomu interakcji
@@ -64,7 +77,7 @@ sobie za cel stworzenie maszyny na tyle uniwersalnej i niezależnej aby mogła
 nosić miano androida. Jednak do realizacji tego zadania konieczne jest
 opracowanie sztucznej inteligencji na którą z pewnością przyjdzie nam jeszcze
 trochę poczekać. \\
-\\
+\newpage
 Pierwszym krokiem na drodze do stworzenia androida było oderwanie robota od
 stałego miejsca instalacji i pozwolenie mu w miarę możliwości swobodne
 poruszanie się dostępnej mu przestrzeni roboczej. Tak powstała klasa robotów
@@ -77,7 +90,8 @@ nazywanych robotami mobilnymi. Cechą wspólną wszystkich urządzeń z tej rodz
 była umiejętność swobodnego przemieszczania się oraz analiza najbliższego
 otoczenia. Na tej podstawie maszyna mogła przeprowadzić wnioskowanie pozwalające
 na podejmowanie dalszych akcji czy też zakomunikowanie użytkownikowi odczytanych
-parametrów środowiska.\newpage
+parametrów środowiska.\\
+\\
 Historię robotów mobilny zapoczątkował amerykański Uniwersytet w Stanford gdyż
 w roku 1968 jako pierwszy stworzył w pełni działający model robota mobilnego pod
 nazwą Shakey. Nazwa została zainspirowana szarpanymi ruchami z jakimi robot się
@@ -103,6 +117,15 @@ rozwój robotów mobilnych następował już bardzo dynamiczne. W latach 90
 powstawało wiele różnych modeli robotów o bardzo różnorodnych rodzajach napędów
 oraz zestawach czujników umożliwiających interakcje ze światem zewnętrznym.
 
+\newpage
+Swoistym ukoronowaniem prac było w 1997 roku stworzenie przez NASA robota o
+nazwie Pathfinder. Robot wyposażony był w czujniki laserowe, stereowizję,
+żyroskopy i inne rodzaje czujników o charakterze badawczym. Zasilany był on
+bateriami słonecznymi które pozwoliły mu na 83 dni nieprzerwanej pracy podczas
+której robot przebyło około 100 metrów i wykonał 230 manewrów. W ostatnich
+latach do największych osiągnięć robotyki mobilnej można z pewnością zaliczyć
+powstanie robotów humanoidalnych takich jak japoński ASIMO. 
+
 \begin{figure}[hb]
  \centering
  \includegraphics[height=60mm]{../images/ch01/pathfinder_and_asimo.png}
@@ -110,29 +133,99 @@ oraz zestawach czujników umożliwiających interakcje ze światem zewnętrznym.
  \label{fig:RobotsHistory_Pathfinder_Asimo}
 \end{figure}
 
-Swoistym ukoronowaniem prac było w 1997 roku stworzenie przez NASA robota o
-nazwie Pathfinder. Robot wyposażony był w czujniki laserowe, stereowizję,
-żyroskopy i inne rodzaje czujników o charakterze badawczym. Zasilany był on
-bateriami słonecznymi które pozwoliły mu na 83 dni nieprzerwanej pracy podczas
-której robot przebyło około 100 metrów i wykonał 230 manewrów. W ostatnich
-latach do największych osiągnięć robotyki mobilnej można z pewnością zaliczyć
-powstanie robotów humanoidalnych takich jak japoński ASIMO. Robot ten ważył 54
-kg i posiadał 130 cm wysokości. Wersja z roku 2005 potrafiła biegnąc osiągnąć
-prędkość dochodzącą nawet do do 6 km/h. Ponad to robot potrafił wchodzić w
-interakcję z otoczającymi go ludźmi i przedmiotami. Urządzenie stworzone przez
-inżynierów z firmy Honda potrafiło rozpoznawać gesty takie jak podanie ręki,
-wskazanie kierunku czy machanie ręką na porzegnanie. Robot równie dobrze radził
-sobie z rozpoznawaniem twarzy, dźwięków i analizą otaczającego go środowiska.
-Potrafił on rozpoznać i omijać niebezpieczeństwa postawione na jego drodze jak
+Robot ten ważył 54 kg i posiadał 130 cm wysokości. Wersja z roku 2005 potrafiła
+biegnąc osiągnąć prędkość dochodzącą nawet do do 6 km/h. Ponad to robot potrafił
+wchodzić w interakcję z otaczającymi go ludźmi i przedmiotami. Urządzenie
+stworzone przez inżynierów z firmy Honda potrafiło rozpoznawać gesty takie jak
+podanie ręki, wskazanie kierunku czy machanie ręką na pożegnanie. Robot równie
+dobrze radził sobie z rozpoznawaniem twarzy, dźwięków i analizą otaczającego go
+środowiska. Potrafił on rozpoznać i omijać niebezpieczeństwa postawione na jego
+drodze jak
 na przykład schody czy osoby poruszające się w jego kierunku.\\
 \\
 Obserwując postęp w dziedzinie robotyki można odnieść wrażenie iż w dzisiejszych
-czasach roboty znalazły dla siebie zastosowanie niemal w każdej dziedzinie
-życia. Od wielu lat sprawdzają się już w przemyśle, transporcie, budownictwie
-oraz są niezastąpione w środowiskach nieprzyjaznych człowiekowi, takich jak
-podmorskie głębiny czy otchłań kosmosu. Obszar zastosowań robotów jest
-tak szeroki iż wydawać się może, że jedynym czynnikiem ograniczającym rozwój
-współczesnej robotyki są względy czysto ekonomiczne. Nie staje to jednak na
-przeszkodzie do projektowania i tworzenia przez konstruktorów z całego świata
-rozwiązań powoli przybliżających ludzkość do stworzenia w pełni samodzielnego
-oraz inteligentnego androida.
+czasach roboty znalazły dla siebie zastosowanie niemal w każdej dziedzinie życia.
+Od wielu lat sprawdzają się już w przemyśle, transporcie, budownictwie oraz są
+niezastąpione w środowiskach nieprzyjaznych człowiekowi, takich jak podmorskie
+głębiny czy otchłań kosmosu. Obszar zastosowań robotów jest tak szeroki iż
+wydawać się może, że jedynym czynnikiem ograniczającym rozwój współczesnej
+robotyki są względy czysto ekonomiczne. Nie staje to jednak na przeszkodzie do
+projektowania i tworzenia przez konstruktorów z całego świata rozwiązań powoli
+przybliżających ludzkość do stworzenia w pełni samodzielnego oraz inteligentnego
+androida.
+\subsection{Obecny rozwój i zakres zastosowań robotyki}
+Pomimo swojego młodego wieku robotyka zawładnęła wieloma dziedzinami życia
+człowieka od przemysłu poprzez zastosowania medyczne, wojskowe aż po urządzenia
+stosowane w gospodarstwach domowych. Roboty znalazły dla siebie zastosowanie w
+wykonywaniu zadań wymagających dużej szybkości, dokładności i wytrzymałości
+której nie może zapewnić praca wykonywana przez ludzi. W rezultacie wiele zadań
+wykonywanych w produkcyjnych zakładach pracy, dawniej wykonywane przez ludzi,
+zostało zastąpione przez roboty. Efektem tego jest zmniejszenie kosztów
+produkcji towarów masowych, szczególnie widocznych w przypadku części
+samochodowych i elektroniki. Zastosowanie robotów powoduje więc wzrost
+efektywności ekonomicznej i skraca czas uruchomienia produkcji, a co za tym
+idzie jest głównym czynnikiem ekonomicznym wspomagającym rozwój robotyki. \\
+\\
+Istnieje szereg zadań które człowiek wykonuje lepiej niż maszyna, ale ze względu
+na męczący charakter pracy lub niebezpieczne środowisko jej wykonywania praca
+ludzka jest zastępowana przez maszyny. Stały rozwój technologii stosowanych w
+robotyce skutkuje w powstawaniu coraz bardziej zaawansowanych systemów co sprzyja
+powszechniejszemu ich stosowaniu. Zastosowanie robotów w życiu codziennym
+prowadzi do zwiększenia bezpieczeństwa pracy szczególnie na stanowiskach pracy
+zagrażających zdrowiu i życiu człowieka. Co więcej stały rozwój robotyki pozwala
+na prowadzenie badań w lokalizacjach fizycznie niedostępnych dla człowieka.
+Bardzo dobrym tego przykładem jest eksploracja odległych planet czy też wnętrz
+wulkanów. Jak można więc zauważyć rozwój robotyki stał się w chwili obecnej
+samonapędzającą się maszyną, w której powstawanie coraz doskonalszych robotów
+zwiększa na nie zapotrzebowanie, a to z kolei wymusza dalszy ich rozwój.
+\subsection{Klasyfikacja robotów}
+Współczesna różnorodność robotów doprowadziła do powstania wielu podziałów
+robotów ze względu na szereg różnych parametrów. Jednym z bardzo często
+spotykanym podziałem ze względy na sposób programowania i możliwości
+komunikacyjne jest podział na generacje robotów. Można wyróżnić trzy generacje
+robotów uwzględniając różnice w ich układzie sterowania oraz dostępne sensory.
+\cite{website:robotyka-pl}
+\begin{description}
+\item[Roboty I generacji] to urządzenia zaprogramowane do wykonywania określonej
+sekwencji czynności z możliwością ich przeprogramowania. W robotach tej
+generacji stosuje się otwarty układ sterowania który charakteryzuje się
+całkowitym brakiem możliwości pobierania informacji ze świata zewnętrznego. Do
+robotów pierwszej generacji zaliczyć można roboty przemysłowe przeznaczone do
+podawania i odbierania obiektów z linii produkcyjnej.
+\item[Roboty II generacji] to maszyny wyposażone w zamknięty układ sterowania.
+Oznacza to, że posiadają one zestaw czujników umożliwiających dokonywanie
+pomiarów stanu robota oraz jego otoczenia. Pozwala to robotowi na rozpoznanie
+żądanego obiektu nawet wówczas, gdy przemieszcza się wśród innych obiektów.
+Robot tej generacji powinien być w stanie podjąć decyzję na temat sposobu
+realizacji zadania na podstawie aktualnego stanu otoczenia i obiektu
+manipulacji.
+\item[Roboty III generacji] to urządzenia również wyposażone w zamknięty układ
+sterowania oraz zestaw czujników umożliwiających dokonywanie skomplikowanych
+pomiarów i klasyfikację obiektów o wysokim stopniu złożoności. System sterowania
+robota tej generacji powinien pozwalać na jego adaptację w nieznanym otoczeniu.
+\end{description}
+Istnieje szereg różnych klasyfikacji robotów bazujących na podziale ze względu
+na ich parametry techniczne. Jednym z bardziej znanych podziałów jest
+klasyfikacja ze względu na rodzaj środowiska w jakim się poruszają i sposób
+poruszania się.
+\begin{itemize}
+  \item roboty lądowe,
+  \item roboty podwodne i poruszające się na wodzie,
+  \item roboty powietrzne,
+  \item roboty wodno-lądowe,
+\end{itemize}
+Wśród robotów lądowych bardzo popularną grupą są roboty mobilne, podział których
+można przeprowadzić na podstawie sposobie poruszania się. Za pomocą takiego
+kryterium możemy wyróżnić roboty kołowe, kroczące, skaczące oraz pełzające.\\
+Innym popularnym sposobem klasyfikacji robotów jest podział ze względu na 
+obszar ich zastosowania. Stosując kryterium takiego rodzaju istnieje możliwość
+wyróżnienia następujących grup
+\begin{itemize}
+  \item roboty przemysłowe,
+  \item roboty badawczo-rozwojowe, eksploracyjne, poszukiwacze, kosmiczne,
+  \item roboty wojskowe i policyjne,
+  \item roboty do gospodarstwa domowego,
+  \item roboty usługowe sektora publicznego (społeczne, interaktywne i
+  terapeutyczne),
+  \item roboty medyczne i egzoszkielety,
+\end{itemize}
