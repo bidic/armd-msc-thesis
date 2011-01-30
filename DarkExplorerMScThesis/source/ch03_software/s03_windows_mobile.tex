@@ -106,6 +106,67 @@ takie rozwiązania jak GAPI (Game API), OpenGL ES (Embeded Systems), Open VG
 wymaga od programisty tworzenie maksymalnie optymalnego kodu, ze względu na
 ograniczone możliwości niektórych urządzeń. 
 
+\subsubsection{Komunikacja}
+Nowoczesne urządzenia mobilne posiadają szeroką gamę możliwości komunikacyjnych.
+Posiadają one dostęp do szybkich sieci bezprzewodowych w standardzie 802.11
+WiFi. Umożliwiają one również komunikację za pomocą portu podczerwieni,
+bluetooth czy USB. Podejmując decyzję na temat wyboru kanału komunikacji należy
+brać pod uwagę nie tylko parametry techniczne, ale również liczbę standardów i
+protokołów dostępnych dla danego kanału komunikacji. Firma Microsoft dostarcza
+szereg interfejsów programistycznych (API) umożliwiających niemal błyskawiczny
+dostęp do funkcji komunikacyjnych urządzenia. AcitveSync API dostarcza funkcjonalność
+umożliwiającą komunikację za pomocą protokołu synchronizacji. Natomiast
+Bluetooth API dostarcza zestaw narzędzi umożliwiających nawiązywanie komunikacji
+bezprzewodowej pomiędzy telefonami jak i urządzeniami peryferyjnymi.  API
+Managera połączeń dostarcza zestaw usług umożliwiających automatyzację procesu
+nawiązywania połączenia oraz zarządzanie ich aktywnością. API wymiany obiektów
+(OBEX API) dostarcza funkcjonalność umożliwiającą wymianę danych pomiędzy
+urządzeniami za pomocą efektywnego, kompaktowego protokołu binarnego
+dedykowanego dla urządzeń z ograniczonymi zasobami. Remote API (RAPI) dostarcza
+funkcję do zarządzania oraz zdalnego wywoływania metod po stronie
+urządzenia klienta. Dostępne są m.in. funkcje dostępu do rejestru, plików, bazy
+danych czy też konfiguracji urządzenia. Najważniejszą funkcjonalnością jest
+jednak możliwość zdalnego wywoływania procedur. Za pomocą funkcji
+CeRapiInvoke() przesyłamy do urządzenia nazwę biblioteki dynamicznej wraz z
+nazwą metody która ma zostać wywołana na urządzeniu mobilnym. Kolejnym zestawem
+narzędzi jest Pocket Outlook Object Model API dostarcza funkcje do zarządzania
+obiektami Pocket Outlook  co umożliwia synchronizację zadań, kalendarza czy
+kontaktów za pomocą prostego i intuicyjnego interfejsu. Dostępne jest również
+Telephony API (TAPI) które zawiera w sobie biblioteki umożliwiające zarządzanie
+kartą SIM oraz wiadomościami SMS. TAPI udostępnia również zestaw funkcji
+umożliwiających dostęp do funkcji telefonowania oraz protokołu WAP. Nie
+zabrakło również narzędzi do pracy z portami USB oraz COM. Część z dostępnych portów COM
+jest zarezerwowana dla urządzeń wewnętrznych, ale pozostałe dostępne są do
+pełnej dyspozycji użytkownika.
+
+\subsubsection{Debugowanie}
+Microsoft Visual Studio umożliwia debugowanie aplikacji działających pod
+kontrolą Windows Mobile w taki sam sposób jak ma to miejsce w przypadku
+tradycyjnych aplikacji desktopowych. Ponadto programista ma do swojej
+następujące narzędzia: emulator, panel zarządzania emulowanymi urządzeniami,
+panel punktów przerwań i wątków. Niestety w Visual Studio nie uda się nam
+jednocześnie debugować kodu natywnego i zarządzalnego. Możliwe jest natomiast
+uruchomienie zarówno projektu napisanego w Visual C++ jak i projektu opartego o
+kod zarządzalny, a dzięki funkcjonalności ``Dołącz do procesu'' możliwe jest
+zdalne dołączenie się doi monitorowanie procesu działającego na urządzeniu lub
+emulatorze urządzenia. Narzędziem umożliwiającym komunikację pomiędzy
+urządzeniem a systemem jest ActiveSync instalowany wraz ze środowiskiem
+rozwojowym.  Za pomocą narzędzia ActiveSync możemy łączyć się nie tylko z
+rzeczywistymi urządzeniami ale również z emulatorami. Umożliwia to pełną
+wirtualizacje urządzeń mobilnych i znacznie ułatwia testowanie funkcjonalności
+zwłaszcza pomiędzy różnymi platformami urządzeń (SmartPhone, PocketPC). Jedynym
+ograniczeniem tego procesu jest możliwość utrzymania tylko jednego aktywnego
+połączenia co uniemożliwia debugowanie na wielu urządzeniach jednocześnie. Co
+więcej Visual Studio umożliwia debugowanie jedynie aplikacji stworzonej przez
+programistę, nie możliwa jest z poziomu IDE debugowanie aplikacji i usług
+systemowych działających na urządzeniu. Do tego typu debugowania konieczne
+byłoby zbudowanie własnej wersji systemu Windows Mobile przy użyciu Platform
+Buildera. Narzędzie to umożliwia również tworzenie własnego SDK dla Visual
+Studio i platformy Windows CE. Dodatkową możliwością dostępną z poziomu
+emulatora jest emulowanie połączenia z siecią GSM oraz wsparcie dla GPS.
+Umożliwia to testowanie, debugowanie i rozwijanie szerokiego spektrum aplikacji
+bez konieczności posiadania urządzenia fizycznie. 
+
 \subsection{Środowisko rozwojowe}
 Tworzenie aplikacji działających na urządzeniach pod kontrolą systemu Windows
 Mobile jest niemal tak samo proste jak tworzenie zwykłych aplikacji na komputery
