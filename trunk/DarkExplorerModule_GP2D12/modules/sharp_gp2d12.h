@@ -1,41 +1,28 @@
+#ifndef SHARP_GP2D12_H_
+#define SHARP_GP2D12_H_
 
+#include <math.h>
 
-#include <at91sam7s256/AT91SAM7S256.h>
-#include <pio/pio.h>
-#include <delay.h>
-
-#include <board.h>
-#include <pio/pio.h>
 #include <dbgu/dbgu.h>
-#include <aic/aic.h>
 #include <utility/trace.h>
+#include <utility/assert.h>
+
+#include <aic/aic.h>
 #include <adc/adc.h>
 
+#define BOARD_ADC_FREQ 6000000
+#define ADC_VREF 3300
 
+/*
+ * Konfiguruje ADC do odczytu danych z czujnika odległości Sharp GP2D12
+ */
+void GP2D12_InitializeADC();
+/*
+ * Na podstawie napięcia podanego
+ */
+unsigned int GP2D12_ComputeOutputCharacterisic(double voltage);
 
+void GP2D12_MeasureDistance(unsigned int adc_channel, void(*callback)(
+		unsigned int));
 
-////////////////////////////////////////////////////////////////////////////////
-// Konfiguracja przetwornika Analogowo-Cyfrowego
-////////////////////////////////////////////////////////////////////////////////
-void ADC_Configure(int adc_clock);
-
-////////////////////////////////////////////////////////////////////////////////
-// ADC - rozpoczecie konwersji analog-digital
-////////////////////////////////////////////////////////////////////////////////
-// Dostepne 4 kana�y dedykowane
-// AT91C_ADC_CH4 - Channel 4
-// AT91C_ADC_CH5 - Channel 5
-// AT91C_ADC_CH6 - Channel 6
-// AT91C_ADC_CH7 - Channel 7
-////////////////////////////////////////////////////////////////////////////////
-void ADC_StartConversion(int channel_mask);
-
-////////////////////////////////////////////////////////////////////////////////
-// ADC - odczytanie wyniku konwersji (8 bit)
-////////////////////////////////////////////////////////////////////////////////
-char ADC_Read_8bit(int channel_mask);
-
-////////////////////////////////////////////////////////////////////////////////
-// ADC - odczytanie wyniku konwersji (2 najstarsze bity)
-////////////////////////////////////////////////////////////////////////////////
-char ADC_Read_2bit(int channel_mask);
+#endif /* SHARP_GP2D12_H_ */
