@@ -6,106 +6,55 @@
  */
 
 #include "sharp_gp2d12.h"
-#include "delay.h"
 
-////////////////////////////////////////////////////////////////////////////////
-// Konfiguracja przetwornika Analogowo-Cyfrowego
-////////////////////////////////////////////////////////////////////////////////
-void ADC_Configure(int adc_clock)
-{
-	Pin pinsADC[] = {PINS_ADC};
-  //W��czenie zegara dla ADC
-  AT91F_PMC_EnablePeriphClock ( AT91C_BASE_PMC, 1 << AT91C_ID_ADC );
+unsigned int gp2d12_adc_channel;
+void (*onMeasureComplete)(unsigned int) = NULL;
 
-  //zamaskowanie przerwan
-  AT91C_BASE_ADC->ADC_IDR = 0xFFFFFFFF;
-
-  //reset przetwornika
-  AT91C_BASE_ADC->ADC_CR = AT91C_ADC_SWRST;
-
-  //obliczenia parametr�w PRESCALER, STARTUP, SHTIM dla zadanego adc_clock
-  ///// PRESCALER
-  int prescaler, adc_clock_real;
-  prescaler = ( MCK / (2 * adc_clock) ) - 1;
-  if (prescaler > 63){prescaler = 63;} //wartosc max
-  adc_clock_real = ( MCK / (2 * (prescaler + 1)) );
-
-  ///// STARTUP
-  int startup;
-  startup = ( (10 * adc_clock_real) / (8*50000) );
-  if ( (startup % 10) >= 1) { startup = (((startup / 10) + 1) - 1); }
-    else { startup = ((startup / 10) - 1); }
-
-  ///// SHTIM
-  int sh;
-  sh = ( (100 * adc_clock_real) / ( 100000 ) );
-  if ( (sh % 100) >= 1 ) { sh = (((sh / 100) + 1) - 1); }
-    else { sh = ((sh / 100) - 1); }
-
-  //parametry pracy ADC
-  AT91C_BASE_ADC->ADC_MR = AT91C_ADC_TRGEN_DIS          |  /* wylaczone wyzwalanie sprzetowe */
-                           AT91C_ADC_LOWRES_10_BIT      |  /* rozdzielczosc 10bit */
-                           AT91C_ADC_SLEEP_NORMAL_MODE  |  /* tryb normalny */
-                           prescaler << 8               |  /* PRESCALER */
-                           startup << 16                |  /* STARTUP */
-                           sh << 24;                       /* SHTIM */
+unsigned int ConvertHexTomV(unsigned int value) {
+	return (ADC_VREF * value) / 0x3FF;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// ADC - rozpoczecie konwersji analog-digital
-////////////////////////////////////////////////////////////////////////////////
-// Dostepne 4 kana�y dedykowane
-// AT91C_ADC_CH4 - Channel 4
-// AT91C_ADC_CH5 - Channel 5
-// AT91C_ADC_CH6 - Channel 6
-// AT91C_ADC_CH7 - Channel 7
-////////////////////////////////////////////////////////////////////////////////
-void ADC_StartConversion(int channel_mask)
-{
-  //disable
-  AT91C_BASE_ADC->ADC_CHDR = 0xFFFFFFFF;
-
-  //enable channel
-  AT91C_BASE_ADC->ADC_CHER = channel_mask;
-
-  //start conversion
-  AT91C_BASE_ADC->ADC_CR = AT91C_ADC_START;
+unsigned int GP2D12_ComputeOutputCharacterisic(double voltage) {
+	double numerator = -0.000086001 + 577.569472223 * voltage;
+	double denominator = 1 + (-5.40278878689 * voltage) + (24.8692264297 * pow(
+			voltage, 2));
+	return 10 * (numerator / denominator);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// ADC - odczytanie wyniku konwersji (8 bit)
-////////////////////////////////////////////////////////////////////////////////
-char ADC_Read_8bit(int channel_mask)
-{
-  //oczekiwanie na zakonczenie konwersji
-  while( AT91C_BASE_ADC->ADC_SR & channel_mask );
+void ADC_InterruptHandler(void) {
+	printf("-- ADC_InterruptHandler --\n\r");
+	if (ADC_IsChannelInterruptStatusSet(ADC_GetStatus(AT91C_BASE_ADC),
+			gp2d12_adc_channel)) {
+		ADC_DisableIt(AT91C_BASE_ADC, gp2d12_adc_channel);
 
-  //odczyt wyniku (8 mlodszych bitow)
-  switch (channel_mask)
-  {
-    case AT91C_ADC_CH4: return (AT91C_BASE_ADC->ADC_CDR4 & 0xFF); break;
-    case AT91C_ADC_CH5: return (AT91C_BASE_ADC->ADC_CDR5 & 0xFF); break;
-    case AT91C_ADC_CH6: return (AT91C_BASE_ADC->ADC_CDR6 & 0xFF); break;
-    case AT91C_ADC_CH7: return (AT91C_BASE_ADC->ADC_CDR7 & 0xFF); break;
-    default: return 0;
-  }
+		unsigned int output = ConvertHexTomV(ADC_GetConvertedData(
+				AT91C_BASE_ADC, gp2d12_adc_channel));
+
+		printf("-- Channel %d output %d mV--\n\r", gp2d12_adc_channel, output);
+		onMeasureComplete(GP2D12_ComputeOutputCharacterisic(output / 100.0));
+	}
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// ADC - odczytanie wyniku konwersji (2 najstarsze bity)
-////////////////////////////////////////////////////////////////////////////////
-char ADC_Read_2bit(int channel_mask)
-{
-  //oczekiwanie na zakonczenie konwersji
-  while( AT91C_BASE_ADC->ADC_SR & channel_mask );
+void GP2D12_MeasureDistance(unsigned int adc_channel, void(*callback)(
+		unsigned int)) {
+	gp2d12_adc_channel = adc_channel;
+	onMeasureComplete = callback;
 
-  //odczyt wyniku (2 najstarsze bity)
-  switch (channel_mask)
-  {
-    case AT91C_ADC_CH4: return (AT91C_BASE_ADC->ADC_CDR4 & 0x300) >> 8; break;
-    case AT91C_ADC_CH5: return (AT91C_BASE_ADC->ADC_CDR5 & 0x300) >> 8; break;
-    case AT91C_ADC_CH6: return (AT91C_BASE_ADC->ADC_CDR6 & 0x300) >> 8; break;
-    case AT91C_ADC_CH7: return (AT91C_BASE_ADC->ADC_CDR7 & 0x300) >> 8; break;
-    default: return 0;
-  }
+	ADC_EnableChannel(AT91C_BASE_ADC, adc_channel);
+	AIC_ConfigureIT(AT91C_ID_ADC, 0, ADC_InterruptHandler);
+	AIC_EnableIT(AT91C_ID_ADC);
+	ADC_EnableIt(AT91C_BASE_ADC, adc_channel);
+
+	printf("-- ADC_StartConversion --\n\r");
+	ADC_StartConversion(AT91C_BASE_ADC);
+}
+
+void GP2D12_InitializeADC() {
+	Pin adcPin[] = { PINS_ADC };
+	PIO_Configure(adcPin, 1);
+
+	printf("-- ADC_Initialize --\n\r");
+	ADC_Initialize(AT91C_BASE_ADC, AT91C_ID_ADC, AT91C_ADC_TRGEN_DIS, 0,
+			AT91C_ADC_SLEEP_NORMAL_MODE, AT91C_ADC_LOWRES_10_BIT, BOARD_MCK,
+			BOARD_ADC_FREQ, 10, 1200);
 }
