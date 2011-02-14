@@ -45,15 +45,15 @@ robota w zależności od poziomu jaki ustalił się na dalmierzach.
 \subsection{Algorytm omijania przeszkód}
 Algorytm sterujący ruchami robota bazuje więc w całości na danych pomiarowych
 otrzymanych z czujników robota. Opisane podejście jest adaptacją metodologii
-opisanej w ramach pracy Obstacles Avoidance Method for an Autonomous Mobile Robot
-\cite{ObstaclesAvoidanceIR}. Algorytm bazuje na prostej maszynie stanów w której
-przejścia pomiędzy kolejnymi stanami odbywają się poprzez zmianę poziomów na
+opisanej w ramach pracy ,,Obstacles Avoidance Method for an Autonomous Mobile
+Robot'' \cite{ObstaclesAvoidanceIR}. Algorytm bazuje na prostej maszynie stanów
+w której przejścia pomiędzy kolejnymi stanami odbywają się poprzez zmianę poziomów na
 czujnikach odległości. Opierając się na takich założeniach, jeżeli oba czujniki
 nie wykrywają na swojej drodze przeszkody to robot porusza się z maksymalną
 możliwą prędkością. Gdy jeden z czujników wykryje obecność przeszkody na poziomie
  L3 lub/i R3 prędkość poruszania się robota zostanie zmniejszona o połowę. Gdy
  przeszkoda znajdzie się w odległości poziomu L2 lub/i R2 prędkość z
-jaką prusza się robot zostanie ustalana na 1/4 prędkości maksymalnej. Jeżeli
+jaką porusza się robot zostanie ustalana na 1/4 prędkości maksymalnej. Jeżeli
 natomiast przeszkoda zostanie wykryta na poziomie L1 lub/i R1 robot skręci w
 prawo lub lewo w zależności od położenia przeszkody i wyznaczonego celu.
 
@@ -92,9 +92,38 @@ poziomie natomiast zero oznaczać będzie brak przeszkody.
    		1  & 1  & 1  & 1  & 1  & 1  & Skręt w lewo o $90\,^{\circ}$ \\ \hline
    	\end{tabular}
 \caption{Zachowanie robota w zależności od stanu wykrywanego na czujnikach odległości}
+\label{ObstacleAvoidTable}
 \end{table}\\
 Podane w tabeli wartości mają charakter orientacyjny i w przypadku gdy robot ma
 wyznaczony cel do którego zmierza kierunki skrętu mogą ulec zmianie. Mogą
 również pojawić się dodatkowe zmiany kierunku jazdy umożliwiające odnalezienie
-wyznaczonego punktu docelowego. 
+wyznaczonego punktu docelowego. \newpage
 \subsection{Implementacja}
+W zrealizowanej w ramach pracy magisterskiej implementacji robot, Dark Explorer,
+wyposażony został w dwa dalmierze Sharp GP2D12 o efektywnym zasięgu od 10 do 80
+cm. Każdy z dalmierzy wyposażony jest w nadajnik i odbiornik IR. Czujnik
+GP2D12 samodzielnie dokonuje pomiaru odległości i zwraca go w postaci sygnału
+analogowego. Dlatego też, robot wykorzystuje konwerter analogowo-cyfrowy do
+przetwarzania wyniku pomiaru otrzymanego z czujnika. Wartość napięcia otrzymana
+na wyjściu z konwertera jest za pomocą równania, otrzymanego na podstawie
+charakterystyki wyjściowej dalmierza, zamieniana na odległość czujnika od
+przeszkody. Na rysunku poniżej przedstawiony został schemat budowy czujnika oraz
+wyprowadzeń umożliwiających podłączenie dalmierza.
+
+\begin{figure}[hb]
+ \centering
+ \includegraphics[width=150mm]{../images/ch04/gp2d12_build.png}
+ \caption{Budowa czujnika GP2D12 wraz z wyporowadzeniami\cite{GP2D12DataSheet}}
+ \label{fig:SharpGP2D12}
+\end{figure}
+
+Zgodnie z założeniami algorytmu obszar zasięgu czujników został podzielony na
+trzy poziomy. Poziom trzeci zostały wyznaczony w odległości 50 cm, drugi poziom
+wyznaczony został w odległości 25 cm, a poziom pierwszy wyznaczony został w
+odległości 12 cm od przeszkody. Program zarządzający działaniem robota odczytuje
+kolejno dane o odległości otrzymane z czujnika prawego i lewego i kontroluje
+zachowanie robota zgodnie z zasadami przedstawionymi w tabeli \ref{ObstacleAvoidTable}.
+Z praktycznego punktu widzenia implementacja tego rodzaju algorytmu sprowadza
+się do stworzenia tablicy w której przechowywane są prędkości poruszania się każdego z
+czterech kół z uwzględnieniem lokalizacji czujnika oraz progu odległości w jakim
+znajduje się przeszkoda. 
