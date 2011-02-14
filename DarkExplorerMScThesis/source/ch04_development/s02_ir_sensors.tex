@@ -126,4 +126,46 @@ zachowanie robota zgodnie z zasadami przedstawionymi w tabeli \ref{ObstacleAvoid
 Z praktycznego punktu widzenia implementacja tego rodzaju algorytmu sprowadza
 się do stworzenia tablicy w której przechowywane są prędkości poruszania się każdego z
 czterech kół z uwzględnieniem lokalizacji czujnika oraz progu odległości w jakim
-znajduje się przeszkoda. 
+znajduje się przeszkoda.
+\newpage
+Sposób obsługi przetwornika analogowo-cyfrowego (ADC), na potrzeby omijania
+przeszkód, został zrealizowany w oparciu o dokumentację i przykłady zawarte w
+książce J. Augustyna pt. ,,Projektowanie systemów wbudowanych na przykładzie
+rodziny SAM7S z rdzeniem ARM7TDMI''. Zgodnie ze specyfikacją, przetwornik,
+wbudowany w procesor SAM7S pozwala na przetwarzanie napięcia w granicach od 0V do
+napięcia referencyjnego które w przypadku robota Dark Explorer jest równe
+napięciu zasilania procesora tj. 3.3V. Aby uzyskać jak najdokładniejszy wynik
+pomiaru przetwornik został skonfigurowany do pracy z rozdzielczością 10-bitową.
+Wydłuża to czas potrzebny na konwersję danych jednakże przy prędkościach z jakimi
+robot się porusza nie ma to większego wpływu na jakość działania aplikacji.
+Konwerter ADC jest tzw. przetwornikiem z sukcesywną aproksymacją (kompensacja
+wagowa), co za tym idzie na przetworniku mierzona jest wartość chwilowa
+napięcia\cite{JAugustyn}.
+
+W trakcie działania aplikacji uruchamiany jest proces konwersji na kanałach do
+których podłączone są czujniki odległości, a następnie aplikacja oczekuje na
+wywołanie przerwania związanego z zakończeniem. Po otrzymaniu wartości napięcia
+widocznego na wyjściu z dalmierzy, obliczana jest odległość w jakiej znajduje
+się przeszkoda. W tym celu, udostępniona w ramach dokumentacji czujnika\cite{GP2D12DataSheet}
+charakterystyka wyjściowa, posłużyła do wyznaczenia równania pozwalającego z
+zadowalającą dokładnością wyznaczyć odległość od przeszkody. W wyniku
+dopasowania otrzymano równanie postaci.
+\begin{equation}
+y=\frac{a+bx}{1+cx+dx^2}
+\end{equation}
+Powyższe równanie nie odzwierciedla w pełni charakterystyki czujnika, ale w
+bardzo dobry sposób przybliża ją w przedziale wymaganym do prawidłowej
+implementacji algorytmu. Posiadając tak przygotowane dane zaimplementowanie
+reszty algorytmu nie stanowiło już większej trudności. 
+
+W ramach testów przeprowadzono kilka symulacji działania implementacji dla
+różnych pozycji startowych przy zbliżaniu się robota to brzegu przeszkody. Już
+pierwsze testy wykazały, że gdy robot porusza się prostopadle do płaszczyzny
+ściany algorytm działa bardzo dobrze, jednakże w przypadku gdy ruch ten nie jest
+prostopadły w niektórych przypadkach pojawiają się problemy z działaniem
+algorytmu. Nie mniejszym problemem jest odbieranie przez dalmierz dodatkowych
+sygnałów wysłanych z sąsiedniego czujnika. Co więcej zasada działania dalmierzy
+IR nie pozwala na wykrycie małych i wąskich obiektów stawianych na drodze
+robota. Wydaje się jednak, że ogólne rezultaty w połączeniu z krótkim czasem
+potrzebnym na wdrożenie rozwiązania przemawiają za ostatecznym zastosowaniem
+opisywanej implementacji.
