@@ -27,8 +27,8 @@ rozwiązania znajdują się ciągle we wczesnej fazie rozwoju i nie są jeszcze
 powszechnie znane przez środowiska twórców oprogramowania.
 
 Firma Microsoft wypuściła po raz pierwszy na światło dzienne swoją platformę
-mobilną w latach 90-tych. Natomiast w roku 2002 pojawiła się pierwsza platforma
-Windows CE.NET. Zapoczątkowało to popularyzację urządzeń Pocket PC opartych o
+mobilną w latach 90-tych\cite{blog:wm-app-dev}. Natomiast w roku 2002 pojawiła
+się pierwsza platforma Windows CE.NET. Zapoczątkowało to popularyzację urządzeń Pocket PC opartych o
 system Windows CE 3.0 oraz późniejsze wersje. Dalszy rozwój bezprzewodowych
 technologi telekomunikacyjnych pozwolił na integracje telefonu z komputerem
 osobistym. Wspomniane urządzenia Pocket PC z 2002 roku wspierały między innymi
@@ -40,12 +40,61 @@ Smartphone i Pocket PC jest fakt iż urządzenia Pocket PC posiadają ekran
 dotykowy, a Smartphone wyposażone są jedynie w przyciski umożliwiające sterowanie
 urządzeniem. Każde z tych urządzeń posiadało inny zestaw aplikacji pomocniczych
 oraz wspierało inne standardy i technologie.
-
+\newpage
 W chwili obecnej większość urządzeń Pocket PC oraz Smartphone działają w oparciu
 o system Windows Mobile 5 oraz Windows Mobile 6. Nowoczesne urządzenia Pocket PC
 wyposażone są w procesor o taktowaniu 500-600 MHz oraz od 64-128 MB pamięci RAM.
 Najnowsze urządzenia z tej grupy wyposażane są w 1 GHz procesor oraz 512 MB
 pamięci.
+ 
+
+\subsection{Środowisko rozwojowe}
+Tworzenie aplikacji działających na urządzeniach pod kontrolą systemu Windows
+Mobile jest niemal tak samo proste jak tworzenie zwykłych aplikacji na komputery
+stacjonarne. Niemniej jednak do stworzenia w pełni funkcjonalnego środowiska
+rozwojowego konieczne jest przejście przez klika kroków przygotowawczych
+związanych z instalacją potrzebnych aplikacji narzędziowych. \\
+\\
+Przed rozpoczęciem przygody z tworzeniem aplikacji dla systemu Windows Mobile
+konieczne jest zainstalowanie Microsoft Visual Studio. Zaleca się aby Visual
+Studio było w wersji 2005 lub 2008. Niestety narzędzia umożliwiające rozwijanie
+aplikacji mobilnych nie są poprawnie wykrywane przez Visual Studio 2010 oraz
+poprzednie wydania w wersji Express. Dlatego też koniecznością jest instalacja
+środowiska w wersji Standard lub Professional. Każda z tych wersji może zostać
+pobrana w wersji czasowej ze stron firmy Microsoft lub w wersji pełnej z MSDNAA.
+Visual Studio posłuży nam nie tylko do edycji kodu aplikacji ale pozwoli również
+w prosty sposób budować, debugować oraz przygotować instalator finalnej wersji
+aplikacji. Po poprawnym zainstalowaniu środowiska rozwojowego konieczne jest
+pobranie i zainstalowanie dostępnych paczek serwisowych dostępnych dla wybranej
+wersji Visual Studio. Pozwoli to uniknąć nieprzyjemnych niespodzianek podczas
+instalacji bibliotek narzędziowych i późniejszej pracy.\\
+\\
+Jeżeli posiadamy już zainstalowaną kopię Visual Studio możemy przystąpić do
+instalacji narzędzi pomocniczych które pomogą nam w tworzeniu aplikacji.
+Pierwszą niezbędną biblioteką jest .NET Compact Framework 2.0 SP1. Jest to
+zestaw narzędzi wykorzystywanych do uruchamiania aplikacji na platformach
+opartych o Windows Mobile. Aby ułatwić sobie proces budowania, debugowania i
+uruchamiania aplikacji na urządzeniu konieczne jest zainstalowanie w systemie
+Windows ActiveSync. Dzięki ActiveSync możliwe stanie się uruchamianie
+projektowanej aplikacji, bezpośrednio z IDE, nie tylko na prawdziwym urządzeniu
+ale również emulatorze. \\
+\\
+Ostatnim, ale i zarazem najważniejszym krokiem jest instalacja Windows Mobile
+SDK. Na stronach firmy Microsoft dostępne są dwie wersje SDK, Standard oraz
+Professional. Wersja Standard zawiera w sobie tylko wsparcie dla urządzeń z
+Windows Mobile Classic lub Standard natomiast wersja Professional obejmuje
+wszystkie dostępne środowiska. Wybór SDK można sprowadzić do następującej
+zasady. Jeżeli zamierzamy tworzyć oprogramowanie dla urządzeń Smartphone bez
+ekranu dotykowego w zupełności wystarczy nam wersja standardowa. Jeżeli
+natomiast planujemy napisane aplikacje uruchamiać na PocketPC lub dotykowych
+SmartPhon'ach będziemy potrzebować bibliotek systemu Windows Mobile Classic lub
+Professional, tak więc konieczne jest użycie SDK w wersji Professional. Tak jak
+w przypadku Visual Studio, również tutaj zaleca się instalację wszystkich
+dostępnych na stronie producenta aktualizacji i poprawek. Jest to szczególnie
+istotne podczas pracy z emulatorami urządzeń. Po zrealizowaniu tych kroków
+otrzymujemy w pełni funkcjonalne środowisko do rozwoju aplikacji mobilnych dla
+urządzeń smartphone.
+
 \subsubsection{Modele aplikacji}
 Istnieje klika modeli rozwoju aplikacji dla Windows Mobile, a wybór docelowego
 modelu został pozostawiony programiście. Pierwszy z nich służy do tworzenia
@@ -147,7 +196,7 @@ następujące narzędzia: emulator, panel zarządzania emulowanymi urządzeniami
 panel punktów przerwań i wątków. Niestety w Visual Studio nie uda się nam
 jednocześnie debugować kodu natywnego i zarządzalnego. Możliwe jest natomiast
 uruchomienie zarówno projektu napisanego w Visual C++ jak i projektu opartego o
-kod zarządzalny, a dzięki funkcjonalności ``Dołącz do procesu'' możliwe jest
+kod zarządzalny, a dzięki funkcjonalności ,,Dołącz do procesu'' możliwe jest
 zdalne dołączenie się doi monitorowanie procesu działającego na urządzeniu lub
 emulatorze urządzenia. Narzędziem umożliwiającym komunikację pomiędzy
 urządzeniem a systemem jest ActiveSync instalowany wraz ze środowiskiem
@@ -165,52 +214,6 @@ Buildera. Narzędzie to umożliwia również tworzenie własnego SDK dla Visual
 Studio i platformy Windows CE. Dodatkową możliwością dostępną z poziomu
 emulatora jest emulowanie połączenia z siecią GSM oraz wsparcie dla GPS.
 Umożliwia to testowanie, debugowanie i rozwijanie szerokiego spektrum aplikacji
-bez konieczności posiadania urządzenia fizycznie. 
+bez konieczności posiadania urządzenia fizycznie.
 
-\subsection{Środowisko rozwojowe}
-Tworzenie aplikacji działających na urządzeniach pod kontrolą systemu Windows
-Mobile jest niemal tak samo proste jak tworzenie zwykłych aplikacji na komputery
-stacjonarne. Niemniej jednak do stworzenia w pełni funkcjonalnego środowiska
-rozwojowego konieczne jest przejście przez klika kroków przygotowawczych
-związanych z instalacją potrzebnych aplikacji narzędziowych. \\
-\\
-Przed rozpoczęciem przygody z tworzeniem aplikacji dla systemu Windows Mobile
-konieczne jest zainstalowanie Microsoft Visual Studio. Zaleca się aby Visual
-Studio było w wersji 2005 lub 2008. Niestety narzędzia umożliwiające rozwijanie
-aplikacji mobilnych nie są poprawnie wykrywane przez Visual Studio 2010 oraz
-poprzednie wydania w wersji Express. Dlatego też koniecznością jest instalacja
-środowiska w wersji Standard lub Professional. Każda z tych wersji może zostać
-pobrana w wersji czasowej ze stron firmy Microsoft lub w wersji pełnej z MSDNAA.
-Visual Studio posłuży nam nie tylko do edycji kodu aplikacji ale pozwoli również
-w prosty sposób budować, debugować oraz przygotować instalator finalnej wersji
-aplikacji. Po poprawnym zainstalowaniu środowiska rozwojowego konieczne jest
-pobranie i zainstalowanie dostępnych paczek serwisowych dostępnych dla wybranej
-wersji Visual Studio. Pozwoli to uniknąć nieprzyjemnych niespodzianek podczas
-instalacji bibliotek narzędziowych i późniejszej pracy.\\
-\\
-Jeżeli posiadamy już zainstalowaną kopię Visual Studio możemy przystąpić do
-instalacji narzędzi pomocniczych które pomogą nam w tworzeniu aplikacji.
-Pierwszą niezbędną biblioteką jest .NET Compact Framework 2.0 SP1. Jest to
-zestaw narzędzi wykorzystywanych do uruchamiania aplikacji na platformach
-opartych o Windows Mobile. Aby ułatwić sobie proces budowania, debugowania i
-uruchamiania aplikacji na urządzeniu konieczne jest zainstalowanie w systemie
-Windows ActiveSync. Dzięki ActiveSync możliwe stanie się uruchamianie
-projektowanej aplikacji, bezpośrednio z IDE, nie tylko na prawdziwym urządzeniu
-ale również emulatorze. \\
-\\
-Ostatnim, ale i zarazem najważniejszym krokiem jest instalacja Windows Mobile
-SDK. Na stronach firmy Microsoft dostępne są dwie wersje SDK, Standard oraz
-Professional. Wersja Standard zawiera w sobie tylko wsparcie dla urządzeń z
-Windows Mobile Classic lub Standard natomiast wersja Professional obejmuje
-wszystkie dostępne środowiska. Wybór SDK można sprowadzić do następującej
-zasady. Jeżeli zamierzamy tworzyć oprogramowanie dla urządzeń Smartphone bez
-ekranu dotykowego w zupełności wystarczy nam wersja standardowa. Jeżeli
-natomiast planujemy napisane aplikacje uruchamiać na PocketPC lub dotykowych
-smartphonach będziemy potrzebować bibliotek systemu Windows Mobile Classic lub
-Professional, tak więc konieczne jest użycie SDK w wersji Professional. Tak jak
-w przypadku Visual Studio, również tutaj zaleca się instalację wszystkich
-dostępnych na stronie producenta aktualizacji i poprawek. Jest to szczególnie
-istotne podczas pracy z emulatorami urządzeń. Po zrealizowaniu tych kroków
-otrzymujemy w pełni funkcjonalne środowisko do rozwoju aplikacji mobilnych dla
-urządzeń smartphone.
 \subsection{Środowisko uruchomieniowe}
