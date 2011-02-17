@@ -69,7 +69,7 @@ volatile char FrameSizeToGet=0;
 char AutoMode=0, AutoPreview=0;
 
 //pamiec obrazu
-char mem[39000];
+char mem[62000];
 
 //tryb auto
 //Stos dla SmithFill - mem od 16000
@@ -503,7 +503,7 @@ int main(void)
 
   // W��czenie timera PIT
 //  PIT_Init(100,MCK);
-  PIT_Configure(100); //pierwsze przerwanie za 100us
+//  PIT_Configure(100); //pierwsze przerwanie za 100us
 
   // Wlaczenie PWM
   PWM_Configure();
@@ -570,14 +570,14 @@ int main(void)
   int i=0;
   int j=0;
   int iPageSize = AT45_PageSize(&sAt45);
-  char wrbuff[iPageSize];
-  memset(wrbuff,0x00,iPageSize);
-  char rdbuff[iPageSize];
-  memset(rdbuff,0x00,iPageSize);
-  char bOK = 1;
-
+//  char wrbuff[iPageSize];
+//  memset(wrbuff,0x00,iPageSize);
+//  char rdbuff[iPageSize];
+//  memset(rdbuff,0x00,iPageSize);
+//  char bOK = 1;
+//
   int iAmount = 1200;
-
+//
 //  printf("Usuwanie...");
 //  for(i = 0; i < (iAmount/8)+1; i++)
 //    AT45_EraseBlock(&sAt45,i*512*8);
@@ -588,6 +588,16 @@ int main(void)
 //    memset(wrbuff,i%256,iPageSize);
 ////    AT45_FastWrite(&sAt45,i%2,wrbuff,iPageSize,iPageSize*i);
 //    AT45_WriteBuffer(&sAt45,i%2,wrbuff,iPageSize);
+//    while (AT45_IsBusy(&sAt45))
+//    {
+//      SANITY_CHECK(&sAt45);
+//
+//      // Wait for transfer to finish
+//      while (AT45_IsBusy(&sAt45)) {
+//
+//          SPID_Handler(sAt45.pSpid);
+//      }
+//    }
 //    AT45D_WaitReady(&sAt45);
 //    AT45_BufferToMem(&sAt45,i%2,iPageSize*i);
 //  }
@@ -623,6 +633,7 @@ int main(void)
   printf("Usuwanie...");
   for(i = 0; i < (iAmount/8)+1; i++)
     AT45_EraseBlock(&sAt45,i*512*8);
+  AT45_EraseChip(&sAt45);
   printf(" KONIEC ");
 
 //  LcdClear();
@@ -694,8 +705,8 @@ int main(void)
   AT91F_PIO_CfgOutput( AT91C_BASE_PIOA, DIODA1 ); //dioda vsync
   AT91F_PIO_CfgOutput( AT91C_BASE_PIOA, DIODA2 ); //dioda drop frame
 
-  AT91F_PIO_CfgInputFilter( AT91C_BASE_PIOA, 0x4F5F0000);
-//  AT91F_PIO_InputFilterEnable( AT91C_BASE_PIOA, 0x4F5F0000);
+//  AT91F_PIO_CfgInputFilter( AT91C_BASE_PIOA, 0x4F5F0000);
+  AT91F_PIO_InputFilterDisable( AT91C_BASE_PIOA, 0x4F5F0000);
   //zgaszenie diod
   AT91F_PIO_SetOutput( AT91C_BASE_PIOA, DIODA1 );
   AT91F_PIO_SetOutput( AT91C_BASE_PIOA, DIODA2 );
@@ -725,11 +736,11 @@ int main(void)
   int twiit = 0;
   unsigned int it = 0;
   printf("\r\nSetting camera registers... \r\n");
-  for(twiit = 0 ; twiit < 4; twiit++) //wykomentuj ta petle zeby nie wyswietlac obrazu testowego
-  {
-    TWID_Write(&twid, PO6030K_DEVICE_ID, reg[twiit], 1, comm + twiit, 1, 0);
-    waitms(200);
-  }
+//  for(twiit = 0 ; twiit < 4; twiit++) //wykomentuj ta petle zeby nie wyswietlac obrazu testowego
+//  {
+//    TWID_Write(&twid, PO6030K_DEVICE_ID, reg[twiit], 1, comm + twiit, 1, 0);
+//    waitms(200);
+//  }
   printf("\r\nCamera registers has been set. \r\n");
   //Konfiguracja modulu bluetooth
 
@@ -757,34 +768,74 @@ int main(void)
   register int row = 0;
   register int wsk = 0;
   register int iter = 0;
-
+  register int bufSel = 0;
+  register int pix = 0;
   //kod ponizej ma za zadanie umiescic w pamieci obraz o rozmiarze 160x120 kolor
   //musi dzialac bardzo szybko tak zeby nadazyc za clockiem kamery MCLK
   //kiedy VSYNC, HSYNC, PCLK sie zmieniaja i jak to sie ma do danych sciaganych z kamery masz tutaj:
   //http://www.pixelplus.com/config/ZIPdownLoad.asp?filepath=/pdf/vga/PO6030_D.pdf
 
-  while(! (AT91C_BASE_PIOA->PIO_PDSR & 0x2000000)); //czekaj gdy VSYNC == 0
+  while(! (AT91C_BASE_PIOA->PIO_PDSR & 0x2000000))
+  {
+    while(! (AT91C_BASE_PIOA->PIO_PDSR & 0x2000000)); //czekaj gdy VSYNC == 0
+  }
 
   while(AT91C_BASE_PIOA->PIO_PDSR & 0x2000000) //podczas gdy VSYNC == 1
   {
-    while(!(AT91C_BASE_PIOA->PIO_PDSR & 0x4000000)); //czekaj gdy HSYNC == 0
+    while(!(AT91C_BASE_PIOA->PIO_PDSR & 0x4000000) && (AT91C_BASE_PIOA->PIO_PDSR & 0x2000000));
+
     while(AT91C_BASE_PIOA->PIO_PDSR & 0x4000000) //podczas gdy HSYNC == 1
     {
-      for(iter = 0; iter < 320; iter++) //odczytaj 160 kolorowych pixeli z linii
-      {
         while(!(AT91C_BASE_PIOA->PIO_PDSR & 0x40000000)); //czekaj gdy PCLK == 0
-        CamR(mem[wsk++])  //odczytaj dane z kamery na narastającym zboczu PCLK
+
+        pix++;
+        CamR(mem[wsk++]);  //odczytaj dane z kamery na narastającym zboczu PCLK
+        if(wsk & 0x200)
+        {
+          wsk = 0;
+
+          AT45_WriteBuffer(&sAt45, bufSel,mem,512);
+
+          while (!sAt45.pSpid->semaphore)
+          {
+            while (!sAt45.pSpid->semaphore)
+                SPID_Handler(sAt45.pSpid);
+          }
+
+          while (!AT45_STATUS_READY(AT45_GetStatus(&sAt45)));
+
+          AT45_SendCommand(&sAt45, !bufSel ? AT45_BUF1_MEM_NOERASE : AT45_BUF2_MEM_NOERASE , 4, 0, 0, row << 9, 0, 0);
+          bufSel = !bufSel;
+          while (!sAt45.pSpid->semaphore)
+          {
+            while (!sAt45.pSpid->semaphore)
+                SPID_Handler(sAt45.pSpid);
+          }
+          row++;
+        }
         while(AT91C_BASE_PIOA->PIO_PDSR & 0x40000000); //czekaj gdy PCLK == 1
-      }
-      for(; iter < 1280; iter++) //czekaj az dojdziesz do konca linii
-      {
-        while(!(AT91C_BASE_PIOA->PIO_PDSR & 0x40000000)); //czekaj gdy PCLK == 0
-        while(AT91C_BASE_PIOA->PIO_PDSR & 0x40000000); //czekaj gdy PCLK == 1
-      }
+    }
+    wsk = 0;
+    AT45_WriteBuffer(&sAt45, bufSel,mem,256);
+
+    while (!sAt45.pSpid->semaphore)
+    {
+      while (!sAt45.pSpid->semaphore)
+          SPID_Handler(sAt45.pSpid);
+    }
+    if (!sAt45.pSpid->semaphore)
+        SPID_Handler(sAt45.pSpid);
+
+    while (!AT45_STATUS_READY(AT45_GetStatus(&sAt45)));
+
+    AT45_SendCommand(&sAt45, !bufSel ? AT45_BUF1_MEM_NOERASE : AT45_BUF2_MEM_NOERASE , 4, 0, 0, row << 9, 0, 0);
+    bufSel = !bufSel;
+    while (!sAt45.pSpid->semaphore)
+    {
+      while (!sAt45.pSpid->semaphore)
+          SPID_Handler(sAt45.pSpid);
     }
     row++;
-    if(row == 120)  //zaalokowalem pamiec tylko na 120 linijek
-      break;
   }
 
 
@@ -846,7 +897,7 @@ int main(void)
 //      row++;
 //    }
 
-  printf("rows %u | pixels %u |",row, wsk);
+  printf("rows %u | pixels %u |",row, pix);
   row = 0;
   // Wait until the command is sent
   while (AT45_IsBusy(&sAt45))
@@ -877,20 +928,14 @@ int main(void)
       {
         printf("send");
         it=0;
-        while(it<120)
+        while(it<480)
         {
-
-//          printf("%d ",it);
-//          AT45D_Read(&sAt45,mem,320,512*it);
-//          for(pixel=0;pixel<320;pixel++)
-//            if(!mem[pixel])
-//              printf("!");
-//          for(it2 = 0; it2<1280; it2++)
-//            USART_Write(AT91C_BASE_US0,mem[it2],0);
-//          it++;
+          int pixel = 0;
+          printf("%d ",it);
+          AT45D_Read(&sAt45,mem,1280,512*3*it);
+          waitms(175);
           it++;
-          waitms(75);
-          if(!USART_WriteBuffer(AT91C_BASE_US0,mem+it*320,320))
+          if(!USART_WriteBuffer(AT91C_BASE_US0,mem,1280))
           {
             it--;
             printf("it = %d\n\r",it);
