@@ -31,6 +31,7 @@
 #include <string.h>
 
 #include "modules/sharp_gp2d12.h"
+#include "modules/mmc212xm.h"
 
 #include "algorithms/obstacle_avoidance.h"
 
@@ -498,10 +499,10 @@ int main(void) {
 	// Inicjalizacje
 
 
-	//	TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
-	//	printf("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
+		TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
+		printf("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
 	//	memset(mem, 0x00, 39000);
-	//	printf("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
+		printf("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
 
 	// Enable User Reset and set its minimal assertion to 960 us
 	//  AT91C_BASE_RSTC->RSTC_RMR = AT91C_RSTC_URSTEN | (0x4<<8) | (unsigned int)(0xA5<<24);
@@ -674,8 +675,8 @@ int main(void) {
 	//konfiguracja wyjsc kierunkowych silnikow (in1-in4)
 	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA7); //in1
 	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA8); //in2
-	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA9); //in3
-	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA10); //in4
+//	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA9); //in3
+//	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA10); //in4
 
 	//konfiguracja linii kamery cam po6030k
 	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, CAM_RESET); //reset
@@ -756,6 +757,10 @@ int main(void) {
 	//  }
 	//	printf("\r\nCamera registers has been set. \r\n");
 	//Konfiguracja modulu bluetooth
+
+	mag_info mg_i = MMC212xM_GetMagneticFieldInfo(&twid);
+
+	printf("MMC212xM response: x = %d y = %d\r\n", mg_i.x, mg_i.y);
 
 	//  AT91F_PIO_ClearOutput( AT91C_BASE_PIOA, DIODA1 );
 	//  AT45_EraseChip(&sAt45);
