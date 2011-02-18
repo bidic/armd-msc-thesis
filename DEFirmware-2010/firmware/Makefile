@@ -107,7 +107,7 @@ VPATH += $(BOARDS)/$(BOARD) $(BOARDS)/$(BOARD)/$(CHIP)
 
 # Objects built from C source files
 C_OBJECTS = main.o lcd.o
-C_OBJECTS += obstacle_avoidance.o sharp_gp2d12.o
+C_OBJECTS += obstacle_avoidance.o sharp_gp2d12.o mmc212xm.o
 C_OBJECTS += at45d.o at45.o spi.o spid.o
 C_OBJECTS += peripherals.o rozpoznawanie.o utils.o
 C_OBJECTS += async.o twid.o
