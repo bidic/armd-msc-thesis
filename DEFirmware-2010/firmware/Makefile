@@ -99,18 +99,20 @@ MEMO = $(AT91LIB)/memories
 
 VPATH += $(DRV)/async $(DRV)/twi
 VPATH += $(MEMO) $(MEMO)/spi-flash
+VPATH += modules algorithms
 VPATH += $(UTILITY)
-VPATH += $(PERIPH)/dbgu $(PERIPH)/pio $(PERIPH)/aic $(PERIPH)/twi $(PERIPH)/pmc
+VPATH += $(PERIPH)/dbgu $(PERIPH)/pio $(PERIPH)/aic $(PERIPH)/adc $(PERIPH)/twi $(PERIPH)/pmc
 VPATH += $(PERIPH)/cp15 $(PERIPH)/pit $(PERIPH)/pwmc $(PERIPH)/usart $(PERIPH)/spi
 VPATH += $(BOARDS)/$(BOARD) $(BOARDS)/$(BOARD)/$(CHIP)
 
 # Objects built from C source files
 C_OBJECTS = main.o lcd.o
+C_OBJECTS += obstacle_avoidance.o sharp_gp2d12.o
 C_OBJECTS += at45d.o at45.o spi.o spid.o
 C_OBJECTS += peripherals.o rozpoznawanie.o utils.o
 C_OBJECTS += async.o twid.o
 C_OBJECTS += stdio.o math.o string.o
-C_OBJECTS += pit.o dbgu.o pio.o aic.o twi.o pmc.o cp15.o pwmc.o usart.o
+C_OBJECTS += pit.o dbgu.o pio.o twi.o pmc.o cp15.o pwmc.o usart.o adc.o aic.o
 C_OBJECTS += board_memories.o board_lowlevel.o
 
 # Objects built from Assembly source files
