@@ -88,7 +88,7 @@ void ADC_Configure(int adc_clock);
 // AT91C_ADC_CH6 - Channel 6
 // AT91C_ADC_CH7 - Channel 7
 ////////////////////////////////////////////////////////////////////////////////
-void ADC_StartConversion(int channel_mask);
+void ADC_StartConversion1(int channel_mask);
 
 ////////////////////////////////////////////////////////////////////////////////
 // ADC - odczytanie wyniku konwersji (8 bit)
