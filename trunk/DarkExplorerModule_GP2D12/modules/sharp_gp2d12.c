@@ -14,7 +14,8 @@ unsigned int ConvertHexTomV(unsigned int value) {
 	return (ADC_VREF * value) / 0x3FF;
 }
 
-unsigned int GP2D12_ComputeOutputCharacterisic(double voltage) {
+unsigned int GP2D12_ComputeDistanceFromCharacterisic(unsigned int output) {
+	double voltage = output / 100.0;
 	double numerator = -0.000086001 + 577.569472223 * voltage;
 	double denominator = 1 + (-5.40278878689 * voltage) + (24.8692264297 * pow(
 			voltage, 2));
@@ -30,8 +31,10 @@ void ADC_InterruptHandler(void) {
 		unsigned int output = ConvertHexTomV(ADC_GetConvertedData(
 				AT91C_BASE_ADC, gp2d12_adc_channel));
 
+		ADC_DisableChannel(AT91C_BASE_ADC, gp2d12_adc_channel);
+		AIC_DisableIT(AT91C_ID_ADC);
 		printf("-- Channel %d output %d mV--\n\r", gp2d12_adc_channel, output);
-		onMeasureComplete(GP2D12_ComputeOutputCharacterisic(output / 100.0));
+		onMeasureComplete(output);
 	}
 }
 
