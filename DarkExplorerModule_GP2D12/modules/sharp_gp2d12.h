@@ -18,9 +18,9 @@
  */
 void GP2D12_InitializeADC();
 /*
- * Na podstawie napięcia podanego
+ * Na podstawie napięcia podanego i charakterystki znanej z dokumentacji wylicza odległość od przeszkody
  */
-unsigned int GP2D12_ComputeOutputCharacterisic(double voltage);
+unsigned int GP2D12_ComputeDistanceFromCharacterisic(unsigned int output);
 
 void GP2D12_MeasureDistance(unsigned int adc_channel, void(*callback)(
 		unsigned int));
