@@ -22,12 +22,12 @@ mag_info MMC212xM_GetMagneticFieldInfo(Twid *twid)
 
 void  MMC212xM_SendSetCmd(Twid *twid)
 {
-  char cmd = MMC2120M_CMD_SET;
+  unsigned char cmd = MMC2120M_CMD_SET;
   TWID_Write(twid, MMC2120M_ADDRESS, 0, 1, &cmd, sizeof(cmd), 0);
 }
 
 void  MMC212xM_SendResetCmd(Twid *twid)
 {
-  char cmd = MMC2120M_CMD_RESET;
+  unsigned char cmd = MMC2120M_CMD_RESET;
   TWID_Write(twid, MMC2120M_ADDRESS, 0, 1, &cmd, sizeof(cmd), 0);
 }
