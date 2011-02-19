@@ -96,21 +96,22 @@ BOARDS = $(AT91LIB)/boards
 UTILITY = $(AT91LIB)/utility
 DRV = $(AT91LIB)/drivers
 
-VPATH += modules
+VPATH += modules algorithms
 VPATH += $(DRV)/async $(DRV)/twi
 VPATH += $(UTILITY)
 VPATH += $(PERIPH)/dbgu $(PERIPH)/pio $(PERIPH)/aic $(PERIPH)/twi $(PERIPH)/pmc
-VPATH += $(PERIPH)/cp15 $(PERIPH)/pit $(PERIPH)/pwmc $(PERIPH)/usart $(PERIPH)/adc
+VPATH += $(PERIPH)/cp15 $(PERIPH)/pit $(PERIPH)/pwmc $(PERIPH)/usart $(PERIPH)/adc $(PERIPH)/rtt
 VPATH += $(BOARDS)/$(BOARD) $(BOARDS)/$(BOARD)/$(CHIP)
 
 # Objects built from C source files
 C_OBJECTS = main.o 
+C_OBJECTS += pedometer.o
 C_OBJECTS += delay.o hy1602f6.o freescale_mma7260.o
 #C_OBJECTS += peripherals.o rozpoznawanie.o utils.o
 #C_OBJECTS += async.o twid.o
 #C_OBJECTS += twi.o cp15.o pwmc.o usart.o aic.o
 C_OBJECTS += stdio.o math.o string.o
-C_OBJECTS += pit.o dbgu.o pio.o pmc.o adc.o aic.o
+C_OBJECTS += pit.o dbgu.o pio.o pmc.o adc.o aic.o rtt.o
 C_OBJECTS += board_memories.o board_lowlevel.o
 
 # Objects built from Assembly source files

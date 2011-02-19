@@ -13,16 +13,26 @@
 #define BOARD_ADC_FREQ 6000000
 #define ADC_VREF 3300
 
-struct MMA7260State{
+typedef struct {
+	// wartość przyspieszenia na osiach odpowiednio X,Y,Z w g/1000
+	int x_acc_mg;
+	int y_acc_mg;
+	int z_acc_mg;
+
+	// znormalizowana wartość napięcia [-850,850] odpowiada [-1g,1g]
+	int x_normal_mv;
+	int y_normal_mv;
+	int z_normal_mv;
+
+	// wartość napięcia odczytana z akcelerometru
 	unsigned int x_mv;
 	unsigned int y_mv;
 	unsigned int z_mv;
-};
+} MMA7260_OUTPUT;
 
 void MMA7260_InitializeADC();
 
-void MMA7260_ReadState(unsigned int channel_x, unsigned int channel_y,
-		unsigned int channel_z, void(*callback)(
-		struct MMA7260State));
+void MMA7260_ReadOutput(unsigned int channel_x, unsigned int channel_y,
+		unsigned int channel_z, void(*callback)(MMA7260_OUTPUT));
 
 #endif /* FREESCALE_MMA7260_H_ */
