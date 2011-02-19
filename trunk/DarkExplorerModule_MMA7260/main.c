@@ -22,22 +22,31 @@
 #include <board.h>
 #include <aic/aic.h>
 #include <adc/adc.h>
+#include <rtt/rtt.h>
 
 #include "modules/hy1602f6.h"
 #include "modules/freescale_mma7260.h"
 
-#define PIN_LED13  {PIO_PA13, AT91C_BASE_PIOA, AT91C_ID_PIOA, PIO_OUTPUT_0, PIO_DEFAULT}
+#include "algorithms/pedometer.h"
 
-void onStatusReadCallback(struct MMA7260State state) {
-	printf("%d %d %d\n", state.x_mv, state.y_mv, state.z_mv);
-	//	printf("-- X: %dmV, Y: %dmV, Z: %dmV -- \n\r", state.x_mv, state.y_mv,
-	//			state.z_mv);
+void onOutputReadyCallback(MMA7260_OUTPUT output) {
+	printf("%d %d %d\n", output.x_mv, output.y_mv, output.z_mv);
+}
 
+void onStepCallback(void) {
+	printf("-- Step detected            %d --\n\r", get_step_count());
+}
+
+void MMA7260_TestCase() {
+	MMA7260_InitializeADC();
+
+	while (1) {
+		MMA7260_ReadOutput(ADC_CHANNEL_4, ADC_CHANNEL_5, ADC_CHANNEL_6,
+				onOutputReadyCallback);
+	}
 }
 
 int main(void) {
-	//-------------------------------- MAIN START ----------------------------------
-
 	// Enable the clock of the PIOA
 	PMC_EnablePeripheral(AT91C_ID_PIOA);
 
@@ -46,30 +55,13 @@ int main(void) {
 			SOFTPACK_VERSION);
 	printf("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
 
-	Pin pins[] = { PIN_LED13 };
-	PIO_Configure(pins, 2);
-	unsigned int diode_state = 0;
+//	MMA7260_TestCase();
 
-	// LCD Init & Clear
-	//	HY1602F6_Configure();
-	//	HY1602F6_Clear();
+	init_pedometer_config();
+	start_steps_detection(onStepCallback);
 
-	MMA7260_InitializeADC();
 
-	while (1) {
-		MMA7260_ReadState(ADC_CHANNEL_4, ADC_CHANNEL_5, ADC_CHANNEL_6,
-				onStatusReadCallback);
-
-		//		delay(1000000);
-		//		HY1602F6_Clear();
-
-		diode_state = !diode_state;
-		if (diode_state) {
-			PIO_Clear(pins);
-		} else {
-			PIO_Set(pins);
-		};
-	}
+//	stop_counting_steps();
 
 	return 0;
 }
