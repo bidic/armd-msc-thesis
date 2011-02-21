@@ -505,10 +505,10 @@ int main(void) {
 	// Inicjalizacje
 
 	//TODO
-	//	TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
-	//	TRACE_INFO("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
+		TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
+		TRACE_INFO("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
 	//	memset(mem, 0x00, 39000);
-	//	TRACE_INFO("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
+		TRACE_INFO("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
 
 	// Enable User Reset and set its minimal assertion to 960 us
 	//  AT91C_BASE_RSTC->RSTC_RMR = AT91C_RSTC_URSTEN | (0x4<<8) | (unsigned int)(0xA5<<24);
@@ -681,8 +681,8 @@ int main(void) {
 	//konfiguracja wyjsc kierunkowych silnikow (in1-in4)
 	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA7); //in1
 	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA8); //in2
-	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA9); //in3
-	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA10); //in4
+//	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA9); //in3
+//	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA10); //in4
 	//TODO
 
 	//konfiguracja linii kamery cam po6030k
@@ -797,7 +797,7 @@ int main(void) {
 	//				(int) min_y, (int) max_y);
 	//}
 
-//	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, DIODA1);
+	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, DIODA2);
 
 	//zrob 2 razy zdjecie kamera zeby AE przystosowalo sie do swiatla
 	//	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA1);

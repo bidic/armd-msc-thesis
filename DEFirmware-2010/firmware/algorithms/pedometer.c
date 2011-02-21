@@ -21,8 +21,8 @@ unsigned int negative_peak_timestamp;
 unsigned int negative_acc_peak;
 
 void init_pedometer_config() {
-	def_config.negative_thld = 500;
-	def_config.positive_thld = 1100;
+	def_config.negative_thld = 700;
+	def_config.positive_thld = 900;
 //	def_config.negative_thld = 700;
 //	def_config.positive_thld = 900;
 
@@ -38,6 +38,9 @@ volatile int min_v = 1000;
 
 volatile unsigned int min_acc[3] = { 4000, 4000, 4000 };
 volatile unsigned int max_acc[3] = { 0, 0, 0 };
+volatile double angle = 160;
+volatile long int suma = 0;
+volatile long int iter = 0;
 
 void step_detector(MMA7260_OUTPUT mma7260_output) {
 	TRACE_DEBUG("-- Step detector (MMA7260) --\n\r");
@@ -47,10 +50,11 @@ void step_detector(MMA7260_OUTPUT mma7260_output) {
 					mma7260_output.y_normal_mv, 2) + pow(
 					mma7260_output.z_normal_mv, 2));
 
-//	printf("%4d %4d %4d %4d %4d %4d %4d \r\n", output, mma7260_output.x_normal_mv,
-//			mma7260_output.y_normal_mv, mma7260_output.z_normal_mv,
-//			((int) mma7260_output.x_mv) - 1650, ((int) mma7260_output.y_mv)
-//					- 1650, ((int) mma7260_output.z_mv) - 1650);
+	angle += (((double)mma7260_output.y_mv - (1222.6))*3.)/(4.*500.);
+	suma += mma7260_output.y_mv;
+iter++;
+	if((iter % 1000) == 0)
+	  printf("%8d\r\n",(int) (angle));
 
 	//	if (min_acc[0] > mma7260_output.x_mv)
 	//		min_acc[0] = mma7260_output.x_mv;
