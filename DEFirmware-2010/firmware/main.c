@@ -34,6 +34,7 @@
 #include "modules/mmc212xm.h"
 
 #include "algorithms/obstacle_avoidance.h"
+#include "algorithms/reverse_track_reconstruction.h"
 
 //adres kamery do zapisu przez TWI
 #define PO6030K_DEVICE_ID 0x6E
@@ -73,7 +74,7 @@ volatile char FrameSizeToGet = 0;
 char AutoMode = 0, AutoPreview = 0;
 
 //pamiec obrazu
-char mem[62000];
+char mem[60000];
 
 //tryb auto
 //Stos dla SmithFill - mem od 16000
@@ -205,18 +206,19 @@ __ramfunc void UART0_DMA_irq_handler(void) {
 		//Sterowanie kanalem pwm 0, 1
 		if (RX_Buffer[0] == 'a') {
 			//			printf("PWM01 - RX_BUffer[1] = %d", RX_Buffer[1]);
-			//			PWM_Set(0, RX_Buffer[1]);
+			//			PWM_Set(0, 85);
 			//			PWM_Set(1, RX_Buffer[1]);
-
-			FrameSizeToGet = 6;
+			reconstruct_reverse_track();
+			//			FrameSizeToGet = 13;
 		}
-
+		//TODO
 		//Sterowanie kanalem pwm 2, 3
 		if (RX_Buffer[0] == 'b') {
+			//			PWM_Set(0, 85);
 			//			printf("PWM23 - RX_BUffer[1] = %d", RX_Buffer[1]);
 			//			PWM_Set(2, RX_Buffer[1]);
 			//			PWM_Set(3, RX_Buffer[1]);
-			FrameSizeToGet = 6;
+			//FrameSizeToGet = 8;
 		}
 
 		//silniki 1-2 kierunek (lewe)
@@ -321,15 +323,19 @@ __ramfunc void UART0_DMA_irq_handler(void) {
 		}
 
 		//dioda led
+		//TODO
 		if (RX_Buffer[0] == 'd') {
 			//wylaczenie diody
 			if (RX_Buffer[1] == 0) {
-				AT91F_PIO_SetOutput(AT91C_BASE_PIOA, LED_POWER);
+				//				FrameSizeToGet = 8;
+				stop_recording_track();
+				//AT91F_PIO_SetOutput(AT91C_BASE_PIOA, LED_POWER);
 			}
 
 			//wlaczenie diody
 			if (RX_Buffer[1] == 1) {
-				AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, LED_POWER);
+				FrameSizeToGet = 7;
+				//AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, LED_POWER);
 			}
 		}
 
@@ -498,11 +504,11 @@ unsigned char AT45_EraseBlock(At45* pAt45, unsigned int uiAddress) {
 int main(void) {
 	// Inicjalizacje
 
-
-		TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
-		printf("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
+	//TODO
+	//	TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
+	//	TRACE_INFO("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
 	//	memset(mem, 0x00, 39000);
-		printf("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
+	//	TRACE_INFO("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
 
 	// Enable User Reset and set its minimal assertion to 960 us
 	//  AT91C_BASE_RSTC->RSTC_RMR = AT91C_RSTC_URSTEN | (0x4<<8) | (unsigned int)(0xA5<<24);
@@ -675,8 +681,9 @@ int main(void) {
 	//konfiguracja wyjsc kierunkowych silnikow (in1-in4)
 	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA7); //in1
 	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA8); //in2
-//	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA9); //in3
-//	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA10); //in4
+	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA9); //in3
+	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA10); //in4
+	//TODO
 
 	//konfiguracja linii kamery cam po6030k
 	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, CAM_RESET); //reset
@@ -738,6 +745,10 @@ int main(void) {
 		a = a + 54;
 	}
 
+	//	MMC212xM_SendSetCmd(&twid);
+	//	printf("start calibrating");
+	//	MMC212xM_Calibrate(&twid);
+	//	printf("end calibrating");
 	// wyjscie ze stanu reset
 	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, CAM_RESET);
 
@@ -758,12 +769,35 @@ int main(void) {
 	//	printf("\r\nCamera registers has been set. \r\n");
 	//Konfiguracja modulu bluetooth
 
-	mag_info mg_i = MMC212xM_GetMagneticFieldInfo(&twid);
+	//TODO
 
-	printf("MMC212xM response: x = %d y = %d\r\n", mg_i.x, mg_i.y);
+	//	MMC212xM_SendSetCmd(&twid);
+	//	double min_x = 65000;
+	//	double min_y = 65000;
+	//	double max_x = -65000;
+	//	double max_y = -65000;
+	//
+	//	while (1) {
+	//		mag_info mg_i = MMC212xM_GetMagneticFieldInfo(&twid);
+	//
+	//		if (min_x > mg_i.x)
+	//			min_x = mg_i.x;
+	//		if (max_x < mg_i.x)
+	//			max_x = mg_i.x;
+	//		if (min_y > mg_i.y)
+	//			min_y = mg_i.y;
+	//		if (max_y < mg_i.y)
+	//			max_y = mg_i.y;
+	//
+	//		//		printf("min_x: %d max_x: %d min_y: %d max_y: %d angle: %d\r\n", (int)min_x,
+	//		//				(int)max_x, (int)min_y, (int)max_y, (int) compute_angle(mg_i.x, mg_i.y));
+	//		printf("%d %d %d min_x: %d max_x: %d min_y: %d max_y: %d\r\n",
+	//				(int) mg_i.x, (int) mg_i.y,
+	//				(int) compute_angle(mg_i.x, mg_i.y), (int) min_x, (int) max_x,
+	//				(int) min_y, (int) max_y);
+	//}
 
-	//  AT91F_PIO_ClearOutput( AT91C_BASE_PIOA, DIODA1 );
-	//  AT45_EraseChip(&sAt45);
+//	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, DIODA1);
 
 	//zrob 2 razy zdjecie kamera zeby AE przystosowalo sie do swiatla
 	//	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA1);
@@ -927,6 +961,7 @@ int main(void) {
 	//	}
 	//	AT45_WaitReady(&sAt45);
 	it = 0;
+	//TODO
 	unsigned int it2 = 0;
 	for (;;) {
 		switch (FrameSizeToGet) {
@@ -961,6 +996,28 @@ int main(void) {
 		}
 		case 6: {
 			obstacle_avoid_TestCase();
+			break;
+		}
+		case 7: {
+			//			turn_at_angle(0);
+			start_recording_track();
+			FrameSizeToGet = 0;
+			break;
+		}
+		case 8: {
+			turn_at_angle(180);
+			//start_recording_track();
+			FrameSizeToGet = 0;
+			break;
+		}
+		case 13: {
+			unsigned short t = 255;
+			for (; t > 0; t--) {
+				PWM_Set(0, t);
+				waitms(100);
+			}
+			//start_recording_track();
+			FrameSizeToGet = 0;
 			break;
 		}
 		default:

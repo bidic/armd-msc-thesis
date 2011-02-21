@@ -8,6 +8,13 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+#define STOP_GEAR 0
+#define FORWARD_GEAR 1
+#define REVERSE_GEAR 2
+
+#define LEFT_ENGINES 1
+#define RIGHT_ENGINES 2
+
 ////////////////////////////////////////////////////////////////////////////////
 // Sterowanie kierunkiem obrotu silnikow
 // silnik = 1 - silniki lewe, 2 - silniki prawe

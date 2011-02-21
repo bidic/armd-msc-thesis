@@ -18,13 +18,14 @@
 
 typedef struct _mag_info
 {
-  int x;
-  int y;
+  double x;
+  double y;
 } mag_info;
 
 mag_info MMC212xM_GetMagneticFieldInfo(Twid *twid);
 
 void  MMC212xM_SendSetCmd(Twid *twid);
 void  MMC212xM_SendResetCmd(Twid *twid);
+void  MMC212xM_Calibrate(Twid *twid);
 
 #endif /* MMC212XM_H_ */
