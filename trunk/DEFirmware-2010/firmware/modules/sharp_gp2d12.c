@@ -10,7 +10,7 @@
 unsigned int gp2d12_adc_channel;
 void (*onMeasureComplete)(unsigned int) = NULL;
 
-unsigned int ConvertHexTomV(unsigned int value) {
+static unsigned int ConvertHexTomV(unsigned int value) {
 	return (ADC_VREF * value) / 0x3FF;
 }
 
@@ -22,7 +22,7 @@ unsigned int GP2D12_ComputeDistanceFromCharacterisic(unsigned int output) {
 	return 10 * (numerator / denominator);
 }
 
-void ADC_InterruptHandler(void) {
+void GP2D12_InterruptHandler(void) {
 //	printf("-- ADC_InterruptHandler --\n\r");
 	if (ADC_IsChannelInterruptStatusSet(ADC_GetStatus(AT91C_BASE_ADC),
 			gp2d12_adc_channel)) {
@@ -44,7 +44,7 @@ void GP2D12_MeasureDistance(unsigned int adc_channel, void(*callback)(
 	onMeasureComplete = callback;
 
 	ADC_EnableChannel(AT91C_BASE_ADC, adc_channel);
-	AIC_ConfigureIT(AT91C_ID_ADC, 0, ADC_InterruptHandler);
+	AIC_ConfigureIT(AT91C_ID_ADC, 0, GP2D12_InterruptHandler);
 	AIC_EnableIT(AT91C_ID_ADC);
 	ADC_EnableIt(AT91C_BASE_ADC, adc_channel);
 
