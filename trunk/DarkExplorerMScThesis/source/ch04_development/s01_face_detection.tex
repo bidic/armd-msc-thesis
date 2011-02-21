@@ -147,5 +147,46 @@ S = \left\{
 \begin{array}{l l}
   1 & \quad \mbox{dla $g < F_1\left(r\right) \cap g > F_2\left(r\right) \cap w
   > 0.001$}\\ 0 & \quad \mbox{dla pozostałych}\\ \end{array} \right. 
+  \label{skinEq1}
 \end{equation}
-
+Praktyczne doświadczenia z wykrywaniem obszarów skóry z zastosowaniem równania
+\ref{skinEq1} wykazały iż niemal wszystkie obszary o kolorze skóry została
+prawidłowo zaklasyfikowana. Znakomita większość pikseli nie stanowiących koloru
+skóry została zastąpiona kolorem czarnym. Niemniej jednak wiele pikseli o
+kolorze niebieski, żółtym i szarym również została błędnie sklasyfikowana. Aby
+wyeliminować tego rodzaju efekt należy wykorzystać kryteria klasyfikacji oparte
+o przestrzeń kolorów HSI. Poniżej przdstawiono zależność pomiędzy modelem RGB a
+HSI.
+\begin{equation}
+\begin{array}{l}
+\phi = cos^{-1}\left\{ \frac{0.5[(R-G)+(R-B)]}{\sqrt{(R-G)^2 + (R-B)(G-B)}}
+\right\}\\\\
+\left\{
+\begin{array}{l l}
+H=\phi & \mbox{dla B }\leq G\\
+H=360^{\circ}-\phi & \mbox{dla B} > G
+\end{array}
+\right.
+\end{array}
+\end{equation}
+Po skorzystaniu z przestrzeni HSI otrzymujemy następujący przepis na kolor
+skóry.
+\begin{equation}
+S = \left\{ 
+\begin{array}{l l}
+  1 & \quad \mbox{dla $g < F_1\left(r\right) \cap g > F_2\left(r\right) \cap w
+  > 0.001 \cap (H > 240 \cup H \leq 20 )$}\\ 0 & \quad \mbox{dla pozostałych}\\
+  \end{array} \right.
+  \label{skinEq2}
+\end{equation}\newpage
+Przy tak zdefiniowanym klasyfikatorze dokonywana jest binaryzacja całego obrazu.
+Po przeprowadzeniu binaryzacji przeprowadzana jest kwantyzacja obrazu za pomocą
+próbki o rozmiarze i wysokości pięciu pikseli. Pozwala to zminiejszyć
+rozdzielczość obrazu, a co za tym idzie wyeliminować pewne rodzaje szumu oraz
+znacznie uprościć dalsze obliczenia. Wspomniany proces kwantyzacji polega na
+przeliczeniu liczby pikseli w kolorze skóry i kolorze czarnym w ramach 25
+pikseli pobranych jako próbka obrazu. A następnie na podstawie wartości progowej
+podjęcie decyzji czy cała próbka zostanie oznaczona kolorem skóry czy kolorem
+czarnym. W ramach implementacji wartość progu została ustalona na poziomie 12
+pikseli, oznacza to, że wszystkie próbki zawierające więcej niż 12 pikseli
+czarnych są w całości oznaczane jako obszar niezawierający skóry i na odwrót.
