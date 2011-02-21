@@ -38,7 +38,7 @@ volatile int min_v = 1000;
 
 volatile unsigned int min_acc[3] = { 4000, 4000, 4000 };
 volatile unsigned int max_acc[3] = { 0, 0, 0 };
-volatile double angle = 160;
+volatile double angle = 0;
 volatile long int suma = 0;
 volatile long int iter = 0;
 
@@ -50,7 +50,7 @@ void step_detector(MMA7260_OUTPUT mma7260_output) {
 					mma7260_output.y_normal_mv, 2) + pow(
 					mma7260_output.z_normal_mv, 2));
 
-	angle += (((double)mma7260_output.y_mv - (1222.6))*3.)/(4.*500.);
+	angle += (((double)mma7260_output.y_mv - (1223.0)))/(6400.);
 	suma += mma7260_output.y_mv;
 iter++;
 	if((iter % 1000) == 0)
