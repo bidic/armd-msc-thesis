@@ -12,6 +12,7 @@
 #include "peripherals.h"
 #include "modules/mmc212xm.h"
 #include "algorithms/pedometer.h"
+#include "modules/gyroscope.h"
 
 #define MAX_STEPS 300
 #ifndef ABS
@@ -25,6 +26,8 @@ void reconstruct_reverse_track();
 void turn_at_angle(double angle);
 
 double compute_angle(double x, double y);
+
+void turn_of_angle(double angle);
 
 
 #endif /* REVERSE_TRACK_RECONSTRUCTION_H_ */

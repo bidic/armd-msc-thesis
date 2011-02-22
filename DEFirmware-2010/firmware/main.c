@@ -140,6 +140,7 @@ __ramfunc void SYSTEM_INTERRUPT_irq_handler(void) {
 volatile unsigned int data_ready = 0;
 volatile unsigned int ls_data = 0;
 volatile unsigned int rs_data = 0;
+volatile unsigned int obstacle_avoid_enable = 0;
 
 void onLSDataReady(unsigned int output) {
 	ls_data = output;
@@ -152,7 +153,7 @@ void onRSDataReady(unsigned int output) {
 }
 
 void obstacle_avoid_TestCase() {
-	while (1) {
+	while (obstacle_avoid_enable) {
 		data_ready = 0;
 		GP2D12_MeasureDistance(ADC_CHANNEL_5, onRSDataReady);
 		while (!data_ready) {
@@ -176,9 +177,10 @@ void obstacle_avoid_TestCase() {
 		Kierunek(1, output.gear_left);
 		Kierunek(2, output.gear_right);
 
-		waitms(1000);
-
-		//		delay(1000000);
+		if (output.gear_left != output.gear_right)
+			waitms(1000);
+		else
+			waitms(500);
 	}
 }
 
@@ -208,8 +210,7 @@ __ramfunc void UART0_DMA_irq_handler(void) {
 			//			printf("PWM01 - RX_BUffer[1] = %d", RX_Buffer[1]);
 			//			PWM_Set(0, 85);
 			//			PWM_Set(1, RX_Buffer[1]);
-			reconstruct_reverse_track();
-			//			FrameSizeToGet = 13;
+			FrameSizeToGet = 13;
 		}
 		//TODO
 		//Sterowanie kanalem pwm 2, 3
@@ -343,12 +344,15 @@ __ramfunc void UART0_DMA_irq_handler(void) {
 		if (RX_Buffer[0] == 'w') {
 			//wylaczenie
 			if (RX_Buffer[1] == 0) {
-				AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, SERWO_POWER);
+				obstacle_avoid_enable = 0;
+				//				AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, SERWO_POWER);
 			}
 
 			//wlaczenie
 			if (RX_Buffer[1] == 1) {
-				AT91F_PIO_SetOutput(AT91C_BASE_PIOA, SERWO_POWER);
+				obstacle_avoid_enable = 1;
+				FrameSizeToGet = 6;
+				//AT91F_PIO_SetOutput(AT91C_BASE_PIOA, SERWO_POWER);
 			}
 		}
 	}
@@ -505,10 +509,10 @@ int main(void) {
 	// Inicjalizacje
 
 	//TODO
-		TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
-		TRACE_INFO("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
-	//	memset(mem, 0x00, 39000);
-		TRACE_INFO("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
+	//	TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
+	//	TRACE_INFO("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
+	//	//	memset(mem, 0x00, 39000);
+	//	TRACE_INFO("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
 
 	// Enable User Reset and set its minimal assertion to 960 us
 	//  AT91C_BASE_RSTC->RSTC_RMR = AT91C_RSTC_URSTEN | (0x4<<8) | (unsigned int)(0xA5<<24);
@@ -681,8 +685,8 @@ int main(void) {
 	//konfiguracja wyjsc kierunkowych silnikow (in1-in4)
 	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA7); //in1
 	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA8); //in2
-//	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA9); //in3
-//	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA10); //in4
+	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA9); //in3
+	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA10); //in4
 	//TODO
 
 	//konfiguracja linii kamery cam po6030k
@@ -770,6 +774,7 @@ int main(void) {
 	//Konfiguracja modulu bluetooth
 
 	//TODO
+
 
 	//	MMC212xM_SendSetCmd(&twid);
 	//	double min_x = 65000;
@@ -996,26 +1001,20 @@ int main(void) {
 		}
 		case 6: {
 			obstacle_avoid_TestCase();
+			FrameSizeToGet = 0;
 			break;
 		}
 		case 7: {
-			//			turn_at_angle(0);
 			start_recording_track();
 			FrameSizeToGet = 0;
 			break;
 		}
 		case 8: {
-			turn_at_angle(180);
-			//start_recording_track();
 			FrameSizeToGet = 0;
 			break;
 		}
 		case 13: {
-			unsigned short t = 255;
-			for (; t > 0; t--) {
-				PWM_Set(0, t);
-				waitms(100);
-			}
+			reconstruct_reverse_track();
 			//start_recording_track();
 			FrameSizeToGet = 0;
 			break;

@@ -138,7 +138,8 @@ void PWM_Configure() {
 void PWM_Set(int channel, char duty) {
 	//ustawienie wypelnienia
 	// channel = 0 - 3, duty = 2 - 255
-	AT91C_BASE_PWMC->PWMC_CH[channel].PWMC_CUPDR = duty;
+//	AT91C_BASE_PWMC->PWMC_CH[channel].PWMC_CUPDR = duty;
+	PWMC_SetDutyCycle(channel, duty);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

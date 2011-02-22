@@ -33,7 +33,7 @@ int computeNormalizedOutputValueForAxis(unsigned int axis,
 	return result;
 }
 
-unsigned int readChannelData(unsigned int adc_channel) {
+static unsigned int readChannelData(unsigned int adc_channel) {
 	ADC_DisableIt(AT91C_BASE_ADC, adc_channel);
 	read_channels++;
 	return ConvertHexTomV(ADC_GetConvertedData(AT91C_BASE_ADC, adc_channel));
