@@ -20,11 +20,11 @@ unsigned int positive_acc_peak;
 unsigned int negative_peak_timestamp;
 unsigned int negative_acc_peak;
 
+volatile double curr_gyroscope_angle = 0;
+
 void init_pedometer_config() {
 	def_config.negative_thld = 700;
 	def_config.positive_thld = 900;
-//	def_config.negative_thld = 700;
-//	def_config.positive_thld = 900;
 
 	def_config.sample_time = 4;
 }
@@ -33,28 +33,25 @@ unsigned int get_step_count() {
 	return detected_steps / 2;
 }
 
-volatile int max_v = -1000;
-volatile int min_v = 1000;
-
-volatile unsigned int min_acc[3] = { 4000, 4000, 4000 };
-volatile unsigned int max_acc[3] = { 0, 0, 0 };
-volatile double angle = 0;
-
-volatile long int iter = 0;
+//volatile int max_v = -1000;
+//volatile int min_v = 1000;
+//volatile unsigned int min_acc[3] = { 4000, 4000, 4000 };
+//volatile unsigned int max_acc[3] = { 0, 0, 0 };
+//volatile long int iter = 0;
 
 void step_detector(MMA7260_OUTPUT mma7260_output) {
 	TRACE_DEBUG("-- Step detector (MMA7260) --\n\r");
 	unsigned int peak_type = 0;
-	int output =
-			sqrt(pow(mma7260_output.x_normal_mv, 2) + pow(
-					mma7260_output.y_normal_mv, 2) + pow(
-					mma7260_output.z_normal_mv, 2));
+	//	int output =
+	//			sqrt(pow(mma7260_output.x_normal_mv, 2) + pow(
+	//					mma7260_output.y_normal_mv, 2) + pow(
+	//					mma7260_output.z_normal_mv, 2));
+	int output = ABS(mma7260_output.z_normal_mv);
 
-	angle += (((double)mma7260_output.y_mv - (1223.0)))/(6400.);
+	curr_gyroscope_angle += (mma7260_output.y_mv - 1223.0) / 11500.0;
 
-iter++;
-	if((iter % 10000) == 0)
-	  printf("%8d\r\n",(int) (angle));
+	//	if ((iter % 10000) == 0)
+	//		printf("%8d\r\n", (int) (angle));
 
 	//	if (min_acc[0] > mma7260_output.x_mv)
 	//		min_acc[0] = mma7260_output.x_mv;
@@ -107,6 +104,7 @@ iter++;
 			positive_peak_timestamp = 0;
 			if (!(detected_steps % 2)) {
 				onStepCallback();
+				curr_gyroscope_angle = 0;
 			}
 		} else {
 			if (peak_type == POSITIVE_PEAK) {
@@ -118,18 +116,16 @@ iter++;
 			}
 		}
 	}
-
 }
 
 void start_steps_detection(void(*callback)(void)) {
 	TRACE_DEBUG("-- Step detector init --\n\r");
 
-	max_v = -1000;
-	min_v = 1000;
 	detected_steps = 0;
 	pedometer_enabled = 1;
 	positive_peak_timestamp = 0;
 	negative_peak_timestamp = 0;
+	curr_gyroscope_angle = 0;
 	onStepCallback = callback;
 
 	TRACE_DEBUG("-- RTT Timer init --\n\r");

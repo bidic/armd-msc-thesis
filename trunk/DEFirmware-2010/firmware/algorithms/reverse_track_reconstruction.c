@@ -9,6 +9,7 @@
 
 double steps_data[MAX_STEPS];
 extern Twid twid;
+extern double curr_gyroscope_angle;
 
 double compute_angle(double x, double y) {
 	if (!x && !y)
@@ -46,25 +47,28 @@ double compute_turn_angle(double dest_angle, double current_angle) {
 	return turn_angle;
 }
 
-double get_descrete_angle(double angle) {
-	//	if (angle < 22.5)
-	//		return 0;
-	//	if (angle > 22.5 && angle < 67.5)
-	//		return 45;
-	//	if (angle > 67.5 && angle < 112.5)
-	//		return 90;
-	//	if (angle > 112.5 && angle < 157.5)
-	//		return 135;
-	//	if (angle > 157.5 && angle < 202.5)
-	//		return 180;
-	//	if (angle > 202.5 && angle < 247.5)
-	//		return 225;
-	//	if (angle > 247.5 && angle < 292.5)
-	//		return 270;
-	//	if (angle > 292.5 && angle < 337.5)
-	//		return 315;
-	//	if (angle > 337.5)
-	//		return 0;
+double get_descrete_angle(double in) {
+	double angle = ABS(in);
+	int sign = SIGN(in);
+
+		if (angle < 22.5)
+			return 0;
+		if (angle > 22.5 && angle < 67.5)
+			return 45 * sign;
+		if (angle > 67.5 && angle < 112.5)
+			return 90 * sign;
+		if (angle > 112.5 && angle < 157.5)
+			return 135 * sign;
+		if (angle > 157.5 && angle < 202.5)
+			return 180 * sign;
+		if (angle > 202.5 && angle < 247.5)
+			return 225 * sign;
+		if (angle > 247.5 && angle < 292.5)
+			return 270 * sign;
+		if (angle > 292.5 && angle < 337.5)
+			return 315 * sign;
+		if (angle > 337.5)
+			return 0;
 
 	//	if(angle < 45)
 	//		return 0;
@@ -83,12 +87,10 @@ double get_descrete_angle(double angle) {
 void onStepDetectedCallback(void) {
 	TRACE_DEBUG("-- Step detected %3d -- \r\n", get_step_count());
 
-	mag_info mg_i = MMC212xM_GetMagneticFieldInfo(&twid);
-	//TODO Progowanie przy zapisywaniu kąta zmiany
-	double angle = compute_angle(mg_i.y, mg_i.x);
-	steps_data[get_step_count() - 1] = get_descrete_angle(angle);
+	//	mag_info mg_i = MMC212xM_GetMagneticFieldInfo(&twid);
+	steps_data[get_step_count() - 1] = get_descrete_angle(curr_gyroscope_angle);
 
-	TRACE_DEBUG("-- Detected angle: %4d, Descrete angle: %d -- \r\n", (int) angle, (int)steps_data[get_step_count() - 1]);
+	TRACE_INFO("-- Detected angle: %4d, Descrete angle: %d -- \r\n", (int) curr_gyroscope_angle, (int)steps_data[get_step_count() - 1]);
 
 }
 
@@ -105,7 +107,39 @@ void stop_recording_track() {
 	stop_counting_steps();
 }
 
-void turn_at_angle(double angle) {
+void turn_of_angle(double angle) {
+	reset_angle();
+
+	PWM_Set(0, 15);
+	waitms(1000);
+	if (angle < 0) {
+		TRACE_INFO("-- w lewo -- \r\n");
+		Kierunek(RIGHT_ENGINES, FORWARD_GEAR);
+		Kierunek(LEFT_ENGINES, REVERSE_GEAR);
+	} else {
+		TRACE_INFO("-- w prawo -- \r\n");
+		Kierunek(RIGHT_ENGINES, REVERSE_GEAR);
+		Kierunek(LEFT_ENGINES, FORWARD_GEAR);
+	}
+	//	waitms(1000);
+	//	PWM_Set(0, 15);
+	//	int i = 0;
+	while (ABS(angle) - ABS(get_current_angle()) > 2) {
+		read_gyroscope_output(ADC_CHANNEL_6);
+
+		//		if (!(++i % 1000)) {
+		//			TRACE_INFO("-- angle %d  curr: %d-- \r\n", (int)angle, (int)get_current_angle());
+		//			i = 1;
+		//		}
+	}
+
+	reset_angle();
+	Kierunek(RIGHT_ENGINES, STOP_GEAR);
+	Kierunek(LEFT_ENGINES, STOP_GEAR);
+
+}
+
+void turn_at_magnetic_angle(double angle) {
 	double turn_angle = 0;
 
 	mag_info current_mg_i = MMC212xM_GetMagneticFieldInfo(&twid);
@@ -120,6 +154,7 @@ void turn_at_angle(double angle) {
 		Kierunek(RIGHT_ENGINES, FORWARD_GEAR);
 		Kierunek(LEFT_ENGINES, REVERSE_GEAR);
 	}
+
 	do {
 		current_mg_i = MMC212xM_GetMagneticFieldInfo(&twid);
 		current_angle = compute_angle(current_mg_i.y, current_mg_i.x);
@@ -144,14 +179,13 @@ void reconstruct_reverse_track() {
 		int step_count = get_step_count() - 1;
 
 		for (; step_count >= 0; step_count--) {
-			double return_angle = compute_return_angle(steps_data[step_count]);
-			turn_at_angle(return_angle);
+			turn_of_angle(steps_data[step_count]);
 
 			PWM_Set(0, 15);
 			Kierunek(RIGHT_ENGINES, FORWARD_GEAR);
 			Kierunek(LEFT_ENGINES, FORWARD_GEAR);
 
-			waitms(1000);
+			waitms(2000);
 		}
 
 		Kierunek(RIGHT_ENGINES, STOP_GEAR);

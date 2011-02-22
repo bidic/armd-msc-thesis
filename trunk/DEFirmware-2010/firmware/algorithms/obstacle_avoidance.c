@@ -10,12 +10,15 @@
 OAA_CONFIG def_config;
 
 void use_default_configuration() {
-	def_config.distance_level_1 = 2100;
-	def_config.distance_level_2 = 1100;
+//	def_config.distance_level_1 = 2100;
+//	def_config.distance_level_2 = 1100;
+//	def_config.distance_level_3 = 700;
+	def_config.distance_level_1 = 1500;
+	def_config.distance_level_2 = 900;
 	def_config.distance_level_3 = 700;
 
-	def_config.speed_level_1 = 150;
-	def_config.speed_level_2 = 200;
+	def_config.speed_level_1 = 127;
+	def_config.speed_level_2 = 190;
 	def_config.speed_level_3 = 255;
 }
 
