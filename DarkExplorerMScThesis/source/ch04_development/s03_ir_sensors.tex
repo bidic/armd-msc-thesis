@@ -1,4 +1,4 @@
-\section{Omijanie przeszkód}
+\subsection{Czujniki odległości}
 Bardzo często problem omijania przeszkód rozwiązywany jest z użyciem czujników
 ultradźwiękowych gdzie dane pomiarowe w pierwszym kroku wykorzystywane są to
 stworzenia lokalnej reprezentacji otaczającego środowiska pozwalającej na
@@ -42,7 +42,7 @@ gdy robot znajduje się w ruchu na każdym z czujników jesteśmy w stanie odczy
 wartość odległości od przeszkody, a co za tym idzie możemy kontrolować zachowanie
 robota w zależności od poziomu jaki ustalił się na dalmierzach.
 
-\subsection{Algorytm omijania przeszkód}
+\subsubsection{Algorytm omijania przeszkód}
 Algorytm sterujący ruchami robota bazuje więc w całości na danych pomiarowych
 otrzymanych z czujników robota. Opisane podejście jest adaptacją metodologii
 opisanej w ramach pracy ,,Obstacles Avoidance Method for an Autonomous Mobile
@@ -98,7 +98,7 @@ Podane w tabeli wartości mają charakter orientacyjny i w przypadku gdy robot m
 wyznaczony cel do którego zmierza kierunki skrętu mogą ulec zmianie. Mogą
 również pojawić się dodatkowe zmiany kierunku jazdy umożliwiające odnalezienie
 wyznaczonego punktu docelowego. \newpage
-\subsection{Implementacja}
+\subsubsection{Implementacja}
 W zrealizowanej w ramach pracy magisterskiej implementacji robot, Dark Explorer,
 wyposażony został w dwa dalmierze Sharp GP2D12 o efektywnym zasięgu od 10 do 80
 cm. Każdy z dalmierzy wyposażony jest w nadajnik i odbiornik IR. Czujnik
