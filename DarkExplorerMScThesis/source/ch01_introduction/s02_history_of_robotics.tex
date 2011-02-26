@@ -20,17 +20,25 @@ tytułem ,,Ja, robot''. Jako ciekawostkę można dodać, że w wydanym w 1942 ro
 opowiadaniu pod tytułem ,,Zabawa w berka'', Assimove wprowadza trzy prawa
 robotyki według których, zdaniem autora, powinny być programowane
 roboty\cite{Runaround}.
-\begin{description}
-\item[Prawo pierwsze] \hfill \\
-Robot nie może zranić istoty ludzkiej, ani przez zaniedbanie narazić człowieka
-na zranienie. 
-\item[Prawo drugie] \hfill \\
-Robot musi spełniać polecenia wydawane przez człowieka, poza poleceniami
-sprzecznymi z prawem pierwszym.
-\item[Prawo trzecie] \hfill \\
-Robot musi chronić samego siebie dopóki nie jest to sprzeczne z prawami
-pierwszym i drugim.
-\end{description} 
+% \begin{description}
+% \item[Prawo pierwsze] \hfill \\
+% Robot nie może zranić istoty ludzkiej, ani przez zaniedbanie narazić człowieka
+% na zranienie. 
+% \item[Prawo drugie] \hfill \\
+% Robot musi spełniać polecenia wydawane przez człowieka, poza poleceniami
+% sprzecznymi z prawem pierwszym.
+% \item[Prawo trzecie] \hfill \\
+% Robot musi chronić samego siebie dopóki nie jest to sprzeczne z prawami
+% pierwszym i drugim.
+% \end{description} 
+
+\begin{figure}[hb]
+ \centering
+ \includegraphics[height=75mm]{../images/ch01/assimov_laws.png}
+ 
+ \label{fig:Assimov_Laws}
+\end{figure}
+
 Nieco później, Isaac Assimov, jako uzupełnienie i prawo nadrzędne dodaje prawo
 zerowe o następującym brzmieniu ,,Robot nie może szkodzić ludzkości, ani przez
 zaniedbanie narazić ludzkości na szkodę''\cite{website:robotyka-pl}. Oprócz
@@ -68,6 +76,7 @@ serię programowalnych ruchów wykonywanych w celu realizacji różnych zadań.
 W myśl wspomnianej definicji jedną z podstawowych cech robota jest jego
 programowalność i możliwość dostosowywania się do zmiennych warunków środowiska
 pracy. \\
+\\
 Pierwsze roboty projektowano z myślą o zastosowaniu ich do realizacji
 elementarnych zadań związanych z przenoszeniem elementów z jednego punktu do
 drugiego. Program pracy robota miał więc charakter sekwencji operacji
@@ -145,6 +154,38 @@ dobrze radził sobie z rozpoznawaniem twarzy, dźwięków i analizą otaczające
 środowiska. Potrafił on rozpoznać i omijać niebezpieczeństwa postawione na jego
 drodze jak na przykład schody czy osoby poruszające się w jego kierunku.\\
 \\
+W roku 2006 podczas Robot World w Seulu grupa południowokoreańskich inżynierów
+prezentuje swojego robota EveR-2. EveR są robotami posiadającymi wygląd typowej
+dwudziestoletniej koreanki. Urządzenie potrafi rozmawiać i śpiewać dzięki
+wbudowanemu ,,silnikowi dialogu'' (ang. embedded dialogue engine). Android
+EveR-2 w odróżnieniu od swojej poprzedniczki ma udoskonalony system wizyjny
+oraz możliwość wyrażania emocji takich jak znudzenie, zadowolenie, żal czy radość.
+Robot ma 170cm wzrostu i waży około 60kg. Twarz androida posiada wysoką
+elastyczność i poruszana jest przy pomocy 29 silniczków i licznych stawów
+które pozwalają na pełną swobodę w wyrażaniu emocji. Wbudowany system
+rozpoznawania i syntezy mowy w połączeniu z możliwością wyrażania się za pomocą
+gestów pozwala na niemal całkowitą swobodę podczas rozmowy z robotem. Możliwości
+komunikacyjne robota są tak znakomite, że EveR-2 została pierwszą piosenkarką
+androidem. Jej pierwszy występ odbył się podczas jej prezentacji w Seulu gdzie
+na oczach publiczności odśpiewała koreańską balladę pt. ,,I will close my eyes
+for you''.\\
+\\
+Lata 2008 i 2009 zaowocowały powstaniem wielu robotów naśladujących w swoim
+zachowaniu niektóre zwierzęta. Bardzo imponującym przykładem takiego robota jest
+wyprodukowany przez firmę AeroVironment latający robot o nazwie Mercury.
+Urządzenie to potrafi ,,zawisnąć'' w powietrzu poruszając jedynie skrzydłami
+dokładnie w taki sam sposób jak robią to prawdziwe kolibry. Lata te były również
+obfite w sukcesy w dziedzinie rozwoju sztucznego mózgu i sztucznej inteligencji.
+W roku 2008 grupa naukowców z University of Reading zbudowała robota sterowanego w całości za
+pomocą biologicznego mózgu z wyhodowanych neuronów. Biologiczny mózg w który wyposażony
+został zainstalowany w macierzy wieloelektrodowej (MEA). MEA jest to pewnego
+rodzaju naczynie które za pomocą około 60 elektrod przechwytuje sygnały
+elektryczne generowane przez komórki nerwowe i przekłada je na ruchy robota. W
+przypadku gdy robot napotka na swojej drodze przeszkody wspomniane
+wcześniej elektrody stymulują komórki nerwowe które tą samą drogą udzielają
+instrukcji na zachowania kół które pozwoliłoby na ominięcie wykrytej przeszkody. Robot jest
+całkowicie samodzielny i w całości sterowany przez własny mózg.\\
+\\
 Obserwując postęp w dziedzinie robotyki można odnieść wrażenie iż w dzisiejszych
 czasach roboty znalazły dla siebie zastosowanie niemal w każdej dziedzinie życia.
 Od wielu lat sprawdzają się już w przemyśle, transporcie, budownictwie oraz są
@@ -165,10 +206,10 @@ produkcyjnych zakładach pracy, dawniej wykonywane przez ludzi, zostało zastąp
 przez roboty. Efektem tego jest zmniejszenie kosztów produkcji towarów masowych,
 szczególnie widocznych w przypadku części samochodowych i elektroniki.
 Zastosowanie robotów powoduje więc wzrost efektywności ekonomicznej i skraca czas
-uruchomienia produkcji, a co za tym idzie jest głównym czynnikiem ekonomicznym wspomagającym rozwój robotyki. \\
-\\
-Istnieje szereg zadań które człowiek wykonuje lepiej niż maszyna, ale ze względu
-na męczący charakter pracy lub niebezpieczne środowisko jej wykonywania praca
+uruchomienia produkcji, a co za tym idzie jest głównym czynnikiem ekonomicznym wspomagającym rozwój robotyki.
+
+Istnieje szereg zadań które człowiek wykonuje lepiej niż maszyna,
+ale ze względu na męczący charakter pracy lub niebezpieczne środowisko jej wykonywania praca
 ludzka jest zastępowana przez maszyny. Stały rozwój technologii stosowanych w
 robotyce skutkuje w powstawaniu coraz bardziej zaawansowanych systemów co sprzyja
 powszechniejszemu ich stosowaniu. Zastosowanie robotów w życiu codziennym
@@ -186,29 +227,35 @@ spotykanych podziałów jest klasyfikacja ze względy na sposób programowania i
 możliwości komunikacyjne. Każda z grup tworzy tzw. generacje robotów. Można
 wyróżnić trzy generacje robotów uwzględniając różnice w ich układzie sterowania
 oraz dostępne sensory\cite{website:robotyka-pl}.
-\begin{description}
-\item[Roboty I generacji] to urządzenia zaprogramowane do wykonywania określonej
-sekwencji czynności z możliwością ich przeprogramowania. W robotach tej
-generacji stosuje się otwarty układ sterowania który charakteryzuje się
-całkowitym brakiem możliwości pobierania informacji ze świata zewnętrznego. Do
-robotów pierwszej generacji zaliczyć można roboty przemysłowe przeznaczone do
-podawania i odbierania obiektów z linii produkcyjnej.
-\item[Roboty II generacji] to maszyny wyposażone w zamknięty układ sterowania.
-Oznacza to, że posiadają one zestaw czujników umożliwiających dokonywanie
-pomiarów stanu robota oraz jego otoczenia. Pozwala to robotowi na rozpoznanie
-żądanego obiektu nawet wówczas, gdy przemieszcza się wśród innych obiektów.
-Robot tej generacji powinien być w stanie podjąć decyzję na temat sposobu
-realizacji zadania na podstawie aktualnego stanu otoczenia i obiektu
-manipulacji.
-\item[Roboty III generacji] to urządzenia również wyposażone w zamknięty układ
-sterowania oraz zestaw czujników umożliwiających dokonywanie skomplikowanych
-pomiarów i klasyfikację obiektów o wysokim stopniu złożoności. System sterowania
-robota tej generacji powinien pozwalać na jego adaptację w nieznanym otoczeniu.
-\end{description}
+% \begin{description}
+% \item[Roboty I generacji] to urządzenia zaprogramowane do wykonywania określonej
+% sekwencji czynności z możliwością ich przeprogramowania. W robotach tej
+% generacji stosuje się otwarty układ sterowania który charakteryzuje się
+% całkowitym brakiem możliwości pobierania informacji ze świata zewnętrznego. Do
+% robotów pierwszej generacji zaliczyć można roboty przemysłowe przeznaczone do
+% podawania i odbierania obiektów z linii produkcyjnej.
+% \item[Roboty II generacji] to maszyny wyposażone w zamknięty układ sterowania.
+% Oznacza to, że posiadają one zestaw czujników umożliwiających dokonywanie
+% pomiarów stanu robota oraz jego otoczenia. Pozwala to robotowi na rozpoznanie
+% żądanego obiektu nawet wówczas, gdy przemieszcza się wśród innych obiektów.
+% Robot tej generacji powinien być w stanie podjąć decyzję na temat sposobu
+% realizacji zadania na podstawie aktualnego stanu otoczenia i obiektu
+% manipulacji.
+% \item[Roboty III generacji] to urządzenia również wyposażone w zamknięty układ
+% sterowania oraz zestaw czujników umożliwiających dokonywanie skomplikowanych
+% pomiarów i klasyfikację obiektów o wysokim stopniu złożoności. System sterowania
+% robota tej generacji powinien pozwalać na jego adaptację w nieznanym otoczeniu.
+% \end{description}
+\begin{figure}[hb]
+ \centering
+ \includegraphics[height=120mm]{../images/ch01/robot_generations.png}
+ \label{fig:RobotsGenerations}
+\end{figure}
+
 Istnieje szereg różnych klasyfikacji robotów bazujących na podziale ze względu
 na ich parametry techniczne. Jednym z bardziej znanych podziałów jest
-klasyfikacja ze względu na rodzaj środowiska w jakim się poruszają i sposób
-poruszania się.
+przedstawiona poniżej klasyfikacja ze względu na rodzaj środowiska w jakim się
+poruszają i sposób ich poruszania się.
 \begin{itemize}
   \item roboty podwodne i poruszające się na wodzie,
   \item roboty lądowe oraz wodno-lądowe
@@ -219,16 +266,22 @@ można przeprowadzić na podstawie sposobie poruszania się. Za pomocą takiego
 kryterium możemy wyróżnić roboty kołowe, kroczące, skaczące oraz pełzające.
 Innym popularnym sposobem klasyfikacji robotów jest podział ze względu na 
 obszar ich zastosowania. Stosując kryterium takiego rodzaju istnieje możliwość
-wyróżnienia następujących grup
-\begin{itemize}
-  \item roboty przemysłowe,
-  \item roboty badawczo-rozwojowe, eksploracyjne, poszukiwacze, kosmiczne,
-  \item roboty wojskowe i policyjne,
-  \item roboty do gospodarstwa domowego,
-  \item roboty usługowe sektora publicznego (społeczne, interaktywne i
-  terapeutyczne),
-  \item roboty medyczne i egzoszkielety,
-\end{itemize}
+wyróżnienia następujących grup:
+% \begin{itemize}
+%   \item roboty przemysłowe,
+%   \item roboty badawczo-rozwojowe, eksploracyjne, poszukiwacze, kosmiczne,
+%   \item roboty wojskowe i policyjne,
+%   \item roboty do gospodarstwa domowego,
+%   \item roboty usługowe sektora publicznego (społeczne, interaktywne i
+%   terapeutyczne),
+%   \item roboty medyczne i egzoszkielety,
+% \end{itemize}
+\begin{figure}[hb]
+ \centering
+ \includegraphics[height=70mm]{../images/ch01/robot_types.png}
+ \label{fig:RobotsGenerations}
+\end{figure}
+
 Omówione sposoby klasyfikacji nie wyczerpują w pełni problemu podziału
 robotów i ich zastosowań. Istnieje bowiem wiele charakterystyk opartych o takie
 parametry jak na przykład kształt czy rodzaj układu napędowego o których w tym
