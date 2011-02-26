@@ -19,6 +19,13 @@
 \geometry{hmargin={2cm, 2cm}, height=10.0in}
 %\includeonly{introduction}
 
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+  {-3.25ex\@plus -1ex \@minus -.2ex}%
+  {1.5ex \@plus .2ex}%
+  {\normalfont\normalsize\bfseries}}
+\makeatother
+
 \begin{document}
 
 
@@ -47,7 +54,7 @@
 %% ------------------------ OPIEKUN PRACY ------------------------------------
 {\Large Opiekun: \bf \textsf{dr hab. inż. Marek Idzik}}\\
 \vspace{22ex}
-{\large \bf \textsf{Kraków, czerwiec 2010}}
+{\large \bf \textsf{Kraków, kwiecień 2011}}
 \end{center}
 %% =====  STRONA TYTUŁOWA PRACY MAGISTERSKIEJKIEJ ====
 
@@ -130,7 +137,7 @@ Na kolejnych dwóch stronach proszę dołączyć kolejno recenzje pracy popełni
 \tableofcontents
 
 \newpage
-\part{Wstęp teoretyczny}
+\part{Wprowadzenie}
 \include{ch01_introduction/s01_introduction}
 \include{ch01_introduction/s02_history_of_robotics}
 
@@ -140,30 +147,41 @@ Na kolejnych dwóch stronach proszę dołączyć kolejno recenzje pracy popełni
 \include{ch02_analysis/s02_software}
 
 \newpage
-\part{Platforma do rozwoju oprogramowania}
-\include{ch03_software/s01_windows}
-\include{ch03_software/s02_linux}
-\include{ch03_software/s03_windows_mobile}
+\part{Rozwój platformy robota mobilnego}
 
 \newpage
-\part{Rozwój platformy robota mobilnego}
-\include{ch04_development/s01_face_detection}
-\include{ch04_development/s02_ir_sensors}
-\include{ch04_development/s03_accelerometer}
+\section{Środowisko rozwojowe systemu wbudowanego}
+\include{ch03_software/s01_windows}
+\include{ch03_software/s02_linux}
+
+\newpage
+\section{Środowisko rozwojowe dla komputerów stacjonarnych}
+\include{ch03_software/s03_java}
+\include{ch03_software/s04_c_sharp}
+
+\newpage
+\section{Środowisko rozwojowe dla urządzeń mobilnych}
+\include{ch03_software/s05_windows_mobile}
+\include{ch03_software/s06_java_mobile}
+
+\newpage
+\section{Rozwój warstwy sprzętowej}
+\include{ch04_development/s01_accelerometer}
+\include{ch04_development/s02_gyroscope}
+\include{ch04_development/s03_ir_sensors}
+\include{ch04_development/s04_magnetometer}
+\include{ch04_development/s05_lcd_display}
+\include{ch04_development/s06_face_detection}
 
 \newpage
 \part{Podsumowanie}
-\include{ch05_summary/s01_software_tests}
-\include{ch05_summary/s02_hardware_tests}
-\include{ch05_summary/s03_summary}
+\include{ch05_summary/s01_summary}
 
 \newpage
 \part{Kod źródłowy}
 %\begin{lstlisting} \end{lstlisting}
 %\lstinputlisting[language=Python]{source_filename.py}
 
-
-%Cite Test~\cite{website:robotyka-pl}
 \newpage
 
 \bibliography{bibliography}{}
