@@ -1,4 +1,4 @@
-\subsection{Narzędzia dla systemu Linux}
+\section{Narzędzia dla systemu Linux}
 Jednym z wymagań pracy dyplomowej było przygotowanie zestawu narzędzi dla systemu
 Linux, dzięki którym będzie możliwy dalszy rozwój robota. Zbiór programów
 potrzebnych do rozwoju projektu to: zintegrowane środowisko programistyczne
@@ -7,7 +7,7 @@ Bierzący rozdział opisuje sposób instalacji i wykorzystania poszczególnych
 narzędzi, a także daje światło na inne tego typu oprogramowanie, które było brane
 pod uwagę podczas pracy nad projektem, jednak nie zostało użyte.
 
-\subsubsection{Wybór zintegrowanego środowiska programistycznego}
+\subsection{Wybór zintegrowanego środowiska programistycznego}
 We wcześniejszej wersji oprogramowanie robota było rozwijane na systemie
 Microsoft Windows. Niestety zintegrowane środowisko programistyczne używane do
 tej pory nie jest multiplatformowe. Konieczne było zatem dobranie nowego IDE,
@@ -28,7 +28,7 @@ rozwoju oprogramowania na mikrokontrolery ARM. Istalacja i sposób wykorzystania
 jednego z nich został opisany w \textcolor{red}{ TODO: NUMER DODATKU!!!! },
 chociaż nie był on wykorzystywany przez autorów tej pracy.
 
-\subsubsection{Instalacja i konfiguracja Eclipse'a}
+\subsection{Instalacja i konfiguracja Eclipse'a}
 Wybrane środowisko programistyczne (Eclipse) jest udostępniane pod adresem:
 \url{http://www.eclipse.org/downloads/}. Ściągnięte archiwum rozpakowujemy w
 wybranym przez nas miejscu. Przechodzimy następnie do katalogu który został
@@ -90,7 +90,7 @@ wybierając z menu kontekstowego opcję \textit{Build Project}. W wyniku powinni
 otrzymać dwa pliki binarne w katalogu \textit{firmware/bin}. Są to pliki gotowe
 do umieszczenia w pamięci flash robota.
 
-\subsubsection{Instalacja i konfiguracja toolchain'a}
+\subsection{Instalacja i konfiguracja toolchain'a}
 W celu przetworzenia kodu do formy współpracującej z mikrokontrolerem ARM
 niezbędny nam jest odpowiedni toolchain, czyli zestaw narzędzi generujących pliki
 wykonywalne oraz pomagających w debugowaniu utworzonego oprogamowania. Tworzony
@@ -123,7 +123,7 @@ zaopatrzenie się w 64--bit'ową wersje binarną toolchain'a lub skompilowanie g
 samodzielnie. Ewentualne dodatkowe informacje można znaleźć pod adresem
 \url{http://www.gnuarm.com}.
 
-\subsubsection{Open On--Chip Debugger -- instalacja i konfiguracja}
+\subsection{Open On--Chip Debugger -- instalacja i konfiguracja}
 \label{roz:opendocd-install}
 Pamięć robota była programowana przy pomocy tego samego narzędzia które służy do
 sprawdzania poprawności działania napisanego kodu. Mowa tu o oprogramowaniu Open
@@ -172,7 +172,7 @@ openocd -s /usr/local/share/openocd/scripts -f board/atmel_at91sam7s-ek.cfg
  \label{fig:openocd}
 \end{figure}
 
-\paragraph{Programowanie pamięci Dark Explorer'a}
+\subsubsection{Programowanie pamięci Dark Explorer'a}
 W celu wgrania programu do pamięci robota musimy uruchomić dwa narzędzia: telnet
 oraz openocd. Procedura instalacji i uruchamiania openocd została opisana
 wczesniej w rozdziale \ref{roz:opendocd-install}. W pierwszym kroku uruchamiamy

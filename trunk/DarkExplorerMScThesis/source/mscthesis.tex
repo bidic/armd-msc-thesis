@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt]{article}
+\documentclass[a4paper,12pt, oneside]{mwbk}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{polski}
@@ -13,21 +13,30 @@
 \usepackage{indentfirst}
 \usepackage{float}
 \usepackage{listings}
+\usepackage{wrapfig}
+\usepackage[table]{xcolor}
 \setlength{\parskip}{2ex}
 \setlength{\parindent}{30pt}
 
-\geometry{hmargin={2cm, 2cm}, height=10.0in}
+%\geometry{hmargin={2cm, 2cm}, height=10.0in}
+\geometry{total={210mm,297mm}, left=20mm,right=20mm,bindingoffset=10mm,
+top=25mm, bottom=25mm} 
+
 %\includeonly{introduction}
 
-\makeatletter
-\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
-  {-3.25ex\@plus -1ex \@minus -.2ex}%
-  {1.5ex \@plus .2ex}%
-  {\normalfont\normalsize\bfseries}}
-\makeatother
+% \makeatletter
+% \renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+%   {-3.25ex\@plus -1ex \@minus -.2ex}%
+%   {1.5ex \@plus .2ex}%
+%   {\normalfont\normalsize\bfseries}}
+% \makeatother
+
+\sloppy %zakaz wydłużania linii (gdy nie może złożyć) 
+\brokenpenalty=10000 %nie dieli wyrazów pomiędzy stronami 
+\clubpenalty=10000 %nie pozostawia sierot pojedynczych
+\widowpenalty=10000 %nie pozostawia wdów pojedynczych
 
 \begin{document}
-
 
 \thispagestyle{empty}
 %% ------------------------ NAGLOWEK STRONY ---------------------------------
@@ -76,7 +85,7 @@
 %% =====  TYL STRONY TYTULOWEJ PRACY MAGISTERSKIEJKIEJ ====
 
 \newpage
-\rightline{Kraków, ?? czerwca 2010}
+\rightline{Kraków, ?? kwiecień 2011}
 \begin{center}
 {\bf Tematyka pracy magisterskiej i praktyki dyplomowej
 Łukasza Hanusiaka oraz Mariusza Nowackiego
@@ -115,7 +124,7 @@ Miejsce praktyki dyplomowej:    & WFiIS AGH, Kraków\\
 
 
 \noindent
-Termin oddania w dziekanacie: ?? czerwca 2010\\[1cm]
+Termin oddania w dziekanacie: ?? kwiecień 2011\\[1cm]
 
 \begin{center}
 \begin{tabular}{lcr}
@@ -136,36 +145,36 @@ Na kolejnych dwóch stronach proszę dołączyć kolejno recenzje pracy popełni
 \newpage
 \tableofcontents
 
-\newpage
-\part{Wprowadzenie}
+\newpage 
+\chapter*{Wprowadzenie}
 \include{ch01_introduction/s01_introduction}
 \include{ch01_introduction/s02_history_of_robotics}
 
 \newpage
-\part{Dark Explorer pod lupą}
-\include{ch02_analysis/s01_hardware}
-\include{ch02_analysis/s02_software}
+\chapter{Dark Explorer pod lupą}
+%\include{ch02_analysis/s01_hardware}
+%\include{ch02_analysis/s02_software}
 
 \newpage
-\part{Rozwój platformy robota mobilnego}
+\chapter{Rozwój platformy robota mobilnego}
 
 \newpage
-\section{Środowisko rozwojowe systemu wbudowanego}
+\chapter{Środowisko rozwojowe systemu wbudowanego}
 \include{ch03_software/s01_windows}
 \include{ch03_software/s02_linux}
 
 \newpage
-\section{Środowisko rozwojowe dla komputerów stacjonarnych}
+\chapter{Środowisko rozwojowe dla komputerów stacjonarnych}
 \include{ch03_software/s03_java}
 \include{ch03_software/s04_c_sharp}
 
 \newpage
-\section{Środowisko rozwojowe dla urządzeń mobilnych}
+\chapter{Środowisko rozwojowe dla urządzeń mobilnych}
 \include{ch03_software/s05_windows_mobile}
 \include{ch03_software/s06_java_mobile}
 
 \newpage
-\section{Rozwój warstwy sprzętowej}
+\chapter{Rozwój warstwy sprzętowej}
 \include{ch04_development/s01_accelerometer}
 \include{ch04_development/s02_gyroscope}
 \include{ch04_development/s03_ir_sensors}
@@ -174,13 +183,17 @@ Na kolejnych dwóch stronach proszę dołączyć kolejno recenzje pracy popełni
 \include{ch04_development/s06_face_detection}
 
 \newpage
-\part{Podsumowanie}
+\chapter*{Podsumowanie}
 \include{ch05_summary/s01_summary}
 
-\newpage
-\part{Kod źródłowy}
+\newpage 
+\appendix
+\chapter{Kod źródłowy}
 %\begin{lstlisting} \end{lstlisting}
 %\lstinputlisting[language=Python]{source_filename.py}
+\listoffigures
+\listoftables
+
 
 \newpage
 
