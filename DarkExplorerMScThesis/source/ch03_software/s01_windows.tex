@@ -1,4 +1,4 @@
-\subsection{Narzędzia dla systemu Windows}
+\section{Narzędzia dla systemu Windows}
 Pierwszym krokiem do przygotowania środowiska rozwojowego umożliwiającego
 rozwijanie oprogramowania sterującego robotem jest instalacja sterowników
 wymaganych przez system Windows do obsługi interfejsu JTAG za pomocą którego
@@ -8,7 +8,7 @@ umożliwiających stworzenie pliku binarnego umożliwiającego uruchomienie
 przygotowanej na platformie sprzętowej robota. Ostatnim etapem przygotowań jest
 instalacja oprogramowania umożliwiającego programowanie układu za pomocą
 wspomnianego interfejsu JTAG oraz debugowanie aplikacji w trakcie jej działania.
-\subsubsection{Instalacja WinARM}
+\subsection{Instalacja WinARM}
 Do kompilacji kodu źródłowego oprogramowania zajmującego się sterowaniem
 podzespołami robota wykorzystany został zestaw narzędzi znany pod nazwą WinARM.
 WinARM jest zestawem narzędzi umożliwiających tworzenie oprogramowania dla
@@ -31,7 +31,7 @@ wymagać wykonania dodatkowych operacji konfiguracyjnych w celu zapewnienia
 poprawności działania wszystkich narzędzi. Aby udostępnić narzędzia WinARM z
 linii poleceń systemu Windows konieczne jest dodanie do zmiennej systemowej PATH
 następujących wartości \url{C:\WinARM\bin;C:\WinARM\utils\bin;}.
-\subsubsection{Instalacja sterowników programatora}
+\subsection{Instalacja sterowników programatora}
 Programowanie oraz debugowanie aplikacji robota może zostać zrealizowane za
 pomocą dowolnego programatora kompatybilnego z interfejsem JTAG. Programatory
 oparte o interfejs LPT nie wymagają dodatkowej konfiguracji w systemie Windows.
@@ -78,4 +78,3 @@ Windows. Instalator OpenOCD dla Windows jest do pobrania ze strony
 lokalizację docelową w której OpenOCD ma zostać zainstalowane. Po zakończeniu
 instalacji konieczne jest uzupełnienie wartości zmiennej systemowej PATH ścieżką
 do miejsca instalacji OpenOCD, domyślnie \url{C:\ethernut\nut\tools\win32}.
-
