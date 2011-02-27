@@ -1,25 +1,26 @@
 \chapter{Historia i rozwój robotyki}
 Robotyka jest stosunkowo młodą dziedziną łączącą różne gałęzie nauk technicznych
 i nie tylko. Do pełnego zrozumienia zagadnień współczesnej robotyki oraz budowy
-i zastosowań robotów konieczna jest niejednokrotnie rozległa wiedza na
+i~zastosowań robotów konieczna jest niejednokrotnie rozległa wiedza na
 temat elektroniki, mechaniki, inżynierii przemysłowej, matematyki oraz szeroko pojętej
 informatyki. Ponadto wiele nowopowstałych gałęzi wiedzy zajmujących się rozwojem
 sztucznej inteligencji, modelowaniem sztucznego życia czy rozwojem inżynierii
 wiedzy coraz częściej staje się nierozerwalnie związane z problemami współczesnej
-robotyki. Nie należy zapominać również o tym, że rozwój inżynierii wytwarzania
+robotyki. Nie~należy zapominać również o tym, że rozwój inżynierii wytwarzania
 oraz automatyki przemysłowej pozwala na nieustanny rozwój robotyki z
-którą mamy do czynienia w przemyśle w dniu dzisiejszym.\\
-\\ 
-Pojęcie ,,Robot'' w literaturze pojawiło się po raz pierwszy w sztuce czeskiego
+którą mamy do czynienia w przemyśle w dniu dzisiejszym.
+
+Pojęcie ,,robot'' w literaturze pojawiło się po raz pierwszy w sztuce czeskiego
 pisarza Karel'a Capka w roku 1920. Termin ,,robot'' oznacza w języku czeskim
 pracę lub służbę przymusową. Nieco ponad 20 lat później, amerykański uczony i
 pisarz Isaac Assimov w jednym ze swoich opowiadań po raz pierwszy używa słowa
 robotyka. W kolejnych latach Assimov w swojej twórczości niejednokrotnie wraca do
 problemu robotyki skutkiem czego jest wydanie w 1950 roku zbioru opowiadań pod
 tytułem ,,Ja, robot''. Jako ciekawostkę można dodać, że w wydanym w 1942 roku
-opowiadaniu pod tytułem ,,Zabawa w berka'', Assimove wprowadza trzy prawa
+opowiadaniu pod tytułem ,,Zabawa w berka'', Assimov wprowadza trzy prawa
 robotyki według których, zdaniem autora, powinny być programowane
-roboty\cite{Runaround}.
+roboty\cite{Runaround}. Zdefiniowane przez Assimov'a prawa robotyki w pełnym
+brzmieniu widoczne są na diagramie \ref{fig:Assimov_Laws}.
 % \begin{description}
 % \item[Prawo pierwsze] \hfill \\
 % Robot nie może zranić istoty ludzkiej, ani przez zaniedbanie narazić człowieka
@@ -32,11 +33,11 @@ roboty\cite{Runaround}.
 % pierwszym i drugim.
 % \end{description} 
 
-\begin{figure}[!h]
- \centering
- \includegraphics[height=67mm]{../images/ch01/assimov_laws.png}
- 
- \label{fig:Assimov_Laws}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[height=70mm]{../images/ch01/assimov_laws.png}
+	\caption{Prawa robotyki zdefiniowane przez Issaca Assimov'a}
+	\label{fig:Assimov_Laws}
 \end{figure}
 
 Nieco później, Isaac Assimov, jako uzupełnienie i prawo nadrzędne dodaje prawo
@@ -56,8 +57,8 @@ który sprzyjał rozwojowi robotyki już od samego jej początku. Pojęcię robo
 używane jest również w stosunku do autonomicznie działających urządzeń
 pobierających informację z~otocznia za pomocą różnego rodzaju czujników,
 nazywanych sensorami, oraz oddziałujących na swoje otoczenie i reagujące na
-jego zmiany. \\
-\\
+jego zmiany. 
+
 Dzięki gwałtownemu rozwojowi naku i techniki w czasie II wojny światowej w roku
 1956 GC.~Devol i JF. Engelberger zainspirowani twórczością Assimov'a zaprojektowali i
 stworzyli pierwszy w dziejach ludzkości działający egzemplarz robota\cite{website:robotyka-pl}.
@@ -67,16 +68,16 @@ pierwszym robotem stworzonym przez firmę Engelbergera był robot nazwany
 został przystosowany do obsługi wysokociśnieniowej maszyny odlewniczej.
 W~kolejnych latach roboty firmy ,,Unimation'' znalazły swoje zastosowanie w
 innych gałęziach przemysłu, a sam Engelberger otrzymał miano ojca
-robotyki.\cite{website:robotyka-pl}\\
-\\
+robotyki.\cite{website:robotyka-pl}
+
 Nieco później, bo w roku 1979 Robotics Industries Association 
 zdefiniowało robota jako wielofunkcyjny, programowalny manipulator
 zaprojektowany do przenoszenia materiałów, narzędzi, części urządzeń poprzez
 serię programowalnych ruchów wykonywanych w celu realizacji różnych zadań.
 W myśl wspomnianej definicji jedną z podstawowych cech robota jest jego
 programowalność i możliwość dostosowywania się do zmiennych warunków środowiska
-pracy. \\
-\\
+pracy. 
+
 Pierwsze roboty projektowano z myślą o zastosowaniu ich do realizacji
 elementarnych zadań związanych z przenoszeniem elementów z jednego punktu do
 drugiego. Program pracy robota miał więc charakter sekwencji operacji
@@ -89,21 +90,20 @@ sobie za cel stworzenie maszyny na tyle uniwersalnej i niezależnej aby mogła
 nosić miano androida. Jednak do realizacji tego zadania konieczne jest
 opracowanie sztucznej inteligencji na którą z pewnością przyjdzie nam jeszcze
 trochę poczekać. 
-\newpage
-Pierwszym krokiem na drodze do stworzenia androida było oderwanie robota od
-stałego miejsca instalacji i pozwolenie mu w miarę możliwości swobodne
-poruszanie się w dostępnej mu przestrzeni roboczej. Tak powstała klasa robotów
+
+Pierwszym krokiem na drodze do stworzenia androida było oderwanie robota
+od~stałego miejsca instalacji i pozwolenie mu w miarę możliwości swobodne
+poruszanie się w~dostępnej mu przestrzeni roboczej. Tak powstała klasa robotów
 które mogą przemieszczać się za pomocą kół, gąsienic czy nawet kończyn lub
-odnóży. Roboty tego typu potrafią pływać, latać i sprawnie poruszać się
-po lądzie dodatkowym ich atutem jest fakt iż większość z nich posiada niemal
-całkowitą autonomię i ograniczona jest jedynie poprzez wielkość otoczenia w
-jakim zostały umieszczone. Takim sposobem powstała grupa robotów
-nazywanych robotami mobilnymi. Cechą wspólną wszystkich urządzeń z tej rodziny
-była umiejętność swobodnego przemieszczania się oraz analiza najbliższego
-otoczenia. Na tej podstawie maszyna mogła przeprowadzić wnioskowanie pozwalające
-na podejmowanie dalszych akcji czy też przesłanie użytkownikowi odczytanych
-parametrów środowiska.\\
-\\
+odnóży. Roboty tego typu potrafią pływać, latać i sprawnie poruszać się po lądzie
+dodatkowym ich atutem jest fakt iż większość z nich posiada niemal całkowitą
+autonomię i ograniczona jest jedynie poprzez wielkość otoczenia w jakim zostały
+umieszczone. Takim sposobem powstała grupa robotów nazywanych robotami mobilnymi.
+Cechą wspólną wszystkich urządzeń z~tej rodziny była umiejętność swobodnego
+przemieszczania się oraz analiza najbliższego otoczenia. Na~tej podstawie maszyna
+mogła przeprowadzić wnioskowanie pozwalające na~podejmowanie dalszych akcji czy
+też przesłanie użytkownikowi odczytanych parametrów środowiska.
+
 Historię robotów mobilny zapoczątkował amerykański Uniwersytet w Stanford gdyż
 w roku 1968 jako pierwszy stworzył w pełni działający model robota mobilnego pod
 nazwą Shakey. Nazwa została zainspirowana szarpanymi ruchami z jakimi robot się
@@ -117,7 +117,7 @@ inklinometrów, czujników zbliżeniowych na podczerwień. Genghis, bo tak
 nazwany został robot, posiadał na pokładzie 4 ośmiobitowe jednostki obliczeniowe, ważył
 niecały kilogram i miał 35 cm długości.
 
-\begin{figure}[hb]
+\begin{figure}[h!]
  \centering
  \includegraphics[height=50mm]{../images/ch01/shakey_and_genghis.png}
  \caption{Od lewej: Shakey (Stanford), Genghis (MIT) }
@@ -129,7 +129,6 @@ bardzo dynamiczne. W latach 90 powstawało wiele różnych modeli robotów o bar
 różnorodnych rodzajach napędów oraz zestawach czujników umożliwiających
 interakcje ze światem zewnętrznym.
 
-\newpage
 Swoistym ukoronowaniem prac było w 1997 roku stworzenie przez NASA robota o
 nazwie Pathfinder. Robot wyposażony był w czujniki laserowe, stereowizję,
 żyroskopy i inne rodzaje czujników o charakterze badawczym. Zasilany był on
@@ -138,7 +137,7 @@ której robot przebyło około 100 metrów i wykonał 230 manewrów. W ostatnich
 latach do największych osiągnięć robotyki mobilnej można z pewnością zaliczyć
 powstanie robotów humanoidalnych takich jak japoński ASIMO. 
 
-\begin{figure}[hb]
+\begin{figure}[h!]
  \centering
  \includegraphics[height=60mm]{../images/ch01/pathfinder_and_asimo.png}
  \caption{Kolejno: Pathfinder (NASA), Asimo (Honda)}
@@ -152,8 +151,8 @@ stworzone przez inżynierów z firmy Honda potrafiło rozpoznawać gesty takie j
 podanie ręki, wskazanie kierunku czy machanie ręką na pożegnanie. Robot równie
 dobrze radził sobie z rozpoznawaniem twarzy, dźwięków i analizą otaczającego go
 środowiska. Potrafił on rozpoznać i omijać niebezpieczeństwa postawione na jego
-drodze jak na przykład schody czy osoby poruszające się w jego kierunku.\\
-\\
+drodze jak na przykład schody czy osoby poruszające się w jego kierunku.
+
 W roku 2006 podczas Robot World w Seulu grupa południowokoreańskich inżynierów
 prezentuje swojego robota EveR-2. EveR są robotami posiadającymi wygląd typowej
 dwudziestoletniej koreanki. Urządzenie potrafi rozmawiać i śpiewać dzięki
@@ -168,8 +167,8 @@ gestów pozwala na niemal całkowitą swobodę podczas rozmowy z robotem. Możli
 komunikacyjne robota są tak znakomite, że EveR-2 została pierwszą piosenkarką
 androidem. Jej pierwszy występ odbył się podczas jej prezentacji w Seulu gdzie
 na oczach publiczności odśpiewała koreańską balladę pt. ,,I will close my eyes
-for you''.\\
-\\
+for you''.
+
 Lata 2008 i 2009 zaowocowały powstaniem wielu robotów naśladujących w swoim
 zachowaniu niektóre zwierzęta. Bardzo imponującym przykładem takiego robota jest
 wyprodukowany przez firmę AeroVironment latający robot o nazwie Mercury.
@@ -246,9 +245,10 @@ oraz dostępne sensory\cite{website:robotyka-pl}.
 % pomiarów i klasyfikację obiektów o wysokim stopniu złożoności. System sterowania
 % robota tej generacji powinien pozwalać na jego adaptację w nieznanym otoczeniu.
 % \end{description}
-\begin{figure}[hb]
+\begin{figure}[h!]
  \centering
  \includegraphics[height=120mm]{../images/ch01/robot_generations.png}
+ \caption{Klasyfikacja robotów ze względu na ich generację}
  \label{fig:RobotsGenerations}
 \end{figure}
 
@@ -280,6 +280,7 @@ wyróżnienia następujących grup:
 \begin{figure}[hb]
  \centering
  \includegraphics[height=70mm]{../images/ch01/robot_types.png}
+ \caption{Podział robotów ze względu na obszar ich zastosowania}
  \label{fig:RobotsGenerations}
 \end{figure}
 
