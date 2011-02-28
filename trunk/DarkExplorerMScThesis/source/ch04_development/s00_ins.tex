@@ -1,30 +1,38 @@
 \section{Inercjalny system nawigacyjny}
-W celu rozwinięcia możliwości robota, zamontowano w nim elementy przy pomocy których,
-została podjęta próba stworzenia inercjalnego systemu nawigacyjnego (INS - Inertial Navigation System).
-Założeniem było, aby robot mobilny był w stanie zapamiętać tor ruchu po jakim się porusza, 
-gdy jest niesiony na ręce osoby operującej nim. Następnie na podstawie wykonanych 
-pomiarów robot miał powrócić po zapamiętanym torze w miejsce początkowe.
-Elementy użyte do wykonania INS zostały wybrane pod kątem walorów ekonomicznych. Nie były przeprowadzane testy
-porównawcze pomiędzy podzespołami danego typu.
-Ninejszy rozdział omawia pokrótce czym jest INS, opisuje zasadę działania jego elementów oraz sposób wykorzystania 
-tych podzespołów do osiągniecia wystarczająco dobrych efektów.
+W celu rozwinięcia możliwości robota, zamontowano w nim elementy przy pomocy
+których, została podjęta próba stworzenia inercjalnego systemu nawigacyjnego
+(INS\footnote{Inertial Navigation System}). Założeniem było, aby robot mobilny
+był w stanie zapamiętać tor ruchu po jakim się porusza, gdy jest niesiony na ręce
+osoby operującej nim. Następnie na podstawie wykonanych pomiarów robot miał
+powrócić po zapamiętanym torze w miejsce początkowe. Elementy użyte do wykonania
+INS zostały wybrane pod kątem walorów ekonomicznych. Nie były przeprowadzane
+testy porównawcze pomiędzy podzespołami danego typu. Poniższy rozdział omawia
+pokrótce czym jest INS, opisuje zasadę działania jego elementów oraz sposób
+wykorzystania tych podzespołów do osiągnięcia wystarczająco dobrych efektów.
 
 \subsection{Wprowadzenie do INS}
-%http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.63.7402&rep=rep1&type=pdf
+% http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.63.7402&rep=rep1&type=pdf
 
-Inercjalny system nawigacyjny jest to narzędzie służące do określenia położenia, prędkości oraz orientacji obiektu w przestrzeni,
-bez kożystania z żadnych zewnętrzych elementów naprowadzających, które byłyby dla niego punktem odniesienia.
-Wykorzystuje on jedynie elementy wbudowane, składające się na inercjalną jednostkę pomiarową (IMU - Inertial Measurement Unit).
-Inercjalne systemy nawigacyjne (INS) mają zastosowanie tam, gdzie jest potrzebna informacja
-o aktualnym położeniu obiektów, natomiast nie ma możliwości odbioru sygnału zewnętrzego, wymaganego do działania na przykład
-urządzeń GPS. Systemy tego typu są stosowane w: samolotach, statkach, łodziach podwodnych, pojazdach bezzałogowych
-czy statkach kosmicznych. Rozwój miniaturowych układów elektromechanicznych (MEMS) otworzył przed nami cały wachlarz
-potencjalnych nowych zastosowań INS, np. do śledzenia ruchów ludzi bądź zwierząt.
-\\
-System nawigacyjny o którym mowa w tym rozdziale oblicza swoje położenie na podstawie ciągłego badania przyspeszenia liniowego
-oraz prędkości kątowej. INS musi otrzymać na starcie wartości początkowe położenia oraz prędkości z jaką się porusza, aby móc
-zacząć wyznaczać dalsze przemieszczenie i zmiany w orientacji.
-\\
-Robot mobilny został wyposarzony w IMU składające się z następujących elementów MEMS: żyroskopu oraz akcelerometru 
-trójosiowego, a także magnetometru dwuosiowego. Zasada działania poszczególnych elementów oraz opis ich wykorzystania 
-można znaleść w kolejnych podrozdziałach,
+Inercjalny system nawigacyjny jest to narzędzie służące do określenia położenia,
+prędkości oraz orientacji obiektu w przestrzeni, bez korzystania z żadnych
+zewnętrznych elementów naprowadzających, które byłyby dla niego punktem
+odniesienia. Wykorzystuje on jedynie elementy wbudowane, składające się na
+inercjalną jednostkę pomiarową (IMU\footnote{Inertial Measurement Unit}).
+Inercjalne systemy nawigacyjne mają zastosowanie tam, gdzie jest potrzebna
+informacja o aktualnym położeniu obiektów, natomiast nie ma możliwości odbioru
+sygnału zewnętrznego, wymaganego do działania na przykład urządzeń GPS. Systemy
+tego typu są stosowane w: samolotach, statkach, łodziach podwodnych, pojazdach
+bezzałogowych czy statkach kosmicznych. Rozwój miniaturowych układów
+elektromechanicznych MEMS\footnote{MEMS ?? } otworzył przed nami cały
+wachlarz potencjalnych nowych zastosowań INS, np. do śledzenia ruchów ludzi bądź
+zwierząt.
+
+System nawigacyjny o którym mowa w tym rozdziale oblicza swoje położenie na
+podstawie ciągłego badania przyspieszenia liniowego oraz prędkości kątowej. INS
+musi otrzymać na starcie wartości początkowe położenia oraz prędkości z jaką się
+porusza, aby móc zacząć wyznaczać dalsze przemieszczenie i zmiany w orientacji.
+
+Robot mobilny został wyposażony w IMU składające się z następujących elementów
+MEMS: żyroskopu oraz akcelerometru trójosiowego, a także magnetometru
+dwuosiowego. Zasada działania poszczególnych elementów oraz opis ich
+wykorzystania można znaleźć w kolejnych podrozdziałach.
