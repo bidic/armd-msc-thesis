@@ -45,7 +45,7 @@ BOARD = at91sam7s-ek
 # TRACE_LEVEL_ERROR      2
 # TRACE_LEVEL_FATAL      1
 # TRACE_LEVEL_NO_TRACE   0
-TRACE_LEVEL = 0
+TRACE_LEVEL = 4
 
 # Optimization level, put in comment for debugging
 OPTIMIZATION = -O3
@@ -107,7 +107,7 @@ VPATH += $(BOARDS)/$(BOARD) $(BOARDS)/$(BOARD)/$(CHIP)
 
 # Objects built from C source files
 C_OBJECTS = main.o lcd.o
-C_OBJECTS += obstacle_avoidance.o sharp_gp2d12.o mmc212xm.o pedometer.o reverse_track_reconstruction.o freescale_mma7260.o gyroscope.o
+C_OBJECTS += obstacle_avoidance.o sharp_gp2d12.o mmc212xm.o pedometer.o reverse_track_reconstruction.o freescale_mma7260.o gyroscope.o l3g4200d.o
 C_OBJECTS += at45d.o at45.o spi.o spid.o
 C_OBJECTS += peripherals.o rozpoznawanie.o utils.o
 C_OBJECTS += async.o twid.o
