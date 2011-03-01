@@ -1,4 +1,97 @@
 \subsection{Żyroskop}
 Do budowy inercjalnej jednostki pomiarowej został użyty żyroskop trójosiowy L3G4200D firmy STMicroelectronics wykonany w
-technologii MEMS. Żyroskopy tego typu mogą być również wykorzystywane np.: podczas stabilizacji obrazu w aparatach cyfrowych lub
-kontrolerach do gier wideo.
+technologii MEMS. Żyroskopy wyprodukowane w technologii MEMS są wykorzystywane np.: podczas stabilizacji obrazu w aparatach 
+cyfrowych lub kontrolerach do gier wideo. W poniższym poddziale zostanie przedstawiona zasada działania takiego żyroskopu
+oraz sposób wykorzystania go w robocie mobilnym.
+
+\subsubsection{Zasada działania}
+%http://www.electroiq.com/index/display/nanotech-article-display/4659348781/articles/small-times/nanotechmems/mems/sensors/2010/11/introduction-to-mems-gyroscopes.html
+Żyroskopy MEMS korzystają z pozornej siły Coriolis'a do pomiaru prędkości kątowej z jaką obraca się ciało.
+\\
+TUTAJ RYSUNEK
+\\
+Załóżmy że ciało (A) o masie (m) porusza się z prędkością (v) oraz układ w którym przemieszcza się to ciało obraca sie 
+z prędkością kątową (omega). W takich warunkach ciało o którym mowa zostanie odchylone od kierunku przemieszczania się 
+wyznaczonego przez wektor prędkości (v). Odchylenie to będzie spowodowane siłą Coriolisa (F) którą można opisać przy 
+pomocy wzoru (wzor). Żyroskopy MEMS wykorzystują to zjawisko określając przemieszczenie drgającego ciała, które jest
+defakto jedną z okładek kondensatora, jako zmianę pojemności.
+\\
+Żyroskopy tego typu posiadają dwa oscylujące miniaturowe elementy które poruszają się w przeciwnych względem
+siebie kierunkach (RYSUNEK). 
+\\
+TUTAJ RYSUNEK
+\\
+Jeżeli urządzenie do którego przymocowany jest żyroskop zacznie się obracać, spowoduje to
+wychylenie się oscylujących elementów w przeciwnych kierunkach. Wychylenie to z koleji powoduje zmianę pojemności, a
+różnica pomiędzy pojemnościami zmierzonymi przy pomocy obydwu ruchomych elementów jest proporcjonalna do prędkości
+kątowej. W ten sposób zmierzona szybkość obrotu jest następnie reprezentowana jako wynik analogowy (napięcie) lub cyfrowy
+(wartość liczbowa).
+\\
+Wynik działania żyroskopu MEMS jest odporny na zmianę przyspieszenia liniowego, w szczególności na przyspieszenie ziemskie.
+Przyspieszenie liniowe wywoła wychylenie się jednoczesnie obydwu elementów oscylujących w tym samym kierunku. W ten sposób
+nie będzie wykryta żadna różnica pojemności. Prędkość kątowa wskazywana przez żyroskop nie ulegnie zmianie. Dzięki temu
+żyroskopy MEMS są odporne na wstrząsy, uderzenia oraz wibracje.
+\\
+Podstawowe wielkości określające żyroskop:
+\begin{itemize}
+ \item zakres [dps\footnote{dps - stopień na sekundę}] -- definiuje wartość maksymalną i minimalną jaką żyroskop jest w stanie
+ zmierzyć. Często żyroskop ma kilka zakresów z których możemy wybrać jeden odpowiadający naszym potrzebą.
+ \item czułość [mdps/digit] -- wielkość określająca wartość minimalną jaką żyroskop może zmierzyć
+ \item zmiana czułości względem temperatury [\%] -- określa jak bardzo pomiary urządzenia są podatnę na zmianę temperatury
+ \item zakres poziomu zero [dps] -- określa zakres w jakim pomiary mogą się wachać w chwili gdy żyroskop pozostaje w spoczynku
+ \item zmiana zakresu poziomu zero względem temperatury [dps/ STOPIEŃ C] -- definiuje zmiany pomiarów żyroskopu pozostającego w spoczynku
+ względem temperatury
+ \item nieliniowość [\% FS] -- parametr określa maksylany procentowe odchylenie wartości na wyjściu żyroskopu od dopasowanej do nich linii prostej
+ \item przepustowość [Hz] -- definiuje częstotliwość z jaką są wykonywane pomiary
+\end{itemize}
+
+\subsubsection{Kalibracja}
+Gyroscopes are usually factory tested and calibrated in terms of zero-rate level and sensitivity. However, after the gyroscope is assembled on the PCB, due to the stress, the zero-rate level and sensitivity may change slightly from the factory trimmed values.
+
+For applications such as gaming and remote controllers, one can simply use the typical zero-rate level and sensitivity values in the datasheet to convert gyroscope measurement to angular velocities.
+
+For more demanding applications the gyroscope needs to be calibrated for new zero-rate level and sensitivity values and other important parameters such as:
+
+    * Misalignment (or cross-axis sensitivity)
+    * Linear acceleration sensitivity or g-sensitivity
+    * Long term in-run bias stability
+    * Turn-on to turn-on bias stability
+    * Bias and sensitivity drift over temperature
+    * Getting rid of zero-rate instability
+
+The gyroscope output can be expressed as Equation 1.
+
+Rt = SC x (Rm - R0)     (1)
+
+Where,
+ Rt (dps): true angular rate
+ Rm  (LSBs): gyroscope measurement
+ R0 (LSBs): zero-rate level
+ SC (dps/LSB): sensitivity
+
+In order to compensate for turn-on to turn-on bias instability, after the gyroscope is powered on, one can collect 50 to 100 samples and then average these samples as the turn-on zero-rate level R0, assuming that the gyroscope is stationary.
+
+Due to temperature change and measurement noise, the gyroscope readings will vary slightly when the gyroscope is stationary. It is necessary to set a threshold Rth to zero the gyroscope readings if the absolute value is within the threshold as shown in Equation 2. This will get rid of the zero-rate noise so that the angular displacement will not accumulate when the gyroscope is stationary.  
+
+delta R = (Rm - R0) = 0 if |(Rm - R0)| < Rth      (2)
+
+Every time the gyroscope is stationary, one can sample 50 to 100 gyroscope datum and then average these samples as new zero-rate level R0. This will eliminate the zero rate in-run bias and small temperature change.
+
+After the zero-rate instability has been taken care of from the above steps, then Equation (1) becomes
+
+Rt = SC x (Rm - R0) = SC x delta R      (3)
+
+So the next step will be to determine the sensitivity SC in Equation 3 by using a reference system.
+
+It should be emphasized that the MEMS gyroscope sensitivity usually is very stable over time and temperature and this calibration is needed only for high-sensitivity applications as mentioned above.
+
+Using a rate table to determine gyroscope sensitivity
+
+Because gyroscopes can measure the angular rate directly, the rate table is a perfect reference to calibrate the gyroscope sensitivity.
+
+An accurate rate table includes a built-in temperature chamber and sits on a vibration isolation platform so that the rate table is not sensitive to environment vibration during calibration.
+
+One can mount the hand-held device in an orthogonal aluminum cube or plastic box and then mount the whole system on the rate table for calibration. Control the rate table to spin at two different angular rates clockwise and counterclockwise. For multi-axis gyroscopes, put the orthogonal box at different orientation on the rate table and repeat the above process. After collecting the gyroscope raw data in different situations, the zero-rate level, sensitivity, misalignment matrix and g-sensitivity values can be determined.
+
+Another option is a step motor spin table to calibrate the gyroscope. The spin table can be programmed and controlled by a PC. 
+
