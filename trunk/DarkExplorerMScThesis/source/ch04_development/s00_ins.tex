@@ -2,11 +2,9 @@
 W celu rozwinięcia możliwości robota, zamontowano w nim elementy przy pomocy
 których, została podjęta próba stworzenia inercjalnego systemu nawigacyjnego
 (INS\footnote{Inertial Navigation System}). Założeniem było, aby robot mobilny
-był w stanie zapamiętać tor ruchu po jakim się porusza, gdy jest niesiony na ręce
+zapamiętał tor ruchu po jakim się porusza, gdy jest niesiony na ręce
 osoby operującej nim. Następnie na podstawie wykonanych pomiarów robot miał
-powrócić po zapamiętanym torze w miejsce początkowe. Elementy użyte do wykonania
-INS zostały wybrane pod kątem walorów ekonomicznych. Nie były przeprowadzane
-testy porównawcze pomiędzy podzespołami danego typu. Poniższy rozdział omawia
+powrócić po zapamiętanym torze w miejsce początkowe. Poniższy rozdział omawia
 pokrótce czym jest INS, opisuje zasadę działania jego elementów oraz sposób
 wykorzystania tych podzespołów do osiągnięcia wystarczająco dobrych efektów.
 
@@ -20,19 +18,38 @@ odniesienia. Wykorzystuje on jedynie elementy wbudowane, składające się na
 inercjalną jednostkę pomiarową (IMU\footnote{Inertial Measurement Unit}).
 Inercjalne systemy nawigacyjne mają zastosowanie tam, gdzie jest potrzebna
 informacja o aktualnym położeniu obiektów, natomiast nie ma możliwości odbioru
-sygnału zewnętrznego, wymaganego do działania na przykład urządzeń GPS. Systemy
-tego typu są stosowane w: samolotach, statkach, łodziach podwodnych, pojazdach
-bezzałogowych czy statkach kosmicznych. Rozwój miniaturowych układów
-elektromechanicznych MEMS\footnote{MEMS ?? } otworzył przed nami cały
+sygnału zewnętrznego, wymaganego do działania takich urządzeń jak na przykład urządzeń GPS. 
+Systemy tego typu są stosowane w: samolotach, statkach, łodziach podwodnych, pojazdach
+bezzałogowych czy statkach kosmicznych. Pierwsze rozwiązania tego typu były drogie i bazowały na bardzo
+dużych gabarytowo elementach mechanicznych. 
+\begin{figure}[h!]
+ \centering
+ \includegraphics[height=50mm]{../images/ch04/gyrocompass.jpg}
+ \caption{Żyrokompas samolotowy, źródło: http://www.gyroscopes.org/uses.asp}
+ \label{fig:Zyrokompas}
+\end{figure}
+Rozwój miniaturowych układów elektromechanicznych MEMS\footnote{Microelectromechanical Systems} otworzył przed nami cały
 wachlarz potencjalnych nowych zastosowań INS, np. do śledzenia ruchów ludzi bądź
 zwierząt.
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[height=50mm]{../images/ch04/mems_imu.jpg}
+ \caption{IMU stworzone przy pomocy układów MEMS, cena ok.: 80\$, źródło: http://www.flytron.com}
+ \label{fig:Zyrokompas}
+\end{figure}
 
 System nawigacyjny o którym mowa w tym rozdziale oblicza swoje położenie na
 podstawie ciągłego badania przyspieszenia liniowego oraz prędkości kątowej. INS
 musi otrzymać na starcie wartości początkowe położenia oraz prędkości z jaką się
 porusza, aby móc zacząć wyznaczać dalsze przemieszczenie i zmiany w orientacji.
 
-Robot mobilny został wyposażony w IMU składające się z następujących elementów
-MEMS: żyroskopu oraz akcelerometru trójosiowego, a także magnetometru
-dwuosiowego. Zasada działania poszczególnych elementów oraz opis ich
-wykorzystania można znaleźć w kolejnych podrozdziałach.
+Robot mobilny został wyposażony w IMU składające się z następujących elementów MEMS:
+\begin{itemize}
+  \item cyfrowy żyroskop trójosiowy L3G4200D firmy STMicroelectronics
+  \item analogowy akcelerometr trójosiowy MMA7260 firmy Freescale
+  \item cyfrowy magnetometr dwuosiowy firmy MMC2120MG firmy Memsic
+\end{itemize}
+Elementy użyte do wykonania IMU zostały wybrane pod kątem walorów ekonomicznych. 
+Nie były przeprowadzane testy porównawcze pomiędzy podzespołami danego typu.
+Zasada działania poszczególnych elementów oraz opis ich wykorzystania można znaleźć w kolejnych podrozdziałach.
