@@ -34,7 +34,7 @@ typedef struct {
 	unsigned int distance_level_3;
 } OAA_CONFIG;
 
-void use_default_configuration();
+void init_oa_configuration();
 
 unsigned int create_level_mask(unsigned int rs_data, unsigned int ls_data);
 

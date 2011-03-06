@@ -45,7 +45,7 @@ BOARD = at91sam7s-ek
 # TRACE_LEVEL_ERROR      2
 # TRACE_LEVEL_FATAL      1
 # TRACE_LEVEL_NO_TRACE   0
-TRACE_LEVEL = 4
+TRACE_LEVEL = 5
 
 # Optimization level, put in comment for debugging
 OPTIMIZATION = -O3
@@ -84,7 +84,7 @@ INCLUDES += -I$(AT91LIB)/components -I$(AT91LIB) -I. -I$(AT91LIB)/memories
 CFLAGS = -Wall -mlong-calls -ffunction-sections
 CFLAGS += $(OPTIMIZATION) $(INCLUDES) -D$(CHIP) -DTRACE_LEVEL=$(TRACE_LEVEL)
 ASFLAGS = $(OPTIMIZATION) $(INCLUDES) -D$(CHIP) -D__ASSEMBLY__
-LDFLAGS = $(OPTIMIZATION) -nostartfiles -Wl,--gc-sections -lm
+LDFLAGS = $(OPTIMIZATION) -nostartfiles -Wl,--gc-sections -lm 
 
 #-------------------------------------------------------------------------------
 #		Files
@@ -99,7 +99,7 @@ MEMO = $(AT91LIB)/memories
 
 VPATH += $(DRV)/async $(DRV)/twi
 VPATH += $(MEMO) $(MEMO)/spi-flash
-VPATH += modules algorithms
+VPATH += modules algorithms peripherals
 VPATH += $(UTILITY)
 VPATH += $(PERIPH)/dbgu $(PERIPH)/pio $(PERIPH)/aic $(PERIPH)/adc $(PERIPH)/twi $(PERIPH)/pmc
 VPATH += $(PERIPH)/cp15 $(PERIPH)/pit $(PERIPH)/pwmc $(PERIPH)/usart $(PERIPH)/spi $(PERIPH)/rtt
@@ -107,11 +107,13 @@ VPATH += $(BOARDS)/$(BOARD) $(BOARDS)/$(BOARD)/$(CHIP)
 
 # Objects built from C source files
 C_OBJECTS = main.o lcd.o
-C_OBJECTS += obstacle_avoidance.o sharp_gp2d12.o mmc212xm.o pedometer.o reverse_track_reconstruction.o freescale_mma7260.o gyroscope.o l3g4200d.o
+C_OBJECTS += adc_helper.o
+C_OBJECTS += obstacle_avoidance.o  pedometer.o reverse_track_reconstruction.o 
+C_OBJECTS += freescale_mma7260.o gyroscope.o sharp_gp2d12.o mmc212xm.o l3g4200d.o po6030k.o at45db321d.o
 C_OBJECTS += at45d.o at45.o spi.o spid.o
 C_OBJECTS += peripherals.o rozpoznawanie.o utils.o
 C_OBJECTS += async.o twid.o
-C_OBJECTS += stdio.o math.o string.o
+C_OBJECTS += math.o string.o stdio.o
 C_OBJECTS += pit.o dbgu.o pio.o twi.o pmc.o cp15.o pwmc.o usart.o adc.o aic.o rtt.o
 C_OBJECTS += board_memories.o board_lowlevel.o
 

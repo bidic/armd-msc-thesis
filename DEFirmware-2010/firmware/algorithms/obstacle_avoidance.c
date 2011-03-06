@@ -9,11 +9,8 @@
 
 OAA_CONFIG def_config;
 
-void use_default_configuration() {
-//	def_config.distance_level_1 = 2100;
-//	def_config.distance_level_2 = 1100;
-//	def_config.distance_level_3 = 700;
-	def_config.distance_level_1 = 1500;
+void init_oa_configuration() {
+	def_config.distance_level_1 = 1400;
 	def_config.distance_level_2 = 900;
 	def_config.distance_level_3 = 700;
 
@@ -113,7 +110,5 @@ OAA_OUTPUT avoid_obstacles(unsigned int level_mask) {
 	}
 
 	// fast left turn 111111
-	//if (level_mask == 63) {
 	return left_turn_output(def_config.speed_level_3);
-	//}
 }

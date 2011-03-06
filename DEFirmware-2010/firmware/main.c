@@ -11,7 +11,6 @@
 #include <de_board.h>
 #include <utils.h>
 #include <rozpoznawanie.h>
-
 #include <math.h>
 
 #include <de_pio.h>
@@ -27,17 +26,19 @@
 #include <drivers/async/async.h>
 #include <drivers/twi/twid.h>
 #include <spi-flash/at45d.h>
+#include <usart/usart.h>
 
 #include <string.h>
 
 #include "modules/sharp_gp2d12.h"
 #include "modules/mmc212xm.h"
+#include "modules/at45db321d.h"
+#include "modules/po6030k.h"
 
 #include "algorithms/obstacle_avoidance.h"
 #include "algorithms/reverse_track_reconstruction.h"
 
-//adres kamery do zapisu przez TWI
-#define PO6030K_DEVICE_ID 0x6E
+#include "peripherals/adc_helper.h"
 
 //flaga dla timera PIT
 int PitState = 0;
@@ -73,9 +74,6 @@ volatile char FrameSizeToGet = 0;
 //Wlacznik trybu autonomicznego
 char AutoMode = 0, AutoPreview = 0;
 
-//pamiec obrazu
-char mem[60000];
-
 //tryb auto
 //Stos dla SmithFill - mem od 16000
 int StackIndex = 16000;
@@ -88,6 +86,8 @@ int xwzorzec = 0, ywzorzec = 0, WzorzecCount = 0, RozpoznanyX, RozpoznanyY;
 char SilnikiEnable = 0;
 
 volatile int xmin, xmax, ymin, ymax;
+
+extern char mem[60000];
 
 ////////////////////////////////////////////////////////////////////////////////
 // Przerwanie od timera PIT
@@ -142,37 +142,26 @@ volatile unsigned int ls_data = 0;
 volatile unsigned int rs_data = 0;
 volatile unsigned int obstacle_avoid_enable = 0;
 
-void onLSDataReady(unsigned int output) {
-	ls_data = output;
-	data_ready = 1;
-}
+void onDistanceDataReady(unsigned int rs_output, unsigned int ls_output) {
+	rs_data = rs_output;
+	ls_data = ls_output;
 
-void onRSDataReady(unsigned int output) {
-	rs_data = output;
 	data_ready = 1;
 }
 
 void obstacle_avoid_TestCase() {
 	while (obstacle_avoid_enable) {
 		data_ready = 0;
-		GP2D12_MeasureDistance(ADC_CHANNEL_5, onRSDataReady);
-		while (!data_ready) {
-			//			printf(" --- wait %d ---\r\n", ADC_GetStatus(AT91C_BASE_ADC));
-		}
+		ADC_StartDoubleChannelConversion(ADC_CHANNEL_5, ADC_CHANNEL_6,
+				onDistanceDataReady);
+		while (!data_ready)
+			;
 
-		data_ready = 0;
-		GP2D12_MeasureDistance(ADC_CHANNEL_6, onLSDataReady);
-		while (!data_ready) {
-			//			printf(" --- wait %d ---\r\n", ADC_GetStatus(AT91C_BASE_ADC));
-		}
-
-		use_default_configuration();
+		init_oa_configuration();
 
 		unsigned int level_mask = create_level_mask(rs_data, ls_data);
-
 		OAA_OUTPUT output = avoid_obstacles(level_mask);
 
-		//		printf("speed: %d", output.speed_right);
 		PWM_Set(0, output.speed_right);
 		Kierunek(1, output.gear_left);
 		Kierunek(2, output.gear_right);
@@ -182,6 +171,11 @@ void obstacle_avoid_TestCase() {
 		else
 			waitms(500);
 	}
+
+	PWM_Set(0, 0);
+	Kierunek(1, STOP_GEAR);
+	Kierunek(2, STOP_GEAR);
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -345,6 +339,7 @@ __ramfunc void UART0_DMA_irq_handler(void) {
 			//wylaczenie
 			if (RX_Buffer[1] == 0) {
 				obstacle_avoid_enable = 0;
+				data_ready = 1;
 				//				AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, SERWO_POWER);
 			}
 
@@ -358,150 +353,6 @@ __ramfunc void UART0_DMA_irq_handler(void) {
 	}
 }
 
-#define CamR(data) { register unsigned int buff= (AT91C_BASE_PIOA->PIO_PDSR & 0x95F0000) >> 14;\
-                        data = (( buff & 0x7C ) )\
-                               | ((buff & 0x2000) >> 6)\
-                               | ((buff & 0x400) >> 10)\
-                               | ((buff & 0x100) >> 7);\
-                      }
-
-__inline void AT45_WriteBuffer(At45* pAt45, short int siBuffNr,
-		unsigned char* pBuff, unsigned int uiSize) {
-	while (AT45_SendCommand(pAt45, (siBuffNr == 0) ? AT45_BUF1_WRITE
-			: AT45_BUF2_WRITE, 4, pBuff, uiSize, 0, 0, 0)) {
-		while (!pAt45->pSpid->semaphore) {
-			while (!pAt45->pSpid->semaphore)
-				SPID_Handler(pAt45->pSpid);
-		}
-	}
-}
-
-unsigned char AT45_EraseChip(At45* pAt45) {
-	SANITY_CHECK(pAt45);
-	unsigned char opcode = 0xC7;
-	unsigned char opcodes[3] = { 0x94, 0x80, 0x9A };
-	unsigned char error = AT45_SendCommand(pAt45, opcode, 1, opcodes, 3, 0, 0,
-			0);
-
-	ASSERT(!error, "-F- AT45_Erase: Could not issue command.\n\r");
-
-	// Wait until the command is sent
-	while (AT45_IsBusy(pAt45)) {
-		SANITY_CHECK(pAt45);
-
-		// Wait for transfer to finish
-		while (AT45_IsBusy(pAt45))
-			SPID_Handler(pAt45->pSpid);
-	}
-
-	AT45D_WaitReady(pAt45);
-
-	return error;
-}
-
-unsigned char AT45_FastWrite(At45* pAt45, short int siBuffNr,
-		unsigned char* pBuff, unsigned int uiSize, unsigned int uiAddress) {
-	unsigned char cmd1;
-	unsigned char cmd2;
-
-	if (siBuffNr == 0) {
-		cmd1 = AT45_BUF1_WRITE;
-		cmd2 = AT45_BUF1_MEM_NOERASE;
-
-	} else {
-		cmd1 = AT45_BUF2_WRITE;
-		cmd2 = AT45_BUF2_MEM_NOERASE;
-	}
-
-	unsigned char error = AT45_SendCommand(pAt45, cmd1, 4, pBuff, uiSize, 0, 0,
-			0);
-	ASSERT(!error, "-F- AT45_Write: Could not issue command.\n\r");
-
-	// Wait until the command is sent
-	while (AT45_IsBusy(pAt45)) {
-		SANITY_CHECK(pAt45);
-
-		// Wait for transfer to finish
-		while (AT45_IsBusy(pAt45))
-			SPID_Handler(pAt45->pSpid);
-	}
-
-	AT45D_WaitReady(pAt45);
-
-	error = AT45_SendCommand(pAt45, cmd2, 4, pBuff, uiSize, uiAddress, 0, 0);
-	ASSERT(!error, "-F- AT45_Write: Could not issue command.\n\r");
-
-	// Wait until the command is sent
-	while (AT45_IsBusy(pAt45)) {
-		SANITY_CHECK(pAt45);
-
-		// Wait for transfer to finish
-		while (AT45_IsBusy(pAt45))
-			SPID_Handler(pAt45->pSpid);
-	}
-
-	return error;
-}
-
-__inline void AT45_WaitReady(At45 *pAt45) {
-	register unsigned char ready = 0;
-
-	// Poll device until it is ready
-	while (!ready) {
-		ready = AT45_STATUS_READY(AT45D_GetStatus(pAt45));
-	}
-}
-
-__inline unsigned char AT45_GetStatus(At45 *pAt45) {
-	unsigned char status;
-
-	// Issue a status register read command
-	AT45_SendCommand(pAt45, AT45_STATUS_READ, 1, &status, 1, 0, 0, 0);
-
-	while (!pAt45->pSpid->semaphore) {
-		while (!pAt45->pSpid->semaphore)
-			SPID_Handler(pAt45->pSpid);
-	}
-
-	return status;
-}
-
-__inline void AT45_BufferToMem(At45* pAt45, short int siBuffNr,
-		unsigned int uiAddress) {
-	AT45_SendCommand(pAt45, (siBuffNr == 0) ? AT45_BUF1_MEM_NOERASE
-			: AT45_BUF2_MEM_NOERASE, 4, 0, 0, uiAddress, 0, 0);
-
-	// Wait until the command is sent
-	while (AT45_IsBusy(pAt45)) {
-		// Wait for transfer to finish
-		while (AT45_IsBusy(pAt45))
-			SPID_Handler(pAt45->pSpid);
-	}
-}
-
-unsigned char AT45_EraseBlock(At45* pAt45, unsigned int uiAddress) {
-	SANITY_CHECK(pAt45);
-	unsigned char opcode = AT45_BLOCK_ERASE;
-
-	unsigned char error = AT45_SendCommand(pAt45, opcode, 4, 0, 0, uiAddress,
-			0, 0);
-
-	ASSERT(!error, "-F- AT45_Erase: Could not issue command.\n\r");
-
-	// Wait until the command is sent
-	while (AT45_IsBusy(pAt45)) {
-		SANITY_CHECK(pAt45);
-
-		// Wait for transfer to finish
-		while (AT45_IsBusy(pAt45))
-			SPID_Handler(pAt45->pSpid);
-	}
-
-	AT45D_WaitReady(pAt45);
-
-	return error;
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 // Main
 ////////////////////////////////////////////////////////////////////////////////
@@ -509,10 +360,10 @@ int main(void) {
 	// Inicjalizacje
 
 	//TODO
-	//	TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
-	//	TRACE_INFO("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
-	//	//	memset(mem, 0x00, 39000);
-	//	TRACE_INFO("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
+	TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
+	TRACE_INFO("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
+	//	memset(mem, 0x00, 39000);
+	TRACE_INFO("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
 
 	// Enable User Reset and set its minimal assertion to 960 us
 	//  AT91C_BASE_RSTC->RSTC_RMR = AT91C_RSTC_URSTEN | (0x4<<8) | (unsigned int)(0xA5<<24);
@@ -526,7 +377,7 @@ int main(void) {
 
 	// W��czenie timera PIT
 	//  PIT_Init(100,MCK);
-	PIT_Configure(100); //pierwsze przerwanie za 100us
+	//	PIT_Configure(100); //pierwsze przerwanie za 100us
 
 	// Wlaczenie PWM
 	PWM_Configure();
@@ -537,7 +388,7 @@ int main(void) {
 	// In IRQ mode: to avoid problems, the priority of the TWI IRQ must be max.
 	// In polling mode: try to disable all IRQs if possible.
 	// (in this example it does not matter, there is only the TWI IRQ active)
-	AT91C_BASE_PMC->PMC_PCER = 1 << AT91C_ID_TWI;
+	PMC_EnablePeripheral(AT91C_ID_TWI);
 	TWI_ConfigureMaster(AT91C_BASE_TWI, TWCK, BOARD_MCK);
 	TWID_Initialize(&twid, AT91C_BASE_TWI);
 
@@ -547,125 +398,12 @@ int main(void) {
 	UART0_DMA_Configure(460800); //460.8kbit/s
 
 	//wlaczenie ADC
-	GP2D12_InitializeADC();
-	//	ADC_Configure(1000000); //1MHz
+	ADC_Configure();
 
-
-	//	PMC_DisablePeripheral(AT91C_ID_SPI);
-	//	//  AT91C_BASE_PMC->PMC_PLLR = 1 | 1 << 16;
-	//
-	//	// KONFIGURACJA MCLK KAMERY!!!!!!!!!!!!
-	AT91F_PMC_EnablePCK(AT91C_BASE_PMC, 1, AT91C_PMC_CSS_MAIN_CLK
-			| AT91C_PMC_PRES_CLK_64); //MAIN_CLK podzielony przez 64
-	//
 	//	// KONFIGURACJA pinow SPI dla pamieci flash oraz PA21 dla MCK kamery
 	AT91F_PIO_CfgPeriph(AT91C_BASE_PIOA, AT91C_PA12_MISO | AT91C_PA13_MOSI
 			| AT91C_PA14_SPCK | AT91C_PA31_NPCS1, AT91C_PA21_PCK1
 			| AT91C_PA11_PWM0);
-	//
-	//	//przygotowywanie pamieci
-	//	At45 sAt45;
-	//	Spid sSpid;
-	//	printf("przed spid conf ");
-	//	SPID_Configure(&sSpid, AT91C_BASE_SPI, AT91C_ID_SPI);
-	//	printf("przed spid conf cs ");
-	//	//((0x1 <<  1) | ((((((250) / 32 * ((48000000) / 1000000)) / 1000) + 1) << 24) & (0xFF << 24)) \
-//       | ((((((250) * ((48000000) / 1000000)) / 1000) + 1)  << 16) & (0xFF << 16)) | ((((48000000) / (20000000)) << 8) & (0xFF <<  8)))
-	//	//AT45_CSR(BOARD_MCK,20000000)
-	//	//AT91C_SPI_NCPHA | ((0x2 << 8) & AT91C_SPI_SCBR)
-	//
-	//	SPID_ConfigureCS(&sSpid, 1, AT45_CSR(BOARD_MCK,20000000));
-	//	printf("przed at45 conf ");
-	//	AT45_Configure(&sAt45, &sSpid, 1);
-	//	printf("przed get status ");
-	//	unsigned char status = AT45D_GetStatus(&sAt45);
-	//	printf("przed find dev %x", status);
-	//	At45Desc * pDesc = AT45_FindDevice(&sAt45, status);
-	//
-	//	char txt[100];
-	//
-	//	if (pDesc == 0)
-	//		printf("Nic");
-	//	else {
-	//		sprintf(txt, "Test: %s page size %d", pDesc->name,
-	//				AT45_PageSize(&sAt45));
-	//		printf(txt);
-	//	}
-	//	printf("poszlo");
-	//	int i = 0;
-	//	int j = 0;
-	//	int iPageSize = AT45_PageSize(&sAt45);
-	//	//  char wrbuff[iPageSize];
-	//	//  memset(wrbuff,0x00,iPageSize);
-	//	//  char rdbuff[iPageSize];
-	//	//  memset(rdbuff,0x00,iPageSize);
-	//	//  char bOK = 1;
-	//	//
-	//	int iAmount = 1200;
-	//
-	//  printf("Usuwanie...");
-	//  for(i = 0; i < (iAmount/8)+1; i++)
-	//    AT45_EraseBlock(&sAt45,i*512*8);
-	//
-	//  printf(" Zapis... ");
-	//  for(i=0 ; i<iAmount && bOK; i++)
-	//  {
-	//    memset(wrbuff,i%256,iPageSize);
-	////    AT45_FastWrite(&sAt45,i%2,wrbuff,iPageSize,iPageSize*i);
-	//    AT45_WriteBuffer(&sAt45,i%2,wrbuff,iPageSize);
-	//    while (AT45_IsBusy(&sAt45))
-	//    {
-	//      SANITY_CHECK(&sAt45);
-	//
-	//      // Wait for transfer to finish
-	//      while (AT45_IsBusy(&sAt45)) {
-	//
-	//          SPID_Handler(sAt45.pSpid);
-	//      }
-	//    }
-	//    AT45D_WaitReady(&sAt45);
-	//    AT45_BufferToMem(&sAt45,i%2,iPageSize*i);
-	//  }
-	//  AT45D_WaitReady(&sAt45);
-	//
-	//  printf(" Odczyt... ");
-	//  for(i=0 ; i<iAmount && bOK; i++)
-	//  {
-	//    memset(wrbuff,i%256,iPageSize);
-	//    memset(rdbuff,0x00,iPageSize);
-	//
-	//    AT45D_Read(&sAt45,rdbuff,iPageSize,iPageSize*i);
-	//
-	//    for(j=0 ; j<iPageSize; j++)
-	//    {
-	//      if(!bOK || wrbuff[j] != rdbuff[j])
-	//      {
-	//        sprintf(txt,"i=%d wrbuff[%d]=%d \r\n",i,j,wrbuff[j]);
-	//        printf(txt);
-	//        sprintf(txt,"i=%d rdbuff[%d]=%d \r\n",i,j,rdbuff[j]);
-	//        printf(txt);
-	//        bOK = 0;
-	//        break;
-	//      }
-	//    }
-	//  }
-	//  AT45D_Erase(&sAt45,0);
-	//  AT45_FastWrite(&sAt45,1,"AllOK",6,0);
-	//  AT45D_WaitReady(&sAt45);
-	//  AT45D_Read(&sAt45,rdbuff,6,0);
-	//  printf("\n\r");
-	//  printf(rdbuff);
-	//	printf("Usuwanie...");
-	//	for (i = 0; i < (iAmount / 8) + 1; i++)
-	//		AT45_EraseBlock(&sAt45, i * 512 * 8);
-	//	AT45_EraseChip(&sAt45);
-	//	printf(" KONIEC ");
-
-	//  LcdClear();
-	//  LcdPrint("Gotowy");
-
-	//wlaczenie TWI
-	//TWI_Configure(400000); //400KHz
 
 	//konfiguracja wyj�cia serwa
 	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA0);
@@ -685,8 +423,8 @@ int main(void) {
 	//konfiguracja wyjsc kierunkowych silnikow (in1-in4)
 	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA7); //in1
 	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA8); //in2
-	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA9); //in3
-	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA10); //in4
+	//	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA9); //in3
+	//	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA10); //in4
 	//TODO
 
 	//konfiguracja linii kamery cam po6030k
@@ -749,225 +487,20 @@ int main(void) {
 		a = a + 54;
 	}
 
-	//	MMC212xM_SendSetCmd(&twid);
-	//	printf("start calibrating");
-	//	MMC212xM_Calibrate(&twid);
-	//	printf("end calibrating");
 	// wyjscie ze stanu reset
 	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, CAM_RESET);
 
-	//0x03 set register to A,B or C, 0x40 turn on test image(0x1a), 0x30 turn of color correction
-	unsigned int reg[] = { 0x03, 0x91, 0x03, 0x40 };
-	unsigned char comm[] = { 0x00, 0xB0, 0x01, 0x1a };
-	//
-	////  unsigned int reg[] = {0x03,0x51,0x53,0x54,0x55,0x56,0x57,0x61,0x63,0x80,0x81,0x82,0x03,0x11,0x13,0x14,0x15,0x16,0x17,0x19,0x1B,0x1D,0x1F};
-	////  unsigned char comm[] = {0x01,0x04,0x04,0x01,0x43,0x00,0xf3,0x0c,0xec,0x20,0x20,0x01,0x02,0x12,0x0e,0x01,0x30,0x00,0xdf,0x72,0x43,0x50,0x50};
-	int twiit = 0;
-	unsigned int it = 0;
-	//	printf("\r\nSetting camera registers... \r\n");
-	//  for(twiit = 0 ; twiit < 4; twiit++) //wykomentuj ta petle zeby nie wyswietlac obrazu testowego
-	//  {
-	//    TWID_Write(&twid, PO6030K_DEVICE_ID, reg[twiit], 1, comm + twiit, 1, 0);
-	//    waitms(200);
-	//  }
-	//	printf("\r\nCamera registers has been set. \r\n");
-	//Konfiguracja modulu bluetooth
-
-	//TODO
-
-
-	//	MMC212xM_SendSetCmd(&twid);
-	//	double min_x = 65000;
-	//	double min_y = 65000;
-	//	double max_x = -65000;
-	//	double max_y = -65000;
-	//
-	//	while (1) {
-	//		mag_info mg_i = MMC212xM_GetMagneticFieldInfo(&twid);
-	//
-	//		if (min_x > mg_i.x)
-	//			min_x = mg_i.x;
-	//		if (max_x < mg_i.x)
-	//			max_x = mg_i.x;
-	//		if (min_y > mg_i.y)
-	//			min_y = mg_i.y;
-	//		if (max_y < mg_i.y)
-	//			max_y = mg_i.y;
-	//
-	//		//		printf("min_x: %d max_x: %d min_y: %d max_y: %d angle: %d\r\n", (int)min_x,
-	//		//				(int)max_x, (int)min_y, (int)max_y, (int) compute_angle(mg_i.x, mg_i.y));
-	//		printf("%d %d %d min_x: %d max_x: %d min_y: %d max_y: %d\r\n",
-	//				(int) mg_i.x, (int) mg_i.y,
-	//				(int) compute_angle(mg_i.x, mg_i.y), (int) min_x, (int) max_x,
-	//				(int) min_y, (int) max_y);
-	//}
-
+	//TODO diódeczka :D :*
 	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, DIODA2);
 
-	//zrob 2 razy zdjecie kamera zeby AE przystosowalo sie do swiatla
-	//	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA1);
-	//	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, DIODA1);
-	//	for (cam_clk = 0; cam_clk < 2; cam_clk++) {
-	//		AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
-	//		while (!(AT91F_PIO_GetInput(AT91C_BASE_PIOA) & VSYNC))
-	//			;
-	//		AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, DIODA2);
-	//		while (AT91F_PIO_GetInput(AT91C_BASE_PIOA) & VSYNC)
-	//			;
-	//	}
-	//	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA1);
+	AT45DB321D_Initalize();
+	//		AT45DB321D_SelfTest();
+	AT45DB321D_ClearChip();
 	//	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
-
-	//AT91C_BASE_PIOA->PIO_PDSR -- odczytaj wszystkie 32 piny
-	//AT91C_BASE_PIOA->PIO_PDSR & 0x2000000 - wyciagnij informacje tylko o 25 pinie (VSYNC)
-	//AT91C_BASE_PIOA->PIO_PDSR & 0x4000000 - wyciagnij informacje tylko o 26 pinie (HSYNC)
-	//AT91C_BASE_PIOA->PIO_PDSR & 0x40000000 - wyciagnij informacje tylko o 30 pinie (PCLK)
-	//	register int row = 0;
-	//	register int wsk = 0;
-	//	register int iter = 0;
-	//	register int bufSel = 0;
-	//	register int pix = 0;
-	//kod ponizej ma za zadanie umiescic w pamieci obraz o rozmiarze 160x120 kolor
-	//musi dzialac bardzo szybko tak zeby nadazyc za clockiem kamery MCLK
-	//kiedy VSYNC, HSYNC, PCLK sie zmieniaja i jak to sie ma do danych sciaganych z kamery masz tutaj:
-	//http://www.pixelplus.com/config/ZIPdownLoad.asp?filepath=/pdf/vga/PO6030_D.pdf
-
-	//	while (!(AT91C_BASE_PIOA->PIO_PDSR & 0x2000000)) {
-	//		while (!(AT91C_BASE_PIOA->PIO_PDSR & 0x2000000))
-	//			; //czekaj gdy VSYNC == 0
-	//	}
-	//
-	//	while (AT91C_BASE_PIOA->PIO_PDSR & 0x2000000) //podczas gdy VSYNC == 1
-	//	{
-	//		while (!(AT91C_BASE_PIOA->PIO_PDSR & 0x4000000)
-	//				&& (AT91C_BASE_PIOA->PIO_PDSR & 0x2000000))
-	//			;
-	//
-	//		while (AT91C_BASE_PIOA->PIO_PDSR & 0x4000000) //podczas gdy HSYNC == 1
-	//		{
-	//			while (!(AT91C_BASE_PIOA->PIO_PDSR & 0x40000000))
-	//				; //czekaj gdy PCLK == 0
-	//
-	//			pix++;
-	//			CamR(mem[wsk++]); //odczytaj dane z kamery na narastającym zboczu PCLK
-	//			if (wsk & 0x200) {
-	//				wsk = 0;
-	//
-	//				AT45_WriteBuffer(&sAt45, bufSel, mem, 512);
-	//
-	//				while (!sAt45.pSpid->semaphore) {
-	//					while (!sAt45.pSpid->semaphore)
-	//						SPID_Handler(sAt45.pSpid);
-	//				}
-	//
-	//				while (!AT45_STATUS_READY(AT45_GetStatus(&sAt45)))
-	//					;
-	//
-	//				AT45_SendCommand(&sAt45, !bufSel ? AT45_BUF1_MEM_NOERASE
-	//						: AT45_BUF2_MEM_NOERASE, 4, 0, 0, row << 9, 0, 0);
-	//				bufSel = !bufSel;
-	//				while (!sAt45.pSpid->semaphore) {
-	//					while (!sAt45.pSpid->semaphore)
-	//						SPID_Handler(sAt45.pSpid);
-	//				}
-	//				row++;
-	//			}
-	//			while (AT91C_BASE_PIOA->PIO_PDSR & 0x40000000)
-	//				; //czekaj gdy PCLK == 1
-	//		}
-	//		wsk = 0;
-	//		AT45_WriteBuffer(&sAt45, bufSel, mem, 256);
-	//
-	//		while (!sAt45.pSpid->semaphore) {
-	//			while (!sAt45.pSpid->semaphore)
-	//				SPID_Handler(sAt45.pSpid);
-	//		}
-	//		if (!sAt45.pSpid->semaphore)
-	//			SPID_Handler(sAt45.pSpid);
-	//
-	//		while (!AT45_STATUS_READY(AT45_GetStatus(&sAt45)))
-	//			;
-	//
-	//		AT45_SendCommand(&sAt45, !bufSel ? AT45_BUF1_MEM_NOERASE
-	//				: AT45_BUF2_MEM_NOERASE, 4, 0, 0, row << 9, 0, 0);
-	//		bufSel = !bufSel;
-	//		while (!sAt45.pSpid->semaphore) {
-	//			while (!sAt45.pSpid->semaphore)
-	//				SPID_Handler(sAt45.pSpid);
-	//		}
-	//		row++;
-	//	}
-
-	//zeby odebrac obraz z kamery musisz wyslac komende: 'z' a potem 0
-	//robot zacznie wysylac obraz 160x120 w paczkach po 320. Nie musisz mu nic potwierdzac, tylko odbieraj.
-	//Lacznie powinienes dostac 2*160*120 bajtow.
-	//jakby udalo Ci sie odebrac czysty obraz z kamery w takim rozmiarze to sprobuj wyslac cos wiekszego.
-	//do tego przyda Ci sie pamiec DataFlash czyli funkcje ktore zaczynaja sie od AT45******
-	//nazwa pamieci to AT45DB321D tutaj info: http://www.atmel.com/dyn/resources/prod_documents/doc3597.pdf
-	//Przeczytaj sobie tam jak zapisywac i odczytywac dane z tej pamieci, najwazniejsze to to ze ma 2 bufory i mozesz
-	//pisac po jednym buforze podczas gdy drugi jest zapisywany do pamieci flash.
-	//pamietaj zeby sprawdzic czy porzednia operacja na pamieci zostala skonczona: while (!AT45_STATUS_READY(AT45_GetStatus(&sAt45)));
-
-	//Good Luck & High Frag :)
-
-
-	//      AT45_WriteBuffer(&sAt45,0,mem,320);
-	//
-	//      while (!AT45_STATUS_READY(AT45_GetStatus(&sAt45)));
-	//
-	//      AT45_SendCommand(&sAt45, AT45_BUF1_MEM_NOERASE, 4, 0, 0, 512*row, 0, 0);
-	//      while (!sAt45.pSpid->semaphore)
-	//      {
-	//        while (!sAt45.pSpid->semaphore)
-	//            SPID_Handler(sAt45.pSpid);
-	//      }
-
-	//      while(AT91C_BASE_PIOA->PIO_PDSR & 0x4000000)
-	//      {
-	//        if(!(AT91C_BASE_PIOA->PIO_PDSR & 0x2000000)) goto end;
-	//      }
-	//      while(! (AT91C_BASE_PIOA->PIO_PDSR & 0x4000000) )
-	//      {
-	//        if(!(AT91C_BASE_PIOA->PIO_PDSR & 0x2000000)) goto end;
-	//      }
-	//      for(pixel=320; pixel<1280; pixel++)
-	//      {
-	//        while(!(AT91C_BASE_PIOA->PIO_PDSR & 0x40000000));
-	//          mem[pixel]=0;
-	//        while(AT91C_BASE_PIOA->PIO_PDSR & 0x40000000);      }
-
-	//      AT45_WriteBuffer(&sAt45,1,mem+512,512);
-
-	//      for(pixel=0; pixel<128; pixel++)
-	//      {
-	//        while(!(AT91C_BASE_PIOA->PIO_PDSR & 0x40000000));
-	//          mem[pixel]=0;
-	//        while(AT91C_BASE_PIOA->PIO_PDSR & 0x40000000);
-	//      }
-
-	//      while (!AT45_STATUS_READY(AT45_GetStatus(&sAt45)));
-	//
-	//      AT45_SendCommand(&sAt45, AT45_BUF2_MEM_NOERASE, 4, 0, 0, 512*row, 0, 0);
-	//      while (!sAt45.pSpid->semaphore)
-	//      {
-	//        while (!sAt45.pSpid->semaphore)
-	//            SPID_Handler(sAt45.pSpid);
-	//      }
-	//      row++;
-	//    }
-
-	//	printf("rows %u | pixels %u |", row, pix);
-	//	row = 0;
-	// Wait until the command is sent
-	//	while (AT45_IsBusy(&sAt45)) {
-	//		// Wait for transfer to finish
-	//		while (AT45_IsBusy(&sAt45))
-	//			SPID_Handler(sAt45.pSpid);
-	//	}
-	//	AT45_WaitReady(&sAt45);
-	it = 0;
+	PO6030K_Initalize();
+	PO6030K_InitRegisters(&twid);
+	PO6030K_TakePicture();
 	//TODO
-	unsigned int it2 = 0;
 	for (;;) {
 		switch (FrameSizeToGet) {
 		case 1://160x100 mono preview
@@ -983,20 +516,25 @@ int main(void) {
 			FrameSizeToGet = 0;
 			break;
 		case 5: {
-			//			printf("send");
-			//			it = 0;
-			//			while (it < 480) {
-			//				int pixel = 0;
-			//				printf("%d ", it);
-			//				AT45D_Read(&sAt45, mem, 1280, 512 * 3 * it);
-			//				waitms(175);
-			//				it++;
-			//				if (!USART_WriteBuffer(AT91C_BASE_US0, mem, 1280)) {
-			//					it--;
-			//					printf("it = %d\n\r", it);
-			//				}
-			//			}
-			//			FrameSizeToGet = 0;
+			//printf("send");
+			TRACE_DEBUG("Sending image...");
+			int it = 0;
+			At45 *pAt45 = AT45DB321D_GetPointer();
+			while (!pAt45->pSpid->semaphore) {
+				while (!pAt45->pSpid->semaphore)
+					SPID_Handler(pAt45->pSpid);
+			}
+			while (it < 480) {
+				TRACE_DEBUG("Sent row %d", it);
+				AT45DB321D_Read(mem, 1280, 512 * 3 * it + 512);
+				waitms(175);
+				it++;
+				if (!USART_WriteBuffer(AT91C_BASE_US0, mem, 1280)) {
+					it--;
+				}
+			}
+
+			FrameSizeToGet = 0;
 			break;
 		}
 		case 6: {
