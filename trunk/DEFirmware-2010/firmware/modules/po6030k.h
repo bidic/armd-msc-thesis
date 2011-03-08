@@ -28,17 +28,26 @@
 // AT91C_BASE_PIOA->PIO_PDSR & 0x40000000 - wyciagnij informacje tylko o 30 pinie (PCLK)
 #define GET_PSYNC (AT91C_BASE_PIOA->PIO_PDSR & 0x40000000)
 
-#define BUFFER_SIZE 512
-#define MAX_BUFF_IDX 100
-#define SHIFT_BUFF_IDX(idx) ( idx = ((idx)+1 < MAX_BUFF_IDX) ? ((idx)+1) : 0)
-#define PREV_BUFF_IDX(idx) ( ((idx)-1 < 0) ? MAX_BUFF_IDX : (idx)-1)
+#define MAX_BUFF_IDX 3
+#define SHIFT_BUFF_IDX(idx) (idx = ((idx)+1 < MAX_BUFF_IDX) ? ((idx)+1) : 0)
+#define PREV_BUFF_IDX(idx) (((idx)-1 < 0) ? MAX_BUFF_IDX-1 : (idx)-1)
+#define IS_COMMAND_SENT(pAt45) ((pAt45)->pSpid->pSpiHw->SPI_SR & AT91C_SPI_RXBUFF)
 
-#define CamR(data) { register unsigned int buff= (AT91C_BASE_PIOA->PIO_PDSR & 0x95F0000) >> 14;\
+#define READ_CAM_DATA(data) { register unsigned int buff= (AT91C_BASE_PIOA->PIO_PDSR & 0x95F0000) >> 14;\
                         data = (( buff & 0x7C ) )\
                                | ((buff & 0x2000) >> 6)\
                                | ((buff & 0x400) >> 10)\
                                | ((buff & 0x100) >> 7);\
                       }
+
+#define RELEASE_SPI(pAt45){ 	(pAt45)->pSpid->pSpiHw->SPI_PTCR = AT91C_PDC_RXTDIS | AT91C_PDC_TXTDIS; \
+								AT91C_BASE_PMC->PMC_PCDR = (1 << (pAt45)->pSpid->spiId);\
+}
+
+#define RELEASE_SPI_WHEN_READY(pAt45){	while (!IS_COMMAND_SENT(pAt45));\
+										RELEASE_SPI((pAt45)); }
+
+#define SYNC_WAIT(psync) {		while ((psync)) while ((psync)); }
 
 void PO6030K_Initalize();
 
