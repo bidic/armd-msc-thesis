@@ -23,7 +23,7 @@
 #define PAGE_SIZE 512
 #define BLOCK_SIZE (8 * PAGE_SIZE)
 
-#define MAX_BUFF_IDX2 100
+#define MAX_BUFF_IDX2 3
 #define SHIFT_BUFF_IDX2(idx) ( idx = ((idx)+1 < MAX_BUFF_IDX2) ? ((idx)+1) : 0)
 
 void AT45DB321D_Initalize();
