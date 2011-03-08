@@ -527,7 +527,7 @@ int main(void) {
 			while (it < 480) {
 				TRACE_DEBUG("Sent row %d", it);
 				AT45DB321D_Read(mem, 1280, 512 * 3 * it + 512);
-				waitms(175);
+				waitms(150);
 				it++;
 				if (!USART_WriteBuffer(AT91C_BASE_US0, mem, 1280)) {
 					it--;

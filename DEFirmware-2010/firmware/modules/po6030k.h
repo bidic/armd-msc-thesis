@@ -31,6 +31,7 @@
 #define BUFFER_SIZE 512
 #define MAX_BUFF_IDX 100
 #define SHIFT_BUFF_IDX(idx) ( idx = ((idx)+1 < MAX_BUFF_IDX) ? ((idx)+1) : 0)
+#define PREV_BUFF_IDX(idx) ( ((idx)-1 < 0) ? MAX_BUFF_IDX : (idx)-1)
 
 #define CamR(data) { register unsigned int buff= (AT91C_BASE_PIOA->PIO_PDSR & 0x95F0000) >> 14;\
                         data = (( buff & 0x7C ) )\
