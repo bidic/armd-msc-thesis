@@ -33,7 +33,7 @@ void PO6030K_InitRegisters(Twid *twid) {
 
 	// without color correction + auto filcker
 	unsigned int reg[] = { 0x03, 0x91, 0x03, 0x11 };
-	unsigned char comm[] = { 0x00, 0x50, 0x01, 0x02 };
+	unsigned char comm[] = { 0x00, 0x30, 0x01, 0x02 };
 
 	// test img
 	//	unsigned int reg[] = { 0x03, 0x91, 0x03, 0x40, 0x30 };
@@ -49,7 +49,7 @@ void PO6030K_InitRegisters(Twid *twid) {
 }
 
 unsigned char command[4];
-__inline void AT45DB321D_SendCommand(At45 *pAt45, unsigned char cmd,
+inline void AT45DB321D_SendCommand( unsigned char cmd,
 		unsigned char cmdSize, unsigned char *pData, unsigned int dataSize,
 		unsigned int address) {
 	// Compute command pattern
@@ -63,37 +63,37 @@ __inline void AT45DB321D_SendCommand(At45 *pAt45, unsigned char cmd,
 	}
 
 	// Enable the SPI clock
-	AT91C_BASE_PMC->PMC_PCER = (1 << pAt45->pSpid->spiId);
+//	AT91C_BASE_PMC->PMC_PCER = (1 << pAt45->pSpid->spiId);
 
 	// Disable transmitter and receiver
-	pAt45->pSpid->pSpiHw->SPI_PTCR = AT91C_PDC_RXTDIS | AT91C_PDC_TXTDIS;
+	AT91C_BASE_SPI->SPI_PTCR = AT91C_PDC_RXTDIS | AT91C_PDC_TXTDIS;
 
-	pAt45->pSpid->pSpiHw->SPI_MR = ((pAt45->pSpid->pSpiHw->SPI_MR
+	AT91C_BASE_SPI->SPI_MR = ((AT91C_BASE_SPI->SPI_MR
 			| AT91C_SPI_PCS) & (~(1 << 17)));
 
 	// Initialize the two SPI PDC buffer
-	pAt45->pSpid->pSpiHw->SPI_RPR = (int) command;
-	pAt45->pSpid->pSpiHw->SPI_RCR = cmdSize;
-	pAt45->pSpid->pSpiHw->SPI_TPR = (int) command;
-	pAt45->pSpid->pSpiHw->SPI_TCR = cmdSize;
-	pAt45->pSpid->pSpiHw->SPI_RNPR = (int) pData;
-	pAt45->pSpid->pSpiHw->SPI_RNCR = dataSize;
-	pAt45->pSpid->pSpiHw->SPI_TNPR = (int) pData;
-	pAt45->pSpid->pSpiHw->SPI_TNCR = dataSize;
+	AT91C_BASE_SPI->SPI_RPR = (int) command;
+	AT91C_BASE_SPI->SPI_RCR = cmdSize;
+	AT91C_BASE_SPI->SPI_TPR = (int) command;
+	AT91C_BASE_SPI->SPI_TCR = cmdSize;
+	AT91C_BASE_SPI->SPI_RNPR = (int) pData;
+	AT91C_BASE_SPI->SPI_RNCR = dataSize;
+	AT91C_BASE_SPI->SPI_TNPR = (int) pData;
+	AT91C_BASE_SPI->SPI_TNCR = dataSize;
 
 	// Enable transmitter and receiver
-	pAt45->pSpid->pSpiHw->SPI_PTCR = AT91C_PDC_RXTEN | AT91C_PDC_TXTEN;
+	AT91C_BASE_SPI->SPI_PTCR = AT91C_PDC_RXTEN | AT91C_PDC_TXTEN;
 }
 
 void PO6030K_TakePicture() {
 	TRACE_DEBUG("\r\nTaking picture in progress, please stand by... \r\n");
-	At45 *pAt45 = AT45DB321D_GetPointer();
+	Spid *pSpid = AT45DB321D_GetPointer()->pSpid;
 	//zrob 2 razy zdjecie kamera zeby AE przystosowalo sie do swiatla
 	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA1);
 	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, DIODA1);
 
 	unsigned int iter = 0;
-	for (iter = 0; iter < 5; iter++) {
+	for (iter = 0; iter < 10; iter++) {
 		AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
 		while (!GET_VSYNC)
 			;
@@ -101,7 +101,7 @@ void PO6030K_TakePicture() {
 		while (GET_VSYNC)
 			;
 	}
-
+	  AT91C_BASE_PMC->PMC_PCER = (1 << AT91C_ID_SPI);
 	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA1);
 	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
 
@@ -109,7 +109,11 @@ void PO6030K_TakePicture() {
 	register int wsk = 0;
 	register int buf = 0;
 	register int idx = 0;
-	register int pix = 0;
+	register int pixa = 0;
+	register int pixb = 0;
+	register int pixc = 0;
+	register int pixd = 0;
+  volatile unsigned char status = 0;
 
 	SYNC_WAIT(!GET_VSYNC);
 
@@ -123,81 +127,74 @@ void PO6030K_TakePicture() {
 			SYNC_WAIT(!GET_PSYNC);
 
 			READ_CAM_DATA(mem[idx*PAGE_SIZE + wsk++]);
-			pix++;
+			pixa++;
+
+      SYNC_WAIT(GET_PSYNC);
 
 			if (wsk & 0x200) {
 				wsk = 0;
 
 				SHIFT_BUFF_IDX(idx);
 
-				while (!IS_COMMAND_SENT(pAt45)) {
-					SYNC_WAIT(GET_PSYNC);
-					SYNC_WAIT(!GET_PSYNC);
-
+				while (!IS_COMMAND_SENT(pSpid)) {
+          SYNC_WAIT(!GET_PSYNC);
 					READ_CAM_DATA(mem[idx*PAGE_SIZE + wsk++]);
-					pix++;
+          SYNC_WAIT(GET_PSYNC);
+					pixb++;
 				}
 
-				RELEASE_SPI(pAt45);
-
-				unsigned char status = 0;
-				while (!AT45_STATUS_READY(status)) {
-					AT45DB321D_SendCommand(pAt45, AT45_STATUS_READ, 1, &status,
+				do
+				{
+					AT45DB321D_SendCommand(AT45_STATUS_READ, 1, &status,
 							1, 0);
 
-					while (!IS_COMMAND_SENT(pAt45)) {
-						SYNC_WAIT(GET_PSYNC);
+					while (!IS_COMMAND_SENT(pSpid)) {
 						SYNC_WAIT(!GET_PSYNC);
-
 						READ_CAM_DATA(mem[idx*PAGE_SIZE + wsk++]);
-						pix++;
+						SYNC_WAIT(GET_PSYNC);
+						pixc++;
 					}
-
-					RELEASE_SPI(pAt45);
 				}
+				while (!AT45_STATUS_READY(status));
 
-				AT45DB321D_SendCommand(pAt45, buf ? AT45_BUF1_MEM_NOERASE
+				AT45DB321D_SendCommand(buf ? AT45_BUF1_MEM_NOERASE
 						: AT45_BUF2_MEM_NOERASE, 4, 0, 0, row++ << 9);
 
-				while (!IS_COMMAND_SENT(pAt45)) {
-					SYNC_WAIT(GET_PSYNC);
+				while (!IS_COMMAND_SENT(pSpid)) {
 					SYNC_WAIT(!GET_PSYNC);
-
 					READ_CAM_DATA(mem[idx*PAGE_SIZE + wsk++]);
-					pix++;
+					SYNC_WAIT(GET_PSYNC);
+					pixd++;
 				}
 
-				RELEASE_SPI(pAt45);
-
-				AT45DB321D_SendCommand(pAt45, !buf ? AT45_BUF1_WRITE
+				AT45DB321D_SendCommand(!buf ? AT45_BUF1_WRITE
 						: AT45_BUF2_WRITE, 4, mem + (PREV_BUFF_IDX(idx)
 						* PAGE_SIZE), PAGE_SIZE, 0);
 
 				buf = !buf;
 			}
-
-			SYNC_WAIT(GET_PSYNC);
 		}
 
 		wsk = 0;
-		RELEASE_SPI_WHEN_READY(pAt45);
+		RELEASE_SPI_WHEN_READY(pSpid);
 
-		unsigned char status = 0;
-		while (!AT45_STATUS_READY(status)) {
-			AT45DB321D_SendCommand(pAt45, AT45_STATUS_READ, 1, &status, 1, 0);
-			RELEASE_SPI_WHEN_READY(pAt45);
+		do
+		{
+			AT45DB321D_SendCommand(AT45_STATUS_READ, 1, &status, 1, 0);
+			RELEASE_SPI_WHEN_READY(pSpid);
 		}
+		while (!AT45_STATUS_READY(status));
 
-		AT45DB321D_SendCommand(pAt45, buf ? AT45_BUF1_MEM_NOERASE
+		AT45DB321D_SendCommand(buf ? AT45_BUF1_MEM_NOERASE
 				: AT45_BUF2_MEM_NOERASE, 4, 0, 0, row++ << 9);
-		RELEASE_SPI_WHEN_READY(pAt45);
+		RELEASE_SPI_WHEN_READY(pSpid);
 
-		AT45DB321D_SendCommand(pAt45, !buf ? AT45_BUF1_WRITE : AT45_BUF2_WRITE,
+		AT45DB321D_SendCommand(!buf ? AT45_BUF1_WRITE : AT45_BUF2_WRITE,
 				4, mem + (idx * PAGE_SIZE), PAGE_SIZE, 0);
 
 		buf = !buf;
 		SHIFT_BUFF_IDX(idx);
 	}
 
-	TRACE_DEBUG("\r\n... acquisition completed. (Pix: %d) \r\n", pix);
+	TRACE_DEBUG("\r\n... acquisition completed. (Pix: %d, %d,%d,%d,%d) \r\n", pixa+pixb+pixc+pixd,pixa, pixb, pixc, pixd);
 }
