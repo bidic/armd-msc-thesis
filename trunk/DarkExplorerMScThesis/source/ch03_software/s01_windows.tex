@@ -7,21 +7,25 @@ Kolejnym wymaganym krokiem jest instalacja i konfiguracja narzędzi
 umożliwiających stworzenie pliku binarnego umożliwiającego uruchomienie
 przygotowanej na platformie sprzętowej robota. Ostatnim etapem przygotowań jest
 instalacja oprogramowania umożliwiającego programowanie układu za pomocą
-wspomnianego interfejsu JTAG oraz debugowanie aplikacji w trakcie jej działania.
+wspomnianego interfejsu JTAG oraz debugowanie aplikacji w trakcie jej działania
+na robocie.
+
 \subsection{Instalacja WinARM}
 Do kompilacji kodu źródłowego oprogramowania zajmującego się sterowaniem
 podzespołami robota wykorzystany został zestaw narzędzi znany pod nazwą WinARM.
 WinARM jest zestawem narzędzi umożliwiających tworzenie oprogramowania dla
 kontrolerów opartych na platformie ARM. W odróżnieniu od innych dostępnych
-obecnie narzędzi środowisko WinARM nie wymaga dodatkowej instalacji środowiska
-MinGW czy też Cygwina. Wszystkie potrzebne narzędzia dostarczane są w ramach
-środowiska WinARM. Narzędzia WinARM pomyślnie przeszła testy z kontrolerami Atmel
-AT91SAM7S64, AT91SAM7S256, AT91RM9200 ARM7TDMI oraz Philips LPC2106, Philips
-LPC2129, Philips LPC2138, Philips LPC2148. Narzędzia dostarczane w ramach
-środowiska WinARM kompilatory i narzędzia powinny prawidłowo współpracować ze
-wszystkimi mikrokontrolerami opartymi o architekturę ARM(-TDMI/Thumb
-itp.).\newline \newline Instalację środowiska WinARM należy rozpocząć od pobrania
-archiwum z najnowszą wersją narzędzi ze strony
+obecnie rozwiązań, środowisko to, nie wymaga dodatkowej instalacji narzędzi
+udostępnianych w ramach MinGW czy też Cygwina. Wszystkie potrzebne narzędzia
+dostarczane są w ramach SDK\footnote{SDK (z ang. Software Development Kit) -
+Zestaw narzędzi do rozwoju oprogramowania}. Narzędzia WinARM pomyślnie przeszły
+testy z kontrolerami Atmel AT91SAM7S64, AT91SAM7S256, AT91RM9200 ARM7TDMI oraz
+Philips LPC2106, Philips LPC2129, Philips LPC2138, Philips LPC2148. Dodatkowo 
+dostarczane w ramach środowiska kompilatory i narzędzia powinny prawidłowo
+współpracować ze wszystkimi mikrokontrolerami opartymi o architekturę
+ARM(-TDMI/Thumb itp.).
+
+Instalację środowiska WinARM należy rozpocząć od pobrania archiwum z najnowszą wersją narzędzi ze strony
 \url{http://gandalf.arubi.uni-kl.de/avr_projects/arm_projects/}. W chwili pisania
 pracy dostępna była wersja środowiska WinARM w wersji 20060606. Po zakończeniu
 procesu pobierania, archiwum należy rozpakować w taki sposób aby wszystkie
@@ -29,25 +33,28 @@ podstawowe narzędzia dostępne były w katalogu \url{C:\WinARM\bin}. Umieszczen
 katalogu z narzędziami WinARM w innej lokalizacji jest również możliwe, ale może
 wymagać wykonania dodatkowych operacji konfiguracyjnych w celu zapewnienia
 poprawności działania wszystkich narzędzi. Aby udostępnić narzędzia WinARM z
-linii poleceń systemu Windows konieczne jest dodanie do zmiennej systemowej PATH
-następujących wartości \url{C:\WinARM\bin;C:\WinARM\utils\bin;}.
+linii poleceń systemu Windows konieczne jest dodanie do zmiennej systemowej
+\url{PATH} ścieżki do katalogów z plikami wykonywalnymi biblioteki.
+W przypadku instalacji w podanym powyżej katalogu wartości powinny być
+następujące \url{C:\WinARM\bin;C:\WinARM\utils\bin;}.
+
 \subsection{Instalacja sterowników programatora}
 Programowanie oraz debugowanie aplikacji robota może zostać zrealizowane za
 pomocą dowolnego programatora kompatybilnego z interfejsem JTAG. Programatory
-oparte o interfejs LPT nie wymagają dodatkowej konfiguracji w systemie Windows.
-Nieco inaczej wygląda sytuacja z programatorami opartymi o interfejs USB które
-wymagają przed pierwszym użyciem zainstalowania sterowników umożliwiających
-prawidłowe rozpoznanie programatora przez system. Jednym z bardziej popularnych
-programatorów USB jest TriTon JTAG. TriTon JTAG to interfejs JTAG przeznaczony
-dla procesorów zbudowanych w oparciu o rdzeń ARM podłączany do komputera za
-pomocą portu USB. TriTon JTAG posiada standardowe 20 pinowe złącze JTAG wraz z
+oparte o interfejs LPT nie wymagają od użytkownika żadnej dodatkowej
+konfiguracji. Nieco inaczej wygląda sytuacja z programatorami opartymi o
+interfejs USB, które to wymagają przed pierwszym użyciem zainstalowania
+sterowników umożliwiających prawidłowe rozpoznanie programatora przez system
+Windows. Jednym z bardziej popularnych programatorów USB jest TriTon JTAG.
+TriTon JTAG to programator przeznaczony dla procesorów zbudowanych w oparciu o
+rdzeń ARM podłączany do komputera za pomocą portu USB. TriTon JTAG posiada standardowe 20 pinowe złącze JTAG wraz z
 wyprowadzeniami sygnałów RxD i TxD interfejsu UART. TriTon JTAG współpracuje z
-OpenOCD, pozwalając na programowanie oraz debugowanie działającej aplikacji.
-Urządzenie oparte jest o układ FT2232 który umożliwa jego współprace także z
-innymi środowiskami rozwoju oprogramowania dla platformy ARM wspierającymi
-wspomniany układ. \newline \newline Instalację sterowników do programatora należy
-rozpocząć od pobrania sterowników do układu FT2232 ze strony
-\url{http://www.ethernut.de/en/download/}. Na stronie dostępne są sterowniki
+OpenOCD, pozwalając na programowanie oraz debugowanie działającej na
+urządzeniu aplikacji. Urządzenie oparte jest o układ FT2232 który umożliwa jego
+współprace także z innymi środowiskami rozwoju oprogramowania dla platformy ARM
+kompatybilnymi z FT2232. 
+
+Instalację sterowników do programatora należy rozpocząć od pobrania sterowników do układu FT2232 ze strony \url{http://www.ethernut.de/en/download/}. Na stronie dostępne są sterowniki
 przeznaczone dla systemów Windows 2000, XP, Server 2003, Vista oraz Server 2008.
 Po rozpakowaniu archiwum ze sterownikami należy za pomocą interfejsu USB
 podłączyć programator do komputera. Po wykryciu system Windows trzykrotnie
