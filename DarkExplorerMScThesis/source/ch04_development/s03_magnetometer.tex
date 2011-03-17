@@ -65,7 +65,21 @@ Podczas odczytu wskazań kompasu istotne jest także wzięcie pod uwagę takich 
 \textcolor{red}{TODO: WYKRES POMIARU ZE SKALIBROWANEGO MAGNETOMETRU ALE NIERÓWNOLEGLE DO POLA!}
 
 \subsection{Budowa modułu}
-Płytka modułu kompasu została zaprojektowana przy pomocy darmowej wersji programu Eagle na podstawie danych zawartych w nocie katalogowej czujnika MMC2120. Na rysunkach \textcolor{red}{TODO: nr rys} przedstawiono schemat oraz layout płytki modułu kompasu.
+Płytka modułu kompasu została zaprojektowana przy pomocy darmowej wersji programu Eagle na podstawie danych zawartych w nocie katalogowej czujnika MMC2120. Na rysunkach \ref{fig:MMC2120Pcb} oraz \ref{fig:MMC2120Sch} przedstawiono schemat oraz layout płytki modułu kompasu.
+
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[height=100mm]{../images/ch04/mmc2120mgsch.png}
+ \caption{Schemat modułu kompasu}
+ \label{fig:MMC2120Sch}
+\end{figure}
+
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[height=50mm]{../images/ch04/mmc2120mgpcb.png}
+ \caption{Projekt płytki kompasu elektronicznego}
+ \label{fig:MMC2120Pcb}
+\end{figure}
 
 \begin{table}[hb]
   \rowcolors{2}{white}{gray!20}
@@ -73,14 +87,21 @@ Płytka modułu kompasu została zaprojektowana przy pomocy darmowej wersji prog
   \caption{Opis wyprowadzeń modułu kompasu}
   \begin{tabular}{ | c | c | c | p{1.75cm} |} \hline
     Nazwa & Typ & Opis \\ \hline
-    VDD & Zasilanie & Napięcie zasilania $3.3V$ \\
+    VDA & Zasilanie & Napięcie zasilania $3.3V$ \\
     GND & Zasilanie & Masa \\
     SCL & Wejście & Zegar sterujący $I^{2}C$ \\
-    SDL & We / Wy & Szyna do przesyłania danych $I^{2}C$ \\
-    SA0 & Wejście & Najmniej zaczący bit adresu urządzenia \\ \hline
+    SDA & We / Wy & Szyna do przesyłania danych $I^{2}C$ \\
+    VDD & Zasilanie & Napięcie zasilania szyny danych $3.3V$ \\ \hline
   \end{tabular}
   \label{tab:MMC2120ModOut}
 \end{table}
+
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[height=50mm]{../images/ch04/compassmodule.jpg}
+ \caption{Gotowy moduł kompasu}
+ \label{fig:L3G4200DModule}
+\end{figure}
 
 \subsection{Nieudana próba zastosowania}
 Docelowo moduł kompasu miał być wykożystywany jako element Inercjalnego Systemu Nawigacji w celu określania kierunku w którym robot się przemieszcza. Zasada działania miała być prosta. Robot miał zapamiętywać aktualny azymut z jakim się poruszał będąc na rekach operatora. Następnie po postawieniu na podłożu miał odtwarzać tor ruchu obracając wszystkie zapamiętane azymuty o $180\circ$. 
