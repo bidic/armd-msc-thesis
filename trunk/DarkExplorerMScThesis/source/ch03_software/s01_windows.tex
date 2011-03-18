@@ -20,12 +20,13 @@ udostępnianych w ramach MinGW czy też Cygwina. Wszystkie potrzebne narzędzia
 dostarczane są w ramach SDK\footnote{SDK (z ang. Software Development Kit) -
 Zestaw narzędzi do rozwoju oprogramowania}. Narzędzia WinARM pomyślnie przeszły
 testy z kontrolerami Atmel AT91SAM7S64, AT91SAM7S256, AT91RM9200 ARM7TDMI oraz
-Philips LPC2106, Philips LPC2129, Philips LPC2138, Philips LPC2148. Dodatkowo 
+Philips LPC2106, Philips LPC2129, Philips LPC2138, Philips LPC2148. Dodatkowo
 dostarczane w ramach środowiska kompilatory i narzędzia powinny prawidłowo
 współpracować ze wszystkimi mikrokontrolerami opartymi o architekturę
 ARM(-TDMI/Thumb itp.).
 
-Instalację środowiska WinARM należy rozpocząć od pobrania archiwum z najnowszą wersją narzędzi ze strony
+Instalację środowiska WinARM należy rozpocząć od pobrania archiwum z najnowszą
+wersją narzędzi ze strony
 \url{http://gandalf.arubi.uni-kl.de/avr_projects/arm_projects/}. W chwili pisania
 pracy dostępna była wersja środowiska WinARM w wersji 20060606. Po zakończeniu
 procesu pobierania, archiwum należy rozpakować w taki sposób aby wszystkie
@@ -34,9 +35,9 @@ katalogu z narzędziami WinARM w innej lokalizacji jest również możliwe, ale 
 wymagać wykonania dodatkowych operacji konfiguracyjnych w celu zapewnienia
 poprawności działania wszystkich narzędzi. Aby udostępnić narzędzia WinARM z
 linii poleceń systemu Windows konieczne jest dodanie do zmiennej systemowej
-\url{PATH} ścieżki do katalogów z plikami wykonywalnymi biblioteki.
-W przypadku instalacji w podanym powyżej katalogu wartości powinny być
-następujące \url{C:\WinARM\bin;C:\WinARM\utils\bin;}.
+\url{PATH} ścieżki do katalogów z plikami wykonywalnymi biblioteki. W przypadku
+instalacji w podanym powyżej katalogu wartości powinny być następujące
+\url{C:\WinARM\bin;C:\WinARM\utils\bin;}.
 
 \subsection{Instalacja sterowników programatora}
 Programowanie oraz debugowanie aplikacji robota może zostać zrealizowane za
@@ -45,36 +46,39 @@ oparte o interfejs LPT nie wymagają od użytkownika żadnej dodatkowej
 konfiguracji. Nieco inaczej wygląda sytuacja z programatorami opartymi o
 interfejs USB, które to wymagają przed pierwszym użyciem zainstalowania
 sterowników umożliwiających prawidłowe rozpoznanie programatora przez system
-Windows. Jednym z bardziej popularnych programatorów USB jest TriTon JTAG.
-TriTon JTAG to programator przeznaczony dla procesorów zbudowanych w oparciu o
-rdzeń ARM podłączany do komputera za pomocą portu USB. TriTon JTAG posiada standardowe 20 pinowe złącze JTAG wraz z
-wyprowadzeniami sygnałów RxD i TxD interfejsu UART. TriTon JTAG współpracuje z
-OpenOCD, pozwalając na programowanie oraz debugowanie działającej na
-urządzeniu aplikacji. Urządzenie oparte jest o układ FT2232 który umożliwa jego
-współprace także z innymi środowiskami rozwoju oprogramowania dla platformy ARM
-kompatybilnymi z FT2232. 
+Windows. Jednym z bardziej popularnych programatorów USB jest TriTon JTAG. TriTon
+JTAG to programator przeznaczony dla procesorów zbudowanych w oparciu o rdzeń ARM
+podłączany do komputera za pomocą portu USB. TriTon JTAG posiada standardowe 20
+pinowe złącze JTAG wraz z wyprowadzeniami sygnałów RxD i TxD interfejsu UART.
+TriTon JTAG współpracuje z OpenOCD, pozwalając na programowanie oraz debugowanie
+działającej na urządzeniu aplikacji. Urządzenie oparte jest o układ FT2232 który
+umożliwia jego współprace także z innymi środowiskami rozwoju oprogramowania dla
+platformy ARM kompatybilnymi z FT2232.
 
-Instalację sterowników do programatora należy rozpocząć od pobrania sterowników do układu FT2232 ze strony \url{http://www.ethernut.de/en/download/}. Na stronie dostępne są sterowniki
-przeznaczone dla systemów Windows 2000, XP, Server 2003, Vista oraz Server 2008.
-Po rozpakowaniu archiwum ze sterownikami należy za pomocą interfejsu USB
-podłączyć programator do komputera. Po wykryciu system Windows trzykrotnie
+Instalację programatora należy rozpocząć od pobrania sterowników do układu FT2232
+ze strony \url{http://www.ethernut.de/en/download/}. Na stronie dostępne są
+sterowniki przeznaczone dla systemów Windows 2000, XP, Server 2003, Vista oraz
+Server 2008. Po rozpakowaniu archiwum ze sterownikami należy za pomocą interfejsu
+USB podłączyć programator do komputera. Po wykryciu system Windows trzykrotnie
 poprosi o podanie ścieżki do sterowników do urządzeń Triton JTAG, Triton USB
 RS232 Adapter oraz USB Serial Port. Należy wtedy skazać ścieżkę do katalogu w
-którym rozpakowane zostały sterowniki pobrane ze strony wspomnianej wcześniej.
-Po poprawnym zakończeniu instalacji w Menadżerze urządzeń systemu Windows
-windoczne będą następujące elementy
+którym rozpakowane zostały sterowniki pobrane ze strony wspomnianej wcześniej. Po
+poprawnym zakończeniu instalacji w Menadżerze urządzeń systemu Windows widoczne
+będą następujące elementy
 \begin{itemize}
   \item Triton USB JTAG Adapter,
   \item Triton USB RS232 Adapter,
   \item Triton JTAG
 \end{itemize}
-\subsubsection{Instalacja Open On-Chip Debugger}
+
+\subsection{Instalacja Open On-Chip Debugger}
 OpenOCD zostało zapoczątkowane przez Dominika Rath w ramach pracy dyplomowej
-relizowanej na uniwersytecie w Augsburg. Od tamtego czasu OpenOCD bardzo się
+realizowanej na uniwersytecie w Augsburg. Od tamtego czasu OpenOCD bardzo się
 rozwinęło i urosło do rozmiarów aktywnego projektu open-sourcowego wspieranego
 przez programistów z całego świata. Celem OpenOCD jest dostarczenie
 uniwersalnego narzędzia umożliwiającego debugowanie i programowanie systemów
-wbudowanych. \newline \newline
+wbudowanych. 
+
 Strona projektu OpenOCD dostępna jest pod adresem
 \url{http://openocd.berlios.de/web/}. Dostępne są tam zarówno źródła jak i
 dokumentacja do projektu. Niestety w chwili pisania pracy magisterskiej autorzy
@@ -85,3 +89,22 @@ Windows. Instalator OpenOCD dla Windows jest do pobrania ze strony
 lokalizację docelową w której OpenOCD ma zostać zainstalowane. Po zakończeniu
 instalacji konieczne jest uzupełnienie wartości zmiennej systemowej PATH ścieżką
 do miejsca instalacji OpenOCD, domyślnie \url{C:\ethernut\nut\tools\win32}.
+
+\subsection{Konfiguracja zintegrowanego środowiska programistycznego}
+Poprawne zainstalowanie pakietów WinARM oraz OpenOCD dostarcza wszystkich
+niezbędnych narzędzi potrzebnych do rozwijania aplikacji dla platform
+wbudowanych. Niemniej jednak korzystanie z nich wymaga bezpośredniej interakcji
+z linią poleceń systemu Windows, co dla niektórych programistów może być
+uciążliwe. Możliwe jest napisanie skryptów systemowych pozwalających na
+uruchamianie sekwencji procedur wymaganych np. do zaprogramowania robota,
+ale jest to rozwiązanie nieprzenośne i słabo konfigurowalne. Dlatego też zaleca
+się instalację zintegrowanego środowiska programistycznego które oprócz edytora
+kodu umożliwi automatyzację najczęściej wykonywanych zadań. Wybór rodzaju
+środowiska programistycznego zależy niemal w całości od preferencji programisty
+gdyż większość potrzebnych narzędzi można bez większych trudności zintegrować z
+ulubionym edytorem. Na potrzeby tej pracy omówiona zostanie konfiguracja dla
+środowiska Eclipse. Wybór podyktowany został faktem iż jest to obecnie jedna z
+najpopularniejszych platform do rozwoju oprogramowania, a co więcej jej
+konfiguracja przebiega identycznie dla systemu Windows jak i Linux. Z tego
+względu szczegółowy opis procedury konfiguracji zamieszczony został w rozdziale
+poświęconym narzędziom dla systemu Linux.
