@@ -3,33 +3,36 @@ Mobilne urządzenia przenośne z dnia na dzień zyskują na popularności. Każd
 dnia spotykamy się z nimi w domu, w pracy czy spacerując po parku. Z całą pewnością
 można stwierdzić, iż większa część społeczeństwa obecnie jest w posiadaniu
 telefonu komórkowego, komputera przenośnego czy też jakiegoś innego urządzenia
-mobilnego. Wszystkie z wspomnianych urządzeń posiadają dedykowaną platformę
-software'ową. Do najlepiej znanych we współczesnym świecie zaliczyć można między
-innymi: Windows Mobile, iPhone, BlackBerry, Symbian OS, Android, Maemo, OpenMoko
-itp. Każda z wymienionych platform posiada inną genezę jak również swoje mocne i
-słabe strony.
+mobilnego. Wszystkie z wspomnianych urządzeń posiadają charakterystyczną dla
+siebie platformę software'ową. Do najlepiej znanych we współczesnym świecie
+zaliczyć można między innymi: Windows Mobile, iPhone, BlackBerry, Symbian OS, Android, Maemo, OpenMoko
+itp. Każda z wymienionych platform posiada inną genezę jak również ma swoje
+mocne i słabe strony.
 
 Platformy takie jak Windows Mobile, BlackBerry czy iPhone ograniczone są do
 urządzeń dedykowanych docelowo do współpracy z wspomnianymi środowiskami. Obok
 różnorakich problemów z jakimi zmagają się wspomniane wcześniej platformy do
 jednego z najpoważniejszych zaliczyć można bardzo ograniczone w niektórych
-aspektach API. Nawet tak przenośna platforma jak Java na urządzeniach przenośnych
-nie zawsze się sprawdza ze względu na liczne braki oraz różnice w API zmuszające
-programistów do tworzenia kodu dedykowanego dla konkretnego urządzenia. Symbian
-oraz Windows Mobile wypadają na tym tle nieco lepiej ponieważ wspierają szerszą
-gamę urządzeń jak również ich API daje więcej możliwości niż ma to miejsce na
-przykład w przypadku Javy. Głównym powodem takiego stanu rzeczy jest bardzo
-szeroki i różnorodny asortyment platform sprzętowych utrudniający stworzenie
-jednolitej i w pełni wykorzystującej wszystkie możliwości urządzenia platformy
-programistycznej. Dostępne w chwili obecnej OpenSource'owe i wieloplatformowe
-rozwiązania znajdują się ciągle we wczesnej fazie rozwoju i nie są jeszcze
-powszechnie znane przez środowiska twórców oprogramowania.
+aspektach API\footnote{Application Programming Interface - interfejs
+programowania aplikacji, specyfikacja instrukcji pozwalających na dostęp do
+zasobów dostarczanych przez zewenętrzny program}. Nawet tak przenośna platforma
+jak Java na urządzeniach przenośnych nie zawsze się sprawdza ze względu na liczne
+braki oraz różnice w API zmuszające programistów do tworzenia kodu dedykowanego
+dla konkretnego urządzenia. Symbian oraz Windows Mobile wypadają na tym tle nieco
+lepiej ponieważ wspierają szerszą gamę urządzeń jak również ich API daje więcej
+możliwości niż ma to miejsce na przykład w przypadku Javy. Głównym powodem
+takiego stanu rzeczy jest bardzo szeroki i różnorodny asortyment platform
+sprzętowych utrudniający stworzenie jednolitej i w pełni wykorzystującej
+wszystkie możliwości urządzenia platformy programistycznej. Dostępne w chwili
+obecnej OpenSource'owe i wieloplatformowe rozwiązania znajdują się ciągle we
+wczesnej fazie rozwoju i nie są jeszcze powszechnie znane przez środowiska
+twórców oprogramowania.
 
 Firma Microsoft wypuściła po raz pierwszy na światło dzienne swoją platformę
 mobilną w latach 90-tych\cite{blog:wm-app-dev}. Natomiast w roku 2002 pojawiła
 się pierwsza platforma Windows CE.NET. Zapoczątkowało to popularyzację urządzeń Pocket PC opartych o
 system Windows CE 3.0 oraz późniejsze wersje. Dalszy rozwój bezprzewodowych
-technologi telekomunikacyjnych pozwolił na integracje telefonu z komputerem
+technologii telekomunikacyjnych pozwolił na integracje telefonu z komputerem
 osobistym. Wspomniane urządzenia Pocket PC z 2002 roku wspierały między innymi
 standard GSM, GPRS, bluetooth oraz umożliwiały użytkownikom dostęp do sieci
 bezprzewodowych. W między czasie rozwojowi ulegały urządzenia typu SmartPhone
@@ -45,29 +48,36 @@ o system Windows Mobile 5 oraz Windows Mobile 6. Nowoczesne urządzenia Pocket P
 wyposażone są w procesor o taktowaniu 500-600 MHz oraz od 64-128 MB pamięci RAM.
 Najnowsze urządzenia z tej grupy wyposażane są w 1 GHz procesor oraz 512 MB
 pamięci.
- 
 
 \subsection{Środowisko rozwojowe}
 Tworzenie aplikacji działających na urządzeniach pod kontrolą systemu Windows
 Mobile jest niemal tak samo proste jak tworzenie zwykłych aplikacji na komputery
 stacjonarne. Niemniej jednak do stworzenia w pełni funkcjonalnego środowiska
 rozwojowego konieczne jest przejście przez klika kroków przygotowawczych
-związanych z instalacją potrzebnych aplikacji narzędziowych. \\
-\\
+związanych z instalacją potrzebnych aplikacji narzędziowych. 
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[height=110mm]{../images/ch03/wm_dev_env.png}
+ \caption{Elementy składowe środowiska rozwojowego Windows Mobile}
+ \label{fig:WMDevelopmentEnviroment}
+\end{figure}
+
 Przed rozpoczęciem przygody z tworzeniem aplikacji dla systemu Windows Mobile
 konieczne jest zainstalowanie Microsoft Visual Studio. Zaleca się aby Visual
 Studio było w wersji 2005 lub 2008. Niestety narzędzia umożliwiające rozwijanie
 aplikacji mobilnych nie są poprawnie wykrywane przez Visual Studio 2010 oraz
 poprzednie wydania w wersji Express. Dlatego też koniecznością jest instalacja
 środowiska w wersji Standard lub Professional. Każda z tych wersji może zostać
-pobrana w wersji czasowej ze stron firmy Microsoft lub w wersji pełnej z MSDNAA.
-Visual Studio posłuży nam nie tylko do edycji kodu aplikacji ale pozwoli również
-w prosty sposób budować, debugować oraz przygotować instalator finalnej wersji
+pobrana w wersji czasowej ze stron firmy Microsoft lub w wersji pełnej z
+MSDNAA\footnote{Microsoft Developer Network Academi Alliance}. Visual
+Studio posłuży nam nie tylko do edycji kodu aplikacji ale pozwoli również w
+prosty sposób budować, debugować oraz przygotować instalator finalnej wersji
 aplikacji. Po poprawnym zainstalowaniu środowiska rozwojowego konieczne jest
 pobranie i zainstalowanie dostępnych paczek serwisowych dostępnych dla wybranej
 wersji Visual Studio. Pozwoli to uniknąć nieprzyjemnych niespodzianek podczas
-instalacji bibliotek narzędziowych i późniejszej pracy.\\
-\\
+instalacji bibliotek narzędziowych i późniejszej pracy.
+
 Jeżeli posiadamy już zainstalowaną kopię Visual Studio możemy przystąpić do
 instalacji narzędzi pomocniczych które pomogą nam w tworzeniu aplikacji.
 Pierwszą niezbędną biblioteką jest .NET Compact Framework 2.0 SP1. Jest to
@@ -76,8 +86,8 @@ opartych o Windows Mobile. Aby ułatwić sobie proces budowania, debugowania i
 uruchamiania aplikacji na urządzeniu konieczne jest zainstalowanie w systemie
 Windows ActiveSync. Dzięki ActiveSync możliwe stanie się uruchamianie
 projektowanej aplikacji, bezpośrednio z IDE, nie tylko na prawdziwym urządzeniu
-ale również emulatorze. \\
-\\
+ale również emulatorze. 
+
 Ostatnim, ale i zarazem najważniejszym krokiem jest instalacja Windows Mobile
 SDK. Na stronach firmy Microsoft dostępne są dwie wersje SDK, Standard oraz
 Professional. Wersja Standard zawiera w sobie tylko wsparcie dla urządzeń z
@@ -107,17 +117,25 @@ pomocą tego modelu tworzy się biblioteki i narzędzia ułatwiających tworzeni
 bardziej skomplikowanych aplikacji. Jeżeli więc interesuje nas tworzenie
 wysokopoziomowych aplikacji z GUI, skierowanych bezpośrednio do użytkowników,
 zaleca się tworzenie tego typu aplikacji za pomocą kodu zarządzalnego z użyciem
-takich języków jak C\# czy Visual Basic. Rozwijanie aplikacji w oparciu o kod
-zarządzalny pozwala na stworzenie programu który będzie mógł w pełni
-wykorzystywać możliwości oferowane przez Microsoft .NET Compact Framework.
-Umożliwia to programiście tworzenie rozproszonych systemów mobilnych pracujących
-zarówno w modelu ze stałym połączeniem jak i bez. Spora część narzędzi
-dostępnych w ramach .NET Compact Framework jest również wykorzystywana do rozwoju
-aplikacji na komputery stacjonarne. Biblioteka została zaprojektowana docelowo na
-urządzenia o ograniczonych zasobach co w połączeniu z możliwościami języków z
-rodziny .NET oraz integracją z Visual Studio daje nam profesjonalny zestaw
-narzędzi do tworzenia aplikacji mobilnych.
-\\
+takich języków jak C\# czy Visual Basic. 
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[height=100mm]{../images/ch03/wm_app_models.png}
+ \caption{Modele tworzenia aplikacji dla Windows Mobile.}
+ \label{fig:WMDevelopmentEnviroment}
+\end{figure}
+
+Rozwijanie aplikacji w oparciu o kod zarządzalny pozwala na stworzenie programu
+który będzie mógł w pełni wykorzystywać możliwości oferowane przez Microsoft .NET
+Compact Framework. Umożliwia to programiście tworzenie rozproszonych systemów
+mobilnych pracujących zarówno w modelu ze stałym połączeniem jak i bez. Spora
+część narzędzi dostępnych w ramach .NET Compact Framework jest również
+wykorzystywana do rozwoju aplikacji na komputery stacjonarne. Biblioteka została
+zaprojektowana docelowo na urządzenia o ograniczonych zasobach co w połączeniu z
+możliwościami języków z rodziny .NET oraz integracją z Visual Studio daje nam
+profesjonalny zestaw narzędzi do tworzenia aplikacji mobilnych.
+
 Trzecim modelem tworzenia programów pod Windows Mobile jest wykorzystywanie kodu
 serwera do pracy z wieloma różnymi typami urządzeń poprzez jeden wspólny kod
 bazowy i model cienkiego klienta. Oczywiście tego typu podejście ma sens jedynie
@@ -127,16 +145,15 @@ tylko w prawidłowy sposób wybierzemy model najbardziej odpowiadający potrzebo
 naszej aplikacji.
 
 \subsubsection{Graficzny interfejs użytkownika}
-Dzięki wygodnemu systemowi projektowania GUI
-dostępnego w Visual Studio tworzenie interfejsu
-użytkownika dla platformy mobilnej jest niemal tak proste jak w przypadku
-tradycyjnych aplikacji, a jedyną różnicą jest ilość i rodzaj dostępnych
+Dzięki wygodnemu systemowi projektowania GUI dostępnego w Visual Studio tworzenie
+interfejsu użytkownika dla platformy mobilnej jest niemal tak proste jak w
+przypadku tradycyjnych aplikacji, a jedyną różnicą jest ilość i rodzaj dostępnych
 kontrolek. Różnice te wynikają z faktu iż niektóre urządzenia mobilne posiadają
-ekrany dotykowe, a inne nie. Co za tym idzie, rozwój interfejsu użytkownika
-staje się bardziej skomplikowany zwłaszcza jeżeli interesuje nas rozwój
-aplikacji wspólnej dla obydwóch platform sprzętowych. W tym miejscu nie może
-zabraknąć informacji, że oprogramowanie zbudowane dla PocketPC nie uruchomi się
-na urządzeniach SmartPhone natomiast sytuacja odwrotna jest możliwa do momentu w
+ekrany dotykowe, a inne nie. Co za tym idzie, rozwój interfejsu użytkownika staje
+się bardziej skomplikowany zwłaszcza jeżeli interesuje nas rozwój aplikacji
+wspólnej dla obydwóch platform sprzętowych. W tym miejscu nie może zabraknąć
+informacji, że oprogramowanie zbudowane dla PocketPC nie uruchomi się na
+urządzeniach SmartPhone natomiast sytuacja odwrotna jest możliwa do momentu w
 którym aplikacja nie zacznie korzystać ze specyficznych funkcji SmartPhone.
 Naturalnym stanem rzeczy wydaje się fakt, iż wiele funkcji i komponentów
 graficznych znanych z aplikacji desktopowych zostało usunięte z bibliotek
@@ -165,8 +182,16 @@ szereg interfejsów programistycznych (API) umożliwiających niemal błyskawicz
 dostęp do funkcji komunikacyjnych urządzenia. AcitveSync API dostarcza funkcjonalność
 umożliwiającą komunikację za pomocą protokołu synchronizacji. Natomiast
 Bluetooth API dostarcza zestaw narzędzi umożliwiających nawiązywanie komunikacji
-bezprzewodowej pomiędzy telefonami jak i urządzeniami peryferyjnymi.  API
-Managera połączeń dostarcza zestaw usług umożliwiających automatyzację procesu
+bezprzewodowej pomiędzy telefonami jak i urządzeniami peryferyjnymi.  
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[height=100mm]{../images/ch03/wm_comm_api.png}
+ \caption{Lista dostępnych na platformie Windows Mobile API komunikacyjnych}
+ \label{fig:WMCommunicationAPI}
+\end{figure}
+
+API Managera połączeń dostarcza zestaw usług umożliwiających automatyzację procesu
 nawiązywania połączenia oraz zarządzanie ich aktywnością. API wymiany obiektów
 (OBEX API) dostarcza funkcjonalność umożliwiającą wymianę danych pomiędzy
 urządzeniami za pomocą efektywnego, kompaktowego protokołu binarnego
