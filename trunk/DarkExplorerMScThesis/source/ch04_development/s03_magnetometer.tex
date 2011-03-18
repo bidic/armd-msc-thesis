@@ -1,6 +1,6 @@
 \section{Magnetometr}
 Jednym z elementów większości Inercjalnych Systemów Nawigacyjnych jest
-magnetometr. Wykorzystoje się go do określenia kierunku w którym porusza się dane
+magnetometr. Wykorzystuje się go do określenia kierunku w którym porusza się dane
 ciało. Typów czujników mierzących pole magnetyczne jest wiele. Dla INS istotny jest jedynie czujnik, będący w stanie wykonać pomiary w zakresie indukcji pola magnetycznego ziemi, która wynosi od $30\mu T$ do $60\mu T$.
 \\
 
@@ -24,7 +24,7 @@ Czujnik AMR wykorzystuje zjawisko anizotropowego magnetooporu w celu pomiaru ind
 Czujniki tego typu charakteryzują się wysoką dokładnością i szybkością działania jednocześnie pobierając mniejszy prąd w stosunku do alternatywnych technologii.
 
 \subsection{Opis elementu}
-W celu stworzenia kompasu został wykorzystany magnetometr dwuosiowy MMC2120 firmy Memsic. Dane z magnetometru są przesyłane przy pomocy interfejsu $I^{2}C$ w postaci dwuch 12-bitowych liczb. Jedna z nich określa wartość indukcji pola magnetycznego zmierzonego na osi $X$ druga zaś na osi $Y$. 
+W celu stworzenia kompasu został wykorzystany magnetometr dwuosiowy MMC2120 firmy Memsic. Dane z magnetometru są przesyłane przy pomocy interfejsu $I^{2}C$ w postaci dwóch 12-bitowych liczb. Jedna z nich określa wartość indukcji pola magnetycznego zmierzonego na osi $X$ druga zaś na osi $Y$. 
 \\
 
 \begin{table}[hb]
@@ -46,15 +46,15 @@ W celu stworzenia kompasu został wykorzystany magnetometr dwuosiowy MMC2120 fir
 
 Dla poprawnego działania kompasu niezbędna jest kalibracja magnetometru. Przeprowadzamy ją poprzez obracanie magnetometru we wszystkich możliwych stopniach swobody jednocześnie zapisując wartość maksymalną i minimalną wskazywaną zarówno na osi $X$ jak i $Y$. Dzięki tym wartością będziemy w stanie wyznaczyć, niezależnie dla obydwu osi, przesunięcie wartości zerowej oraz ich czułość.
 \textcolor{red}{TODO: WYKRES POMIARU Z NIESKALIBROWANEGO MAGNETOMETRU!}
-Kalibrację należy wykonać po umieszczeniu modułu w robocie w celu wyeliminowania zakłuceń spowodowanych metalowymi elementami robota. MMC2120 jako wartość zerową przyjmuje liczbę $2048$. Jest to środek przedziału liczb składającego się z 12 bitów. Wartości poniżej tej liczby są uznawane za ujemne, a wartości powyżej za dodatnie.
+Kalibrację należy wykonać po umieszczeniu modułu w robocie w celu wyeliminowania zakłóceń spowodowanych metalowymi elementami robota. MMC2120 jako wartość zerową przyjmuje liczbę $2048$. Jest to środek przedziału liczb składającego się z 12 bitów. Wartości poniżej tej liczby są uznawane za ujemne, a wartości powyżej za dodatnie.
 
 \textcolor{red}{TODO: WYKRES POMIARU ZE SKALIBROWANEGO MAGNETOMETRU!}
 
-Niestety z powodu niedokładności samego ukladu, a także negatywnego wpływu metalowych elementów konstrukcji robota i modułu, wartość zerowa magnetometru może ulec przemieszczeniu. Dlatego też musimy obliczyć offset o jaki należy przesunąć każdy pomiar w celu otrzymania prawidłowego wyniku. Offset ten wyznaczamy dla każdej osi jako wartość środkową pomiędzy maksymalnym a minimalnym odczytem podczas kalibracji.
+Niestety z powodu niedokładności samego układu, a także negatywnego wpływu metalowych elementów konstrukcji robota i modułu, wartość zerowa magnetometru może ulec przemieszczeniu. Dlatego też musimy obliczyć offset o jaki należy przesunąć każdy pomiar w celu otrzymania prawidłowego wyniku. Offset ten wyznaczamy dla każdej osi jako wartość środkową pomiędzy maksymalnym a minimalnym odczytem podczas kalibracji.
 
 \textcolor{red}{TODO: WYKRES POMIARU ZE SKALIBROWANEGO I NIESKALIBROWANEGO MAGNETOMETRU Z ZAZNACZONYM OFFSETEM!}
 
-Dopiero po właściwym skalibrowaniu magnetometru jesteśmy w stanie wykorzystać go jako kompas. W celu wyznaczenia azymutu, czyli kąta pomiędzy kierunkiem wskazywanym przez oś $X$, \textcolor{red}{TODO: SPRAWDZIĆ KTÓRĄ OŚ FAKTYCZNIE!} a kierunkiem północnym, należy skożystać z prostego wyrażenia trygonometrycznego przedstawionego na wzorze \ref{eq:azymut}.
+Dopiero po właściwym skalibrowaniu magnetometru jesteśmy w stanie wykorzystać go jako kompas. W celu wyznaczenia azymutu, czyli kąta pomiędzy kierunkiem wskazywanym przez oś $X$, \textcolor{red}{TODO: SPRAWDZIĆ KTÓRĄ OŚ FAKTYCZNIE!} a kierunkiem północnym, należy skorzystać z prostego wyrażenia trygonometrycznego przedstawionego na wzorze \ref{eq:azymut}.
 
 \begin{equation}
   \label{eq:azymut}
@@ -104,10 +104,10 @@ Płytka modułu kompasu została zaprojektowana przy pomocy darmowej wersji prog
 \end{figure}
 
 \subsection{Nieudana próba zastosowania}
-Docelowo moduł kompasu miał być wykożystywany jako element Inercjalnego Systemu Nawigacji w celu określania kierunku w którym robot się przemieszcza. Zasada działania miała być prosta. Robot miał zapamiętywać aktualny azymut z jakim się poruszał będąc na rekach operatora. Następnie po postawieniu na podłożu miał odtwarzać tor ruchu obracając wszystkie zapamiętane azymuty o $180\circ$. 
+Docelowo moduł kompasu miał być wykorzystywany jako element Inercjalnego Systemu Nawigacji w celu określania kierunku w którym robot się przemieszcza. Zasada działania miała być prosta. Robot miał zapamiętywać aktualny azymut z jakim się poruszał będąc na rekach operatora. Następnie po postawieniu na podłożu miał odtwarzać tor ruchu obracając wszystkie zapamiętane azymuty o $180\circ$. 
 
 \textcolor{red}{TODO: 2xZDJĘCIE BUSOLI NA PODŁODZE!}
 
-Niestety wykonane testy pokazały, iż nie jest możliwe wykożystanie kompasu w celu określenia azymutu robota poruszającego się po podłodze budynku. Jest to spowodowane stosowaniem metalowych prętów zbrojeniowych w stropach budynków, które zakłucają pracę kompasu. Testy zostały wykonane zarówno przy pomocy modułu elektronicznego kompasu jak i tradycyjnej wojskowej busoli. Rysunki \textcolor{red}{TODO: nr rys} przedstawiają odchylenie azymutów wyznaczonych na podłodze budynku od faktycznego kierunku północy. Po wielu nieudanych próbach wyeliminowania zakłuceń moduł kompasu został zastąpiony modułem żyroskopu.
+Niestety wykonane testy pokazały, iż nie jest możliwe wykorzystanie kompasu w celu określenia azymutu robota poruszającego się po podłodze budynku. Jest to spowodowane stosowaniem metalowych prętów zbrojeniowych w stropach budynków, które zakłócają pracę kompasu. Testy zostały wykonane zarówno przy pomocy modułu elektronicznego kompasu jak i tradycyjnej wojskowej busoli. Rysunki \textcolor{red}{TODO: nr rys} przedstawiają odchylenie azymutów wyznaczonych na podłodze budynku od faktycznego kierunku północy. Po wielu nieudanych próbach wyeliminowania zakłóceń moduł kompasu został zastąpiony modułem żyroskopu.
 
 % http://www.iemw.tuwien.ac.at/publication/workshop0600/Hauser.html

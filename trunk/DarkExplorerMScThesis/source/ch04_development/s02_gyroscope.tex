@@ -121,7 +121,7 @@ W taki sposób otrzymujemy wzór na kąt o jaki ciało zostało obrócone w czas
 \begin{tabbing}
   gdzie: \= \\
     \> $\varphi_{0}$ -- kąt początkowy,\\
-    \> $\varphi_{i}$ -- wartość kąta z pojedyńczego pomiaru\\
+    \> $\varphi_{i}$ -- wartość kąta z pojedynczego pomiaru\\
 \end{tabbing}
 
 Do otrzymania jak najlepszych wyników konieczne jest określenie współczynnika korygującego pomiar żyroskopu.
@@ -190,7 +190,7 @@ Schemat przedstawiony na rysunku \ref{fig:L3G4200DSchem} został stworzony na po
  \label{fig:L3G4200DPCB}
 \end{figure}
 
-Płytka modułu została zaprojektowana z wykorzystaniem elementów SMD w obudowie 1206. Rozmiar obudowy tych elementów został wymuszony przez brak kondensatorów ceramicznych o pojemności $10\mu F$ w obudowe mniejszej. Cały proces tworzenia płytki modułu żyroskopu był przeprowadzony metodami domowymi ze względu na niski koszt oraz brak konieczności czekania kilku tygodni na wykonanie takiej płytki przez specjalistyczną firmę. Opis tworzenia plytki można znaleść w dodatku: \textcolor{red}{TODO: REFERENCJA DO DODATKU W TYM MIEJSCU!}
+Płytka modułu została zaprojektowana z wykorzystaniem elementów SMD w obudowie 1206. Rozmiar obudowy tych elementów został wymuszony przez brak kondensatorów ceramicznych o pojemności $10\mu F$ w obudowie mniejszej. Cały proces tworzenia płytki modułu żyroskopu był przeprowadzony metodami domowymi ze względu na niski koszt oraz brak konieczności czekania kilku tygodni na wykonanie takiej płytki przez specjalistyczną firmę. Opis tworzenia płytki można znaleźć w dodatku: \textcolor{red}{TODO: REFERENCJA DO DODATKU W TYM MIEJSCU!}
 
 \begin{table}[hb]
   \rowcolors{2}{white}{gray!20}
@@ -204,8 +204,8 @@ Płytka modułu została zaprojektowana z wykorzystaniem elementów SMD w obudow
     DR  & Wyjście & Pin informujący o nowych danych do pobrania \\
     SCL & Wejście & Zegar sterujący $I^{2}C$ \\
     SDL & We / Wy & Szyna do przesyłania danych $I^{2}C$ \\
-    SA0 & Wejście & Najmniej zaczący bit adresu urządzenia \\
-    CS  & Wejście & Przęłącznik trybu działania $I^{2}C$ lub SPI \\ \hline
+    SA0 & Wejście & Najmniej znaczący bit adresu urządzenia \\
+    CS  & Wejście & Przełącznik trybu działania $I^{2}C$ lub SPI \\ \hline
   \end{tabular}
   \label{tab:L3G4200DModOut}
 \end{table}
