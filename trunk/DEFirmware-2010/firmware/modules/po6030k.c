@@ -17,7 +17,9 @@ void PO6030K_Initalize() {
 
 	TRACE_DEBUG("  in  PO6030K_Initalize()\r\n");
 	AT91F_PMC_EnablePCK(AT91C_BASE_PMC, 1, AT91C_PMC_CSS_MAIN_CLK
-			| AT91C_PMC_PRES_CLK_64); //MAIN_CLK podzielony przez 64
+			| AT91C_PMC_PRES_CLK_64); //640x480 color
+//  AT91F_PMC_EnablePCK(AT91C_BASE_PMC, 1, AT91C_PMC_CSS_MAIN_CLK
+//      | AT91C_PMC_PRES_CLK_32); //320x240 color
 	TRACE_DEBUG("  out  PO6030K_Initalize()\r\n");
 }
 
@@ -31,9 +33,29 @@ void PO6030K_InitRegisters(Twid *twid) {
 //	unsigned int reg[] = { 0x03, 0x91, 0x03, 0x30 };
 //	unsigned char comm[] = { 0x00, 0x50, 0x01, 0x7f };
 
-	// without color correction + auto filcker
-	unsigned int reg[] = { 0x03, 0x91, 0x03, 0x11 };
-	unsigned char comm[] = { 0x00, 0x30, 0x01, 0x02 };
+  // 640x480 color
+  unsigned int reg[] = { 0x03, 0x91, 0x03, 0x38, 0x03, 0x68, 0x03, 0x80, 0x03, 0x81, 0x03, 0x51, 0x03, 0x53, 0x03, 0x54, 0x03, 0x55, 0x03, 0x56, 0x03, 0x57 };
+  unsigned char comm[] = { 0x00, 0x30, 0x01, 0x00, 0x01, 0x00, 0x01, 0x20, 0x01, 0x20, 0x01, 0x07, 0x01, 0x07, 0x01, 0x02, 0x01, 0x86, 0x01, 0x01, 0x01, 0xE7 };
+
+	// 320x240 color
+//	unsigned int reg[] = { 0x03, 0x91, 0x03, 0x38, 0x03, 0x68, 0x03, 0x80, 0x03, 0x81, 0x03, 0x51, 0x03, 0x53, 0x03, 0x54, 0x03, 0x55, 0x03, 0x56, 0x03, 0x57 };
+//	unsigned char comm[] = { 0x00, 0x30, 0x01, 0x00, 0x01, 0x01, 0x01, 0x40, 0x01, 0x40, 0x01, 0x04, 0x01, 0x04, 0x01, 0x01, 0x01, 0x43, 0x01, 0x00, 0x01, 0xF3 };
+
+  // 160x120 color
+//  unsigned int reg[] = { 0x03, 0x91, 0x03, 0x38, 0x03, 0x68, 0x03, 0x80, 0x03, 0x81, 0x03, 0x51, 0x03, 0x53, 0x03, 0x54, 0x03, 0x55, 0x03, 0x56, 0x03, 0x57 };
+//  unsigned char comm[] = { 0x00, 0x30, 0x01, 0x00, 0x01, 0x03, 0x01, 0x80, 0x01, 0x80, 0x01, 0x03, 0x01, 0x02, 0x01, 0x00, 0x01, 0xA2, 0x01, 0x00, 0x01, 0x79 };
+
+  // 640x480 b&w
+//  unsigned int reg[] = { 0x03, 0x91, 0x03, 0x38, 0x03, 0x68, 0x03, 0x80, 0x03, 0x81, 0x03, 0x51, 0x03, 0x53, 0x03, 0x54, 0x03, 0x55, 0x03, 0x56, 0x03, 0x57 };
+//  unsigned char comm[] = { 0x00, 0x30, 0x01, 0x0D, 0x01, 0x01, 0x01, 0x20, 0x01, 0x20, 0x01, 0x07, 0x01, 0x07, 0x01, 0x02, 0x01, 0x86, 0x01, 0x01, 0x01, 0xE7 };
+
+//  // 320x240 b&w
+//  unsigned int reg[] = { 0x03, 0x91, 0x03, 0x38, 0x03, 0x68, 0x03, 0x80, 0x03, 0x81, 0x03, 0x51, 0x03, 0x53, 0x03, 0x54, 0x03, 0x55, 0x03, 0x56, 0x03, 0x57 };
+//  unsigned char comm[] = { 0x00, 0x30, 0x01, 0x0D, 0x01, 0x03, 0x01, 0x40, 0x01, 0x40, 0x01, 0x04, 0x01, 0x04, 0x01, 0x01, 0x01, 0x43, 0x01, 0x00, 0x01, 0xF3 };
+
+  // 160x120 b&w
+//  unsigned int reg[] = { 0x03, 0x91, 0x03, 0x38,  0x03, 0x68, 0x03, 0x80, 0x03, 0x81, 0x03, 0x51, 0x03, 0x53, 0x03, 0x54, 0x03, 0x55, 0x03, 0x56, 0x03, 0x57 };
+//  unsigned char comm[] = { 0x00, 0x30, 0x01, 0x0D, 0x01, 0x07, 0x01, 0x80, 0x01, 0x80, 0x01, 0x03, 0x01, 0x02, 0x01, 0x00, 0x01, 0xA2, 0x01, 0x00, 0x01, 0x79 };
 
 	// test img
 	//	unsigned int reg[] = { 0x03, 0x91, 0x03, 0x40, 0x30 };
@@ -41,7 +63,7 @@ void PO6030K_InitRegisters(Twid *twid) {
 
 	int twiit = 0;
 	TRACE_DEBUG("\r\nSetting camera registers... \r\n");
-	for (twiit = 0; twiit < 2; twiit++) {
+	for (twiit = 0; twiit < 22; twiit++) {
 		TWID_Write(twid, PO6030K_DEVICE_ID, reg[twiit], 1, comm + twiit, 1, 0);
 		waitms(200);
 	}
@@ -93,7 +115,7 @@ void PO6030K_TakePicture() {
 	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, DIODA1);
 
 	unsigned int iter = 0;
-	for (iter = 0; iter < 10; iter++) {
+	for (iter = 0; iter < 3; iter++) {
 		AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
 		while (!GET_VSYNC)
 			;
@@ -122,7 +144,7 @@ void PO6030K_TakePicture() {
 		while (!GET_HSYNC && GET_VSYNC)
 			;
 
-		while (GET_HSYNC) //podczas gdy HSYNC == 1
+		while (GET_HSYNC && GET_VSYNC) //podczas gdy HSYNC == 1
 		{
 			SYNC_WAIT(!GET_PSYNC);
 
@@ -136,11 +158,15 @@ void PO6030K_TakePicture() {
 
 				SHIFT_BUFF_IDX(idx);
 
-				while (!IS_COMMAND_SENT(pSpid)) {
-          SYNC_WAIT(!GET_PSYNC);
-					READ_CAM_DATA(mem[idx*PAGE_SIZE + wsk++]);
-          SYNC_WAIT(GET_PSYNC);
-					pixb++;
+				while (!IS_COMMAND_SENT(pSpid))
+				{
+				  if(GET_HSYNC)
+          {
+            SYNC_WAIT(!GET_PSYNC);
+            READ_CAM_DATA(mem[idx*PAGE_SIZE + wsk++]);
+            SYNC_WAIT(GET_PSYNC);
+            pixb++;
+          }
 				}
 
 				do
@@ -148,11 +174,15 @@ void PO6030K_TakePicture() {
 					AT45DB321D_SendCommand(AT45_STATUS_READ, 1, &status,
 							1, 0);
 
-					while (!IS_COMMAND_SENT(pSpid)) {
-						SYNC_WAIT(!GET_PSYNC);
-						READ_CAM_DATA(mem[idx*PAGE_SIZE + wsk++]);
-						SYNC_WAIT(GET_PSYNC);
-						pixc++;
+					while (!IS_COMMAND_SENT(pSpid))
+					{
+					  if(GET_HSYNC)
+            {
+              SYNC_WAIT(!GET_PSYNC);
+              READ_CAM_DATA(mem[idx*PAGE_SIZE + wsk++]);
+              SYNC_WAIT(GET_PSYNC);
+              pixc++;
+            }
 					}
 				}
 				while (!AT45_STATUS_READY(status));
@@ -160,11 +190,15 @@ void PO6030K_TakePicture() {
 				AT45DB321D_SendCommand(buf ? AT45_BUF1_MEM_NOERASE
 						: AT45_BUF2_MEM_NOERASE, 4, 0, 0, row++ << 9);
 
-				while (!IS_COMMAND_SENT(pSpid)) {
-					SYNC_WAIT(!GET_PSYNC);
-					READ_CAM_DATA(mem[idx*PAGE_SIZE + wsk++]);
-					SYNC_WAIT(GET_PSYNC);
-					pixd++;
+				while (!IS_COMMAND_SENT(pSpid))
+				{
+				  if(GET_HSYNC)
+				  {
+				    SYNC_WAIT(!GET_PSYNC);
+				    READ_CAM_DATA(mem[idx*PAGE_SIZE + wsk++]);
+				    SYNC_WAIT(GET_PSYNC);
+	          pixd++;
+				  }
 				}
 
 				AT45DB321D_SendCommand(!buf ? AT45_BUF1_WRITE
@@ -174,27 +208,23 @@ void PO6030K_TakePicture() {
 				buf = !buf;
 			}
 		}
-
-		wsk = 0;
-		RELEASE_SPI_WHEN_READY(pSpid);
-
-		do
-		{
-			AT45DB321D_SendCommand(AT45_STATUS_READ, 1, &status, 1, 0);
-			RELEASE_SPI_WHEN_READY(pSpid);
-		}
-		while (!AT45_STATUS_READY(status));
-
-		AT45DB321D_SendCommand(buf ? AT45_BUF1_MEM_NOERASE
-				: AT45_BUF2_MEM_NOERASE, 4, 0, 0, row++ << 9);
-		RELEASE_SPI_WHEN_READY(pSpid);
-
-		AT45DB321D_SendCommand(!buf ? AT45_BUF1_WRITE : AT45_BUF2_WRITE,
-				4, mem + (idx * PAGE_SIZE), PAGE_SIZE, 0);
-
-		buf = !buf;
-		SHIFT_BUFF_IDX(idx);
 	}
+
+  RELEASE_SPI_WHEN_READY(pSpid);
+
+  do
+  {
+    AT45DB321D_SendCommand(AT45_STATUS_READ, 1, &status, 1, 0);
+    RELEASE_SPI_WHEN_READY(pSpid);
+  }
+  while (!AT45_STATUS_READY(status));
+
+  AT45DB321D_SendCommand(buf ? AT45_BUF1_MEM_NOERASE
+      : AT45_BUF2_MEM_NOERASE, 4, 0, 0, row++ << 9);
+  RELEASE_SPI_WHEN_READY(pSpid);
+
+  AT45DB321D_SendCommand(!buf ? AT45_BUF1_WRITE : AT45_BUF2_WRITE,
+      4, mem + (idx * PAGE_SIZE), PAGE_SIZE, 0);
 
 	TRACE_DEBUG("\r\n... acquisition completed. (Pix: %d, %d,%d,%d,%d) \r\n", pixa+pixb+pixc+pixd,pixa, pixb, pixc, pixd);
 }
