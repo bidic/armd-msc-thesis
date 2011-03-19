@@ -234,44 +234,36 @@ __ramfunc void UART0_DMA_irq_handler(void) {
 			//			UART0_DMA_Write(&RX_Buffer[0], 2);
 		}
 
-		//wyslanie klatki obrazu 320 x 200
-		if (RX_Buffer[0] == 'f') {
-			if (RX_Buffer[1] == 0) {
-				FrameSizeToGet = 2;
-			}
-
-			if (RX_Buffer[1] > 0 && RX_Buffer[1] < 20) {
-				UART0_DMA_Write(&mem[3200 * RX_Buffer[1]], 3200);
-			}
-		}
-
-		//wyslanie klatki obrazu 160 x 100
-		if (RX_Buffer[0] == 'p') {
+		if (RX_Buffer[0] == 'z') {
 			if (RX_Buffer[1] == 0) {
 				FrameSizeToGet = 1;
 			}
-
-			if (RX_Buffer[1] > 0 && RX_Buffer[1] < 5) {
-				UART0_DMA_Write(&mem[3200 * RX_Buffer[1]], 3200);
-			}
 		}
-
-		//wyslanie klatki obrazu 160 x 100 kolorowego
-		if (RX_Buffer[0] == 'x') {
-			if (RX_Buffer[1] == 0) {
-				FrameSizeToGet = 3;
-			}
-
-			if (RX_Buffer[1] > 0 && RX_Buffer[1] < 10) {
-				UART0_DMA_Write(&mem[3200 * RX_Buffer[1]], 3200);
-			}
-		}
-
-		if (RX_Buffer[0] == 'z') {
-			if (RX_Buffer[1] == 0) {
-				FrameSizeToGet = 5;
-			}
-		}
+    if (RX_Buffer[0] == 'h') {
+      if (RX_Buffer[1] == 0) {
+        FrameSizeToGet = 2;
+      }
+    }
+    if (RX_Buffer[0] == 'x') {
+      if (RX_Buffer[1] == 0) {
+        FrameSizeToGet = 3;
+      }
+    }
+    if (RX_Buffer[0] == 'g') {
+      if (RX_Buffer[1] == 0) {
+        FrameSizeToGet = 4;
+      }
+    }
+    if (RX_Buffer[0] == 'f') {
+      if (RX_Buffer[1] == 0) {
+        FrameSizeToGet = 5;
+      }
+    }
+    if (RX_Buffer[0] == 'p') {
+      if (RX_Buffer[1] == 0) {
+        FrameSizeToGet = 6;
+      }
+    }
 
 		//tryb autonomiczny komenda i
 		if (RX_Buffer[0] == 'i') {
@@ -329,7 +321,7 @@ __ramfunc void UART0_DMA_irq_handler(void) {
 
 			//wlaczenie diody
 			if (RX_Buffer[1] == 1) {
-				FrameSizeToGet = 7;
+				FrameSizeToGet = 8;
 				//AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, LED_POWER);
 			}
 		}
@@ -346,7 +338,7 @@ __ramfunc void UART0_DMA_irq_handler(void) {
 			//wlaczenie
 			if (RX_Buffer[1] == 1) {
 				obstacle_avoid_enable = 1;
-				FrameSizeToGet = 6;
+				FrameSizeToGet = 7;
 				//AT91F_PIO_SetOutput(AT91C_BASE_PIOA, SERWO_POWER);
 			}
 		}
@@ -497,36 +489,38 @@ int main(void) {
 	//		AT45DB321D_SelfTest();
 	AT45DB321D_ClearChip();
 	//	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
-	PO6030K_Initalize();
-	PO6030K_InitRegisters(&twid);
+  PO6030K_Initalize();
+  PO6030K_InitRegisters(&twid);
 	PO6030K_TakePicture();
+	int iAmountOfPackets=0;
 	//TODO
 	for (;;) {
 		switch (FrameSizeToGet) {
-		case 1://160x100 mono preview
-			//			GetFrame(4, 4, 1);
-			FrameSizeToGet = 0;
-			break;
-		case 2: //320x200
-			//			GetFrame(2, 2, 1);
-			FrameSizeToGet = 0;
-			break;
-		case 3://160x100 color
-			//			GetFrame(16, 4, 1);
-			FrameSizeToGet = 0;
-			break;
-		case 5: {
-			//printf("send");
+		case 1://640x480 color
+		  iAmountOfPackets = 480;
+		case 2://320x240 color
+		  iAmountOfPackets = iAmountOfPackets ? iAmountOfPackets : 120;
+		case 3://160x120 color
+		  iAmountOfPackets = iAmountOfPackets ? iAmountOfPackets : 30;
+		case 4://640x480 b&w
+		  iAmountOfPackets = iAmountOfPackets ? iAmountOfPackets : 240;
+		case 5://320x240 b&w
+		  iAmountOfPackets = iAmountOfPackets ? iAmountOfPackets : 60;
+		case 6://160x120 b&w
+		{
+      iAmountOfPackets = iAmountOfPackets ? iAmountOfPackets : 15;
 			TRACE_DEBUG("Sending image...");
 			int it = 0;
 			At45 *pAt45 = AT45DB321D_GetPointer();
-			while (!pAt45->pSpid->semaphore) {
+			while (!pAt45->pSpid->semaphore)
+			{
 				while (!pAt45->pSpid->semaphore)
 					SPID_Handler(pAt45->pSpid);
 			}
-			while (it < 480) {
+			while (it < iAmountOfPackets)
+			{
 				TRACE_DEBUG("Sent row %d", it);
-				AT45DB321D_Read(mem, 1280, 512 * 3 * it + 512);
+				AT45DB321D_Read(mem, 1280, 1280 * it + 512);
 				waitms(150);
 				it++;
 				if (!USART_WriteBuffer(AT91C_BASE_US0, mem, 1280)) {
@@ -537,17 +531,17 @@ int main(void) {
 			FrameSizeToGet = 0;
 			break;
 		}
-		case 6: {
+		case 7: {
 			obstacle_avoid_TestCase();
 			FrameSizeToGet = 0;
 			break;
 		}
-		case 7: {
+		case 8: {
 			start_recording_track();
 			FrameSizeToGet = 0;
 			break;
 		}
-		case 8: {
+		case 9: {
 			FrameSizeToGet = 0;
 			break;
 		}
