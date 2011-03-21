@@ -51,24 +51,28 @@ double get_descrete_angle(double in) {
 	double angle = ABS(in);
 	int sign = SIGN(in);
 
-		if (angle < 22.5)
-			return 0;
-		if (angle > 22.5 && angle < 67.5)
-			return 45 * sign;
-		if (angle > 67.5 && angle < 112.5)
-			return 90 * sign;
-		if (angle > 112.5 && angle < 157.5)
-			return 135 * sign;
-		if (angle > 157.5 && angle < 202.5)
-			return 180 * sign;
-		if (angle > 202.5 && angle < 247.5)
-			return 225 * sign;
-		if (angle > 247.5 && angle < 292.5)
-			return 270 * sign;
-		if (angle > 292.5 && angle < 337.5)
-			return 315 * sign;
-		if (angle > 337.5)
-			return 0;
+	if (angle < 20) {
+		angle = 0;
+	}
+	//
+	//		if (angle < 22.5)
+	//			return 0;
+	//		if (angle > 22.5 && angle < 67.5)
+	//			return 45 * sign;
+	//		if (angle > 67.5 && angle < 112.5)
+	//			return 90 * sign;
+	//		if (angle > 112.5 && angle < 157.5)
+	//			return 135 * sign;
+	//		if (angle > 157.5 && angle < 202.5)
+	//			return 180 * sign;
+	//		if (angle > 202.5 && angle < 247.5)
+	//			return 225 * sign;
+	//		if (angle > 247.5 && angle < 292.5)
+	//			return 270 * sign;
+	//		if (angle > 292.5 && angle < 337.5)
+	//			return 315 * sign;
+	//		if (angle > 337.5)
+	//			return 0;
 
 	//	if(angle < 45)
 	//		return 0;
@@ -81,16 +85,17 @@ double get_descrete_angle(double in) {
 	//	if(angle > 315)
 	//		return 0;
 
-	return angle;
+	return angle * sign;
 }
 
 void onStepDetectedCallback(void) {
 	TRACE_DEBUG("-- Step detected %3d -- \r\n", get_step_count());
 
 	//	mag_info mg_i = MMC212xM_GetMagneticFieldInfo(&twid);
-	steps_data[get_step_count() - 1] = get_descrete_angle(curr_gyroscope_angle);
+	steps_data[get_step_count() - 1] = get_descrete_angle(
+			L3G4200D_GetData().sAngle_z);
 
-	TRACE_INFO("-- Detected angle: %4d, Descrete angle: %d -- \r\n", (int) curr_gyroscope_angle, (int)steps_data[get_step_count() - 1]);
+	TRACE_INFO("-- Detected angle: %4d, Descrete angle: %d -- \r\n", L3G4200D_GetData().sAngle_z, (int)steps_data[get_step_count() - 1]);
 
 }
 
@@ -108,7 +113,9 @@ void stop_recording_track() {
 }
 
 void turn_of_angle(double angle) {
-	reset_angle();
+	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, 0x1 << 29);
+	//	reset_angle();
+	L3G4200D_Reset(&twid);
 
 	PWM_Set(0, 15);
 	waitms(1000);
@@ -124,19 +131,24 @@ void turn_of_angle(double angle) {
 	//	waitms(1000);
 	//	PWM_Set(0, 15);
 	//	int i = 0;
-	while (ABS(angle) - ABS(get_current_angle()) > 2) {
-		read_gyroscope_output(ADC_CHANNEL_6);
+	while (ABS(angle) - ABS(L3G4200D_GetData().sAngle_z) > 2) {
+		//		read_gyroscope_output(ADC_CHANNEL_6);
+
+
+		L3G4200D_ReadData(&twid);
 
 		//		if (!(++i % 1000)) {
-		//			TRACE_INFO("-- angle %d  curr: %d-- \r\n", (int)angle, (int)get_current_angle());
+		//			TRACE_INFO("-- angle %d  curr: %d-- \r\n", (int)angle, (int)L3G4200D_GetData().sAngle_z);
 		//			i = 1;
 		//		}
 	}
 
-	reset_angle();
+	//	reset_angle();
+	L3G4200D_Reset(&twid);
 	Kierunek(RIGHT_ENGINES, STOP_GEAR);
 	Kierunek(LEFT_ENGINES, STOP_GEAR);
 
+	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, 0x1 << 29);
 }
 
 void turn_at_magnetic_angle(double angle) {
@@ -172,20 +184,67 @@ void turn_at_magnetic_angle(double angle) {
 
 }
 
+volatile unsigned int oa_data_ready = 0;
+//volatile unsigned int ls_data = 0;
+//volatile unsigned int rs_data = 0;
+volatile unsigned int level_mask;
+
+void onDistanceDataRdy(unsigned int rs_output, unsigned int ls_output) {
+	level_mask = create_level_mask(rs_output, ls_output);
+	//printf("%d %d\r\n",rs_output,ls_output);
+	oa_data_ready = 1;
+}
+
+volatile int offset_angle = 0;
+
 void reconstruct_reverse_track() {
 	if (get_step_count() > 0) {
 		TRACE_DEBUG("-- reconstruct_reverse_track -- \r\n");
 
+		init_oa_configuration();
+
 		int step_count = get_step_count() - 1;
 
 		for (; step_count >= 0; step_count--) {
+			if(offset_angle != 0){
+				turn_of_angle(-offset_angle);
+				offset_angle = 0;
+			}
+
 			turn_of_angle(steps_data[step_count]);
 
+			unsigned int mariuszek_count = 0;
 			PWM_Set(0, 15);
-			Kierunek(RIGHT_ENGINES, FORWARD_GEAR);
-			Kierunek(LEFT_ENGINES, FORWARD_GEAR);
+			for (; mariuszek_count < 4; mariuszek_count++) {
+				Kierunek(RIGHT_ENGINES, FORWARD_GEAR);
+				Kierunek(LEFT_ENGINES, FORWARD_GEAR);
+				waitms(250);
 
-			waitms(2000);
+				//			waitms(2000);
+
+				ADC_StartDoubleChannelConversion(ADC_CHANNEL_5, ADC_CHANNEL_6,
+						onDistanceDataRdy);
+
+				while (!oa_data_ready)
+					;
+
+				oa_data_ready = 0;
+				OAA_OUTPUT oa_result = avoid_obstacles(level_mask);
+
+				if (oa_result.gear_left != oa_result.gear_right) {
+					int angle = oa_result.speed_left == 190 ? 45 : 90;
+					int sign = oa_result.gear_left == FORWARD_GEAR ? 1 : -1;
+
+					turn_of_angle(angle * sign);
+
+					offset_angle += angle * sign;
+					//					PWM_Set(0, 15);
+					//					Kierunek(LEFT_ENGINES, oa_result.gear_left);
+					//					Kierunek(RIGHT_ENGINES, oa_result.gear_right);
+
+					//					waitms(1000);
+				}
+			}
 		}
 
 		Kierunek(RIGHT_ENGINES, STOP_GEAR);
