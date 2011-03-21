@@ -19,7 +19,7 @@ int getNormalizedOutputValueForAxis(unsigned int axis, unsigned int output_mv) {
 
 void MMA7260_InterruptHandler(unsigned int output_x, unsigned int output_y,
 		unsigned int output_z) {
-	TRACE_DEBUG("-- MMA7260_InterruptHandler --\n\r");
+//	TRACE_DEBUG("-- MMA7260_InterruptHandler --\n\r");
 
 	MMA7260_OUTPUT mma7260_output;
 
@@ -32,8 +32,8 @@ void MMA7260_InterruptHandler(unsigned int output_x, unsigned int output_y,
 	mma7260_output.z_mv = output_z;
 	mma7260_output.z_normal_mv = getNormalizedOutputValueForAxis(2, output_z);
 
-	TRACE_DEBUG("-- Channel X: %d mV, Channel Y: %d mV, Channel Z: %d mV --\n\r",
-			mma7260_output.x_normal_mv, mma7260_output.y_normal_mv, mma7260_output.z_normal_mv);
+//	TRACE_DEBUG("-- Channel X: %d mV, Channel Y: %d mV, Channel Z: %d mV --\n\r",
+//			mma7260_output.x_normal_mv, mma7260_output.y_normal_mv, mma7260_output.z_normal_mv);
 
 	onOutputReadComplete(mma7260_output);
 }

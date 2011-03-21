@@ -12,7 +12,9 @@
 #include "peripherals.h"
 #include "modules/mmc212xm.h"
 #include "algorithms/pedometer.h"
+#include "algorithms/obstacle_avoidance.h"
 #include "modules/gyroscope.h"
+
 
 #define MAX_STEPS 300
 #ifndef ABS

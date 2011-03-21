@@ -13,6 +13,7 @@
 #include <math.h>
 
 #include "modules/freescale_mma7260.h"
+#include "modules/l3g4200d.h"
 
 #define POSITIVE_PEAK 1
 #define NEGATIVE_PEAK 2

@@ -34,6 +34,7 @@
 #include "modules/mmc212xm.h"
 #include "modules/at45db321d.h"
 #include "modules/po6030k.h"
+#include "modules/l3g4200d.h"
 
 #include "algorithms/obstacle_avoidance.h"
 #include "algorithms/reverse_track_reconstruction.h"
@@ -239,31 +240,31 @@ __ramfunc void UART0_DMA_irq_handler(void) {
 				FrameSizeToGet = 1;
 			}
 		}
-    if (RX_Buffer[0] == 'h') {
-      if (RX_Buffer[1] == 0) {
-        FrameSizeToGet = 2;
-      }
-    }
-    if (RX_Buffer[0] == 'x') {
-      if (RX_Buffer[1] == 0) {
-        FrameSizeToGet = 3;
-      }
-    }
-    if (RX_Buffer[0] == 'g') {
-      if (RX_Buffer[1] == 0) {
-        FrameSizeToGet = 4;
-      }
-    }
-    if (RX_Buffer[0] == 'f') {
-      if (RX_Buffer[1] == 0) {
-        FrameSizeToGet = 5;
-      }
-    }
-    if (RX_Buffer[0] == 'p') {
-      if (RX_Buffer[1] == 0) {
-        FrameSizeToGet = 6;
-      }
-    }
+		if (RX_Buffer[0] == 'h') {
+			if (RX_Buffer[1] == 0) {
+				FrameSizeToGet = 2;
+			}
+		}
+		if (RX_Buffer[0] == 'x') {
+			if (RX_Buffer[1] == 0) {
+				FrameSizeToGet = 3;
+			}
+		}
+		if (RX_Buffer[0] == 'g') {
+			if (RX_Buffer[1] == 0) {
+				FrameSizeToGet = 4;
+			}
+		}
+		if (RX_Buffer[0] == 'f') {
+			if (RX_Buffer[1] == 0) {
+				FrameSizeToGet = 5;
+			}
+		}
+		if (RX_Buffer[0] == 'p') {
+			if (RX_Buffer[1] == 0) {
+				FrameSizeToGet = 6;
+			}
+		}
 
 		//tryb autonomiczny komenda i
 		if (RX_Buffer[0] == 'i') {
@@ -345,17 +346,26 @@ __ramfunc void UART0_DMA_irq_handler(void) {
 	}
 }
 
+void step_detector3(MMA7260_OUTPUT mma7260_output) {
+	//	int output =
+	//			sqrt(pow(mma7260_output.x_normal_mv, 2) + pow(
+	//					mma7260_output.y_normal_mv, 2) + pow(
+	//					mma7260_output.z_normal_mv, 2));
+	int output = ABS(mma7260_output.z_normal_mv);
+	printf("%d \r\n", mma7260_output.z_normal_mv);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // Main
 ////////////////////////////////////////////////////////////////////////////////
 int main(void) {
 	// Inicjalizacje
 
-	//TODO
-	TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
-	TRACE_INFO("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
-	//	memset(mem, 0x00, 39000);
-	TRACE_INFO("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
+	//	//TODO
+	//	TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
+	//	TRACE_INFO("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
+	//	// memset(mem, 0x00, 39000);
+	//	TRACE_INFO("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
 
 	// Enable User Reset and set its minimal assertion to 960 us
 	//  AT91C_BASE_RSTC->RSTC_RMR = AT91C_RSTC_URSTEN | (0x4<<8) | (unsigned int)(0xA5<<24);
@@ -369,7 +379,7 @@ int main(void) {
 
 	// W��czenie timera PIT
 	//  PIT_Init(100,MCK);
-	//	PIT_Configure(100); //pierwsze przerwanie za 100us
+	//		PIT_Configure(100); //pierwsze przerwanie za 100us
 
 	// Wlaczenie PWM
 	PWM_Configure();
@@ -415,8 +425,8 @@ int main(void) {
 	//konfiguracja wyjsc kierunkowych silnikow (in1-in4)
 	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA7); //in1
 	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA8); //in2
-	//	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA9); //in3
-	//	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA10); //in4
+	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA9); //in3
+	AT91F_PIO_CfgOutput(AT91C_BASE_PIOA, PIO_PA10); //in4
 	//TODO
 
 	//konfiguracja linii kamery cam po6030k
@@ -485,40 +495,65 @@ int main(void) {
 	//TODO diódeczka :D :*
 	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, DIODA2);
 
-	AT45DB321D_Initalize();
+	//	while (1) {
+	//			MMA7260_ReadOutput(ADC_CHANNEL_5, ADC_CHANNEL_6, ADC_CHANNEL_7,
+	//					step_detector3);
+	//		}
+
+	TRACE_INFO("--- power on --- \r\n");
+	L3G4200D_PowerOn(&twid);
+	L3G4200D_StreamMode(&twid);
+	TRACE_INFO("--- calib on --- \r\n");
+	L3G4200D_Calibrate(&twid);
+	TRACE_INFO("--- calib done --- \r\n");
+	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
+
+	int count = 0;
+	//	while (1) {
+	//		L3G4200D_ReadData(&twid);
+	//		gyro_data gd = L3G4200D_GetData();
+	//		if (gd.status & 0x08)
+	//			count++;
+	//
+	//		if (count == 100) {
+	//			count = 0;
+	//			TRACE_DEBUG("x: %d, y: %d, z: %d, t: %d \r\n", gd.sAngle_x, gd.sAngle_y, gd.sAngle_z, gd.sTemperature);
+	//		}
+	//
+	//	}
+
+	//	AT45DB321D_Initalize();
 	//		AT45DB321D_SelfTest();
-	AT45DB321D_ClearChip();
+	//	AT45DB321D_ClearChip();
 	//	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
-  PO6030K_Initalize();
-  PO6030K_InitRegisters(&twid);
-	PO6030K_TakePicture();
-	int iAmountOfPackets=0;
+	//  PO6030K_Initalize();
+	//  PO6030K_InitRegisters(&twid);
+	//	PO6030K_TakePicture();
+	int iAmountOfPackets = 0;
 	//TODO
 	for (;;) {
 		switch (FrameSizeToGet) {
 		case 1://640x480 color
-		  iAmountOfPackets = 480;
+			iAmountOfPackets = 480;
 		case 2://320x240 color
-		  iAmountOfPackets = iAmountOfPackets ? iAmountOfPackets : 120;
+			iAmountOfPackets = iAmountOfPackets ? iAmountOfPackets : 120;
 		case 3://160x120 color
-		  iAmountOfPackets = iAmountOfPackets ? iAmountOfPackets : 30;
+			iAmountOfPackets = iAmountOfPackets ? iAmountOfPackets : 30;
 		case 4://640x480 b&w
-		  iAmountOfPackets = iAmountOfPackets ? iAmountOfPackets : 240;
+			iAmountOfPackets = iAmountOfPackets ? iAmountOfPackets : 240;
 		case 5://320x240 b&w
-		  iAmountOfPackets = iAmountOfPackets ? iAmountOfPackets : 60;
+			iAmountOfPackets = iAmountOfPackets ? iAmountOfPackets : 60;
 		case 6://160x120 b&w
 		{
-      iAmountOfPackets = iAmountOfPackets ? iAmountOfPackets : 15;
+			iAmountOfPackets = iAmountOfPackets ? iAmountOfPackets : 15;
 			TRACE_DEBUG("Sending image...");
 			int it = 0;
 			At45 *pAt45 = AT45DB321D_GetPointer();
-			while (!pAt45->pSpid->semaphore)
-			{
+			while (!pAt45->pSpid->semaphore) {
 				while (!pAt45->pSpid->semaphore)
 					SPID_Handler(pAt45->pSpid);
 			}
-			while (it < iAmountOfPackets)
-			{
+			while (it < iAmountOfPackets) {
 				TRACE_DEBUG("Sent row %d", it);
 				AT45DB321D_Read(mem, 1280, 1280 * it + 512);
 				waitms(150);
