@@ -124,3 +124,7 @@ unsigned int stop_counting_steps() {
 			/ 2);
 	return detected_steps;
 }
+
+char is_walking(){
+	return 1;
+}
