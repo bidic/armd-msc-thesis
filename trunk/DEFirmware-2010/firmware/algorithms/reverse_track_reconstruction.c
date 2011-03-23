@@ -8,6 +8,7 @@
 #include "reverse_track_reconstruction.h"
 
 double steps_data[MAX_STEPS];
+
 extern Twid twid;
 extern double curr_gyroscope_angle;
 
@@ -197,6 +198,105 @@ void onDistanceDataRdy(unsigned int rs_output, unsigned int ls_output) {
 
 volatile int offset_angle = 0;
 
+char obstacle_detect(OAA_OUTPUT *result) {
+	ADC_StartDoubleChannelConversion(ADC_CHANNEL_5, ADC_CHANNEL_6,
+			onDistanceDataRdy);
+
+	while (!oa_data_ready)
+		;
+
+	oa_data_ready = 0;
+	*result = avoid_obstacles(level_mask);
+
+	return result->gear_left != result->gear_right;
+}
+
+volatile unsigned char call_count = 0;
+volatile char val = 0;
+volatile char go_prosto_count = 0;
+
+char avoid_obstacle();
+
+char go_prosto() {
+	char result = 0;
+	char step_count = 0;
+
+	if (val == 2) {
+		go_prosto_count++;
+	}
+
+	for (; step_count < 7; step_count++) {
+		ADC_StartDoubleChannelConversion(ADC_CHANNEL_5, ADC_CHANNEL_6,
+				onDistanceDataRdy);
+
+		while (!oa_data_ready)
+			;
+
+		oa_data_ready = 0;
+		OAA_OUTPUT oa_result = avoid_obstacles(level_mask);
+
+		if (oa_result.gear_left == oa_result.gear_right) {
+			PWM_Set(0, oa_result.speed_left);
+			Kierunek(RIGHT_ENGINES, FORWARD_GEAR);
+			Kierunek(LEFT_ENGINES, FORWARD_GEAR);
+			waitms(200);
+		}
+
+		result = avoid_obstacle();
+	}
+
+	return result;
+}
+
+char avoid_obstacle() {
+	char result = 0;
+
+	OAA_OUTPUT oa_result;
+	call_count++;
+
+	if (call_count > 6) {
+		return 1;
+	}
+
+	if (obstacle_detect(&oa_result)) {
+		//		int angle = oa_result.speed_left == 190 ? 45 : 90;
+		int angle = 90;
+		int sign = oa_result.gear_left == FORWARD_GEAR ? 1 : -1;
+
+		turn_of_angle(angle * sign);
+		result = go_prosto();
+		if (!result) {
+			turn_of_angle(-(angle * sign));
+			result = go_prosto();
+
+			if (val == 1) {
+				val = 2;
+				turn_of_angle(-(angle * sign));
+				result = go_prosto();
+			}
+
+			if (!result) {
+				if (call_count == 1) {
+					val = 0;
+					turn_of_angle(angle * sign);
+				} else {
+					if (go_prosto_count > 0) {
+						go_prosto_count--;
+					} else {
+						result = go_prosto();
+					}
+				}
+			}
+		}
+	} else {
+		if (call_count > 1 && !val)
+			val = 1;
+	}
+	call_count--;
+
+	return result;
+}
+
 void reconstruct_reverse_track() {
 	if (get_step_count() > 0) {
 		TRACE_DEBUG("-- reconstruct_reverse_track -- \r\n");
@@ -206,45 +306,32 @@ void reconstruct_reverse_track() {
 		int step_count = get_step_count() - 1;
 
 		for (; step_count >= 0; step_count--) {
-			if(offset_angle != 0){
-				turn_of_angle(-offset_angle);
-				offset_angle = 0;
-			}
 
 			turn_of_angle(steps_data[step_count]);
 
-			unsigned int mariuszek_count = 0;
-			PWM_Set(0, 15);
-			for (; mariuszek_count < 4; mariuszek_count++) {
-				Kierunek(RIGHT_ENGINES, FORWARD_GEAR);
-				Kierunek(LEFT_ENGINES, FORWARD_GEAR);
-				waitms(250);
-
-				//			waitms(2000);
-
-				ADC_StartDoubleChannelConversion(ADC_CHANNEL_5, ADC_CHANNEL_6,
-						onDistanceDataRdy);
-
-				while (!oa_data_ready)
-					;
-
-				oa_data_ready = 0;
-				OAA_OUTPUT oa_result = avoid_obstacles(level_mask);
-
-				if (oa_result.gear_left != oa_result.gear_right) {
-					int angle = oa_result.speed_left == 190 ? 45 : 90;
-					int sign = oa_result.gear_left == FORWARD_GEAR ? 1 : -1;
-
-					turn_of_angle(angle * sign);
-
-					offset_angle += angle * sign;
-					//					PWM_Set(0, 15);
-					//					Kierunek(LEFT_ENGINES, oa_result.gear_left);
-					//					Kierunek(RIGHT_ENGINES, oa_result.gear_right);
-
-					//					waitms(1000);
-				}
-			}
+			go_prosto();
+			//			unsigned int mariuszek_count = 0;
+			//			for (; mariuszek_count < 4; mariuszek_count++) {
+			//				ADC_StartDoubleChannelConversion(ADC_CHANNEL_5, ADC_CHANNEL_6,
+			//						onDistanceDataRdy);
+			//
+			//				while (!oa_data_ready)
+			//					;
+			//
+			//				oa_data_ready = 0;
+			//				OAA_OUTPUT oa_result = avoid_obstacles(level_mask);
+			//
+			//				if (oa_result.gear_left == oa_result.gear_right) {
+			//					PWM_Set(0, oa_result.speed_left);
+			//					Kierunek(RIGHT_ENGINES, FORWARD_GEAR);
+			//					Kierunek(LEFT_ENGINES, FORWARD_GEAR);
+			//					waitms(200);
+			//				}
+			//
+			//				//			waitms(2000);
+			//				avoid_obstacle();
+			//
+			//			}
 		}
 
 		Kierunek(RIGHT_ENGINES, STOP_GEAR);
