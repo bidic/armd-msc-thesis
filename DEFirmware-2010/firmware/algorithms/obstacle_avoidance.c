@@ -14,9 +14,9 @@ void init_oa_configuration() {
 	def_config.distance_level_2 = 900;
 	def_config.distance_level_3 = 700;
 
-	def_config.speed_level_1 = 127;
-	def_config.speed_level_2 = 190;
-	def_config.speed_level_3 = 255;
+	def_config.speed_level_1 = 142;
+	def_config.speed_level_2 = 72;
+	def_config.speed_level_3 = 2;
 }
 
 unsigned int create_level_mask(unsigned int rs_data, unsigned int ls_data) {
