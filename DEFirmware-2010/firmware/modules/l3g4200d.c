@@ -37,7 +37,7 @@ void L3G4200D_ReadData(Twid *twid) {
 			for (iter = 0; iter < 3; iter++) {
 				val[iter]
 						= ((short) BIT8TO16(szBuff[3 + iter*2], szBuff[2 + iter*2]));
-				L3G4200D_angle[iter] += ((4.03846 * (((double) val[iter])
+				L3G4200D_angle[iter] += ((3.95 * (((double) val[iter])
 						+ L3G4200D_offset[iter])) / (100000.0));
 			}
 			//			TRACE_INFO("test");

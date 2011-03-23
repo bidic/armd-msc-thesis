@@ -38,4 +38,6 @@ unsigned int stop_counting_steps();
 
 unsigned int get_step_count();
 
+char is_walking();
+
 #endif /* PEDOMETER_H_ */
