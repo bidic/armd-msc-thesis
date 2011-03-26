@@ -8,6 +8,15 @@ W tym rozdziale zostanie opisana konfiguracja pierwotna robota z wyszczególnien
 \end{figure}
 
 \section{Analiza sprzętu}
+Dark Explorer jest autonomicznym robotem mobilnym z wbudowaną kolorową kamerą cyfrową VGA. Jego podstawowe możliwości to:
+\begin{itemize}
+ \item jazda ze zmienną prędkością w przód, tył, lewo oraz prawo
+ \item komunikacja z urządzeniami zewnętrznymi przy pomocy technologii bluetooth
+ \item wykonywanie zdjęć z maksymalną rozdzielczością $160x100$ pikseli w kolorze oraz $320x200$ pikseli w odcieniach szarości
+ \item poruszanie wieżyczką na której zainstalowana jest kamera
+ \item wykrywanie prostych wzorców przy pomocy analizy obrazu oraz podążanie za nimi
+\end{itemize}
+
 \subsection{Elementy elektroniczne}
 Dark Explorer został wyposażony w mikrokontroler zarządzający AT91Sam7s256 o częstotliwości pracy zegara maksymalnie do 50 MHz oraz wbudowanej szybkiej pamięci sram 64 kB. Mikrokontroler ten jest bogaty w różnego rodzaju urządzenia peryferyjne takie jak na przykład: TWI\footnote{TWI -- Two Wire Interfece znany również jako $I^{2}C$, interfejs szeregowej komunikacji danych}, RTT\footnote{RTT -- Real Time Timer, służy do odmierzania dłuższych odcinków czasu}, PDC\footnote{PDC -- Peripheral DMA Controller, kontroler DMA}, AIC\footnote{AIC -- Advanced Interrupt Controller, kontroler przerywań}, PWM\footnote{PWM -- Pulse Width Modulation Controller}, ADC\footnote{ADC -- Analog to Digital Converter, konwerter analogowo cyfrowy}. To tylko część z nich. Dzięki tak wielkiemu wyborowi urządzeń peryferyjnych mikrokontroler ten daje nam duże możliwości rozwoju konfiguracji. Częstotliwość pracy mikrokontroler ARM7 jest wystarczająca do zadań przez niego wykonywanych.
 \\
