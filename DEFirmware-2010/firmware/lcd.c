@@ -47,12 +47,12 @@ unsigned char lcdBuff = 0;
 // D7-A3
 // RS-A4
 // EN-A5
-#define LCDRS(arg)  if(arg==1) lcdBuff=lcdBuff | 1; else if(arg==0) lcdBuff= ~(~lcdBuff | 1); TWID_Write(&twid, AT24C_ADDRESS, 0, 0, &lcdBuff, 1, 0);
-#define LCDE(arg)   if(arg==1) lcdBuff=lcdBuff | 2; else if(arg==0) lcdBuff= ~(~lcdBuff | 2); TWID_Write(&twid, AT24C_ADDRESS, 0, 0, &lcdBuff, 1, 0);
-#define LCDD4(arg)  if(arg==1) lcdBuff=lcdBuff | 4; else if(arg==0) lcdBuff= ~(~lcdBuff | 4); TWID_Write(&twid, AT24C_ADDRESS, 0, 0, &lcdBuff, 1, 0);
-#define LCDD5(arg)  if(arg==1) lcdBuff=lcdBuff | 8; else if(arg==0) lcdBuff= ~(~lcdBuff | 8); TWID_Write(&twid, AT24C_ADDRESS, 0, 0, &lcdBuff, 1, 0);
-#define LCDD6(arg)  if(arg==1) lcdBuff=lcdBuff | 16; else if(arg==0) lcdBuff= ~(~lcdBuff | 16); TWID_Write(&twid, AT24C_ADDRESS, 0, 0, &lcdBuff, 1, 0);
-#define LCDD7(arg)  if(arg==1) lcdBuff=lcdBuff | 32; else if(arg==0) lcdBuff= ~(~lcdBuff | 32); TWID_Write(&twid, AT24C_ADDRESS, 0, 0, &lcdBuff, 1, 0);
+#define LCDRS(arg)  if(arg==1) lcdBuff=lcdBuff | 32; else if(arg==0) lcdBuff= ~(~lcdBuff | 32); TWID_Write(&twid, AT24C_ADDRESS, 0, 0, &lcdBuff, 1, 0);
+#define LCDE(arg)   if(arg==1) lcdBuff=lcdBuff | 16; else if(arg==0) lcdBuff= ~(~lcdBuff | 16); TWID_Write(&twid, AT24C_ADDRESS, 0, 0, &lcdBuff, 1, 0);
+#define LCDD4(arg)  if(arg==1) lcdBuff=lcdBuff | 8;  else if(arg==0) lcdBuff= ~(~lcdBuff | 8);  TWID_Write(&twid, AT24C_ADDRESS, 0, 0, &lcdBuff, 1, 0);
+#define LCDD5(arg)  if(arg==1) lcdBuff=lcdBuff | 4;  else if(arg==0) lcdBuff= ~(~lcdBuff | 4);  TWID_Write(&twid, AT24C_ADDRESS, 0, 0, &lcdBuff, 1, 0);
+#define LCDD6(arg)  if(arg==1) lcdBuff=lcdBuff | 2;  else if(arg==0) lcdBuff= ~(~lcdBuff | 2);  TWID_Write(&twid, AT24C_ADDRESS, 0, 0, &lcdBuff, 1, 0);
+#define LCDD7(arg)  if(arg==1) lcdBuff=lcdBuff | 1;  else if(arg==0) lcdBuff= ~(~lcdBuff | 1);  TWID_Write(&twid, AT24C_ADDRESS, 0, 0, &lcdBuff, 1, 0);
 
 //#define LCDCONT(arg)  if(arg==1) IOPORT0_PD|=0x01; else if(arg==0) IOPORT0_PD&=~0x01
 //#define LCDLIGHT(arg) if(arg==1) IOPORT0_PD|=0x01; else if(arg==0) IOPORT0_PD&=~0x01

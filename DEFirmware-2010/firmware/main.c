@@ -493,6 +493,16 @@ int main(void) {
 	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, CAM_RESET);
 
 	//TODO diódeczka :D :*
+  LcdInit();
+  for(;;)
+  {
+    LcdPrint("0123456789012345");
+    LcdSetCursor(0x40);
+    LcdPrint("6789012345678901");
+    waitms(1000);
+    LcdClear();
+  }
+
 	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, DIODA2);
 
 	//	while (1) {
@@ -530,6 +540,8 @@ int main(void) {
 	//  PO6030K_InitRegisters(&twid);
 	//	PO6030K_TakePicture();
 	int iAmountOfPackets = 0;
+
+
 	//TODO
 	for (;;) {
 		switch (FrameSizeToGet) {
