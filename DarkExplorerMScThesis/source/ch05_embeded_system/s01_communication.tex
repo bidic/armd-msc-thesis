@@ -12,7 +12,7 @@ strumienia bajtów bez żadnych dodatkowych metadanych.
 \begin{figure}[h!]
  \centering
  \includegraphics[height=18mm]{../images/ch05/old_req_schema.png}
- \caption{Schemat ramki komunikacyjej w pierwotnej wersji robota}
+ \caption{Schemat ramki komunikacyjnej w pierwotnej wersji robota}
  \label{fig:OldCommFrame}
 \end{figure}
 
@@ -22,8 +22,8 @@ związanych z obsługą protokołu komunikacji. Nie mniej jednak tego rodzaju
 komunikacja wymaga, od programisty tworzącego aplikacje klienckie, głębokiej
 znajomości sposobu realizacji poszczególnych poleceń, tak aby mógł on
 synchronizować komunikację zarówno pod względem czasowy jak i ilościowym. Kolejną
-znaczącą niedogodnością jest fakt, iż bardzo często nawet najdrobnijesze zmiany w
-oprogramowaniu robota wymuszają wprowadzanie zmian w aplikacji klienta pomimo
+znaczącą niedogodnością jest fakt, iż bardzo często nawet najdrobniejsze zmiany
+w oprogramowaniu robota wymuszają wprowadzanie zmian w aplikacji klienta pomimo
 tego, że sposób wymiany komunikatów pozostał niezmieniony. Dotychczasowy sposób
 wymiany danych nie gwarantował również mechanizmów wykrywania i zapobiegania
 błędów transmisji na poziomie aplikacji. Wykorzystywany do komunikacji protokół
@@ -31,23 +31,23 @@ RFCOMM\footnote{Radio Frequency Communication} będący rozszerzeniem protokołu
 L2CAP\footnote{Logical Link Control And Adaptation Protocol} gwarantuje nam
 korekcję błędów na poziomie pakietów, niestety na poziomie aplikacji programista
 musi samodzielnie wnioskować rozmiar prawdopodobnej odpowiedzi oraz kolejność
-przeysłanych strumieni danych co w warunkach produkcyjnych może być czasami wręcz
-niemożliwe.
+przesyłanych strumieni danych co w warunkach produkcyjnych może być czasami
+wręcz niemożliwe.
 
 Aby zaadresować wszystkie napotkane w czasie rozwoju robota problemy konieczne
-okazało się zaprojektowanie nowego protokołu wartstwy aplikacji który ułatwiłby
+okazało się zaprojektowanie nowego protokołu warstwy aplikacji który ułatwiłby
 tworzenie oprogramowania współpracującego z rozbudowaną wersją robota Dark
 Explorer. Takim sposobem narodził się projekt protokołu komunikacji opartego o
 ramki z 16 bitowym nagłówkiem. W ramach opracowanego standardu wyróżnić można
-dwa rodzaje ramek. Do pierwszej grupy zaliczyć można ramki rządań wysyłane przez
-urządzenia zewnętrzne w celu zlecenia robotowi wykonania manewru lub ropoczęcia
-kolejnych etapów bardziej złożonej procedury. Diagram przedstawiający stukturę
-funkcjonalną ramki rządania widoczny jest na rysunku \ref{fig:RfcommReqFrame}.
+dwa rodzaje ramek. Do pierwszej grupy zaliczyć można ramki żądań wysyłane przez
+urządzenia zewnętrzne w celu zlecenia robotowi wykonania manewru lub rozpoczęcia
+kolejnych etapów bardziej złożonej procedury. Diagram przedstawiający strukturę
+funkcjonalną ramki żądania widoczny jest na rysunku \ref{fig:RfcommReqFrame}.
 
 \begin{figure}[h!] 
  \centering
  \includegraphics[width=\textwidth]{../images/ch05/req_schema2.png}
- \caption{Schemat funkcjonalny ramki komunikacyjej z rządaniem}
+ \caption{Schemat funkcjonalny ramki komunikacyjnej z żądaniem}
  \label{fig:RfcommReqFrame}
 \end{figure}
 
@@ -56,23 +56,50 @@ robot ma wykonać. Pozwala to na zdefiniowanie 64 niezależnych funkcjonalnie
 komend w ramach których, w wersji podstawowej, możliwe jest uruchomienie 256
 niezależnych wariantów polecenia. W przypadku wykorzystania wersji rozszerzonej
 nagłówka programista ma do dyspozycji 24 bity które może przeznaczyć na dane
-polecenia i identyfikator podpolecenia w proporcjach odpowiadających wymaganiom
-programisty. Kolejny bit nagłówka przeznaczony został na flagę potwierdzenia.
-Umieszczenie 1 na wspomnianym bicie spowoduje iż robot po zakończeniu wykonywnia
-rządania prześle ramkę potwierdzającą ze statusem wykonania akcji. Ułatwia to
-programiście wykonywanie czynności sekwencyjnych takich jak np. wykonanie
+polecenia i identyfikator wariantu komendy w proporcjach odpowiadających
+wymaganiom programisty. Kolejny bit nagłówka przeznaczony został na flagę potwierdzenia.
+Umieszczenie 1 na wspomnianym bicie spowoduje iż robot po zakończeniu
+wykonywania żądania prześle ramkę potwierdzającą ze statusem wykonania akcji.
+Ułatwia to programiście wykonywanie czynności sekwencyjnych takich jak np. wykonanie
 zdjęcia za pomocą kamery i przesłanie go do aplikacji klienta. Ósmy bit nagłówka
 zarezerwowany został na flagę z informacją o użyciu rozszerzonej wersji
 nagłówka. Wymuszenie 1 na tym bicie spowoduje, że robot będzie oczekiwał na
-dodatkowe 16 bitów danych rządania które mogą zostać wykorzystane do przesłania
+dodatkowe 16 bitów danych żądania które mogą zostać wykorzystane do przesłania
 bardziej skomplikowanej konfiguracji wykonania polecenia. Kolejne osiem bitów
 stanowi tzw. podstawową konfigurację polecenia, która może służyć jako
 identyfikator przy uruchamianiu odpowiedniego wariantu polecenia lub jako nośnik
 danych potrzebnych do zrealizowania przesłanej komendy. W przypadku gdyby
-rozmiar bufora konfiugracyjnego nie pozwalał na przechowanie wszystkich
+rozmiar bufora konfiguracyjnego nie pozwalał na przechowanie wszystkich
 wymaganych danych programista może wykorzystać dodatkowe 2 bajty konfiguracji
-rozszrzonej.
+rozszerzonej.
 
-Do drugiej grupy 
+Drugi rodzaj ramek stanowią powiadomienia informujące użytkownika o rezultacie 
+wykonania przesłanej akcji lub aktualnym stanie robota. Podobnie jak w przypadku
+ramki z żądaniem pierwsze 6 bitów zarezerwowane jest na unikalny identyfikator
+polecenia dla którego przesyłana jest odpowiedź. Kolejny bit zawiera flagę
+informującą o rezultacie zakończenia akcji. Prawidłowe zakończenie wykonania
+polecenia sygnalizowane jest ustawieniem zera na wspomnianym bicie. Wystąpienie
+błędu podczas realizacji polecenia lub przesłanie komendy w nieprawidłowym
+formacie spowoduje ustawienie 1 na bicie STATE. W przypadku gdy ilość
+danych do przesłania przekracza maksymalny dopuszczalny rozmiar
+pojedynczej ramki możliwe jest podzielenie danych na fragmenty i przesłanie ich
+za pomocą sekwencji komunikatów. Koniec sekwencji sygnalizowany jest za pomocą
+bitu EOT\footnote{End of Transmission}. Dostępność tego rodzaju trybu pozwala
+na szybką transmisję większych ilości danych bez konieczności wysyłania żądań dla poszczególnych fragmentów.
 
+\begin{figure}[h!] 
+ \centering
+ \includegraphics[width=\textwidth]{../images/ch05/resp_schema2.png}
+ \caption{Schemat funkcjonalny ramki komunikacyjnej z odpowiedzią}
+ \label{fig:RfcommRespFrame}
+\end{figure}
 
+Kolejne 8 bitów nagłówka odpowiedzi stanowi informacja o ilości bajtów
+przesyłanych w sekcji danych ramki. Ogranicza to maksymalny rozmiar ramki przez
+co transmisja danych nie powoduje licznych retransmisji które bardzo często
+pojawiają się w przypadku transmisji większych ilości danych. Informacja o
+szerokości pola danych ramki może również służyć jako suma kontrolna pozwalająca
+na sprawdzenie czy wszystkie zadeklarowane dane zostały prawidłowo odebrane.
+Pozwala to programiście tworzącemu oprogramowanie klienta na monitorowanie
+transmisji i ewentualne reagowanie w przypadku pojawiania się problemów z
+płynnością transmisji. 
