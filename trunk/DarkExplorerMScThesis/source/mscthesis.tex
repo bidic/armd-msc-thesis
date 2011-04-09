@@ -2,6 +2,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{polski}
+\usepackage{mdwlist}
 \usepackage{helvet}
 \usepackage{graphicx}
 \usepackage{color}
@@ -36,6 +37,17 @@ top=25mm, bottom=25mm}
 \brokenpenalty=10000 %nie dieli wyrazów pomiędzy stronami 
 \clubpenalty=10000 %nie pozostawia sierot pojedynczych
 \widowpenalty=10000 %nie pozostawia wdów pojedynczych
+
+\newenvironment{desc}
+{\begin{description}
+  \setlength{\itemsep}{0mm}
+  \setlength{\parskip}{0pt}
+  %\setlength{\labelwidth}{15mm}
+  \setlength{\labelsep}{10mm}
+  %\setlength{\itemindent}{15mm}
+  %\setlength{\listparindent}{\parindent}
+  \setlength{\parsep}{1pt}}
+{\end{description}}
 
 \begin{document}
 
