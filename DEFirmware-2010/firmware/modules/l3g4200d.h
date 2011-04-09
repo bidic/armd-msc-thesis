@@ -12,7 +12,7 @@
 #include <utility/trace.h>
 #include <utility/assert.h>
 
-#define L3G4200D_ADDRESS                        0x68
+#define L3G4200D_ADDRESS                        0x69
 #define L3G4200D_CTRL_REG1                      0x20
 #define L3G4200D_CTRL_REG4                      0x23
 #define L3G4200D_CMD_CTRL_REG1_POWER_ON         0x0F

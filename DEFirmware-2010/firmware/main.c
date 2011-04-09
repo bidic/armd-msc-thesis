@@ -41,6 +41,8 @@
 
 #include "peripherals/adc_helper.h"
 
+#define PIN_PA15  {PIO_PA15, AT91C_BASE_PIOA, AT91C_ID_PIOA, PIO_OUTPUT_0, PIO_DEFAULT}
+
 //flaga dla timera PIT
 int PitState = 0;
 
@@ -49,6 +51,7 @@ int PitState = 0;
 
 /// Pio pins to configure.
 static const Pin pins[] = { PINS_TWI };
+static const Pin multiplexer_ctrl[] = { PIN_PA15 };
 
 /// TWI driver instance.
 Twid twid;
@@ -87,8 +90,20 @@ int xwzorzec = 0, ywzorzec = 0, WzorzecCount = 0, RozpoznanyX, RozpoznanyY;
 char SilnikiEnable = 0;
 
 volatile int xmin, xmax, ymin, ymax;
+volatile char adc_ready = 0;
+volatile unsigned int channel_5;
+volatile unsigned int channel_6;
+volatile unsigned int channel_7;
 
 extern char mem[60000];
+
+void adc_conv_done(unsigned int a, unsigned int b, unsigned int c) {
+	channel_5 = a;
+	channel_6 = b;
+	channel_7 = c;
+	adc_ready = 1;
+
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Przerwanie od timera PIT
@@ -355,6 +370,23 @@ void step_detector3(MMA7260_OUTPUT mma7260_output) {
 	printf("%d \r\n", mma7260_output.z_normal_mv);
 }
 
+double cangle(double x, double y) {
+	if (!x && !y)
+		return 0;
+
+	if (!x)
+		return y < 0 ? 270.0 : 90.0;
+
+	double angle = atan(y / x);
+
+	if (y < 0 && x > 0)
+		angle += M_PI * 2.0;
+	else if (x < 0)
+		angle += M_PI;
+
+	return angle * 180.0 / M_PI;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // Main
 ////////////////////////////////////////////////////////////////////////////////
@@ -362,10 +394,10 @@ int main(void) {
 	// Inicjalizacje
 
 	//	//TODO
-	//	TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
-	//	TRACE_INFO("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
-	//	// memset(mem, 0x00, 39000);
-	//	TRACE_INFO("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
+//	TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
+//	TRACE_INFO("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
+//	// memset(mem, 0x00, 39000);
+//	TRACE_INFO("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
 
 	// Enable User Reset and set its minimal assertion to 960 us
 	//  AT91C_BASE_RSTC->RSTC_RMR = AT91C_RSTC_URSTEN | (0x4<<8) | (unsigned int)(0xA5<<24);
@@ -385,6 +417,7 @@ int main(void) {
 	PWM_Configure();
 
 	PIO_Configure(pins, PIO_LISTSIZE(pins));
+	PIO_Configure(multiplexer_ctrl, 1);
 
 	// Configure TWI
 	// In IRQ mode: to avoid problems, the priority of the TWI IRQ must be max.
@@ -490,18 +523,70 @@ int main(void) {
 	}
 
 	// wyjscie ze stanu reset
-	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, CAM_RESET);
+	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, CAM_RESET);
 
 	//TODO diódeczka :D :*
-  LcdInit();
-  for(;;)
-  {
-    LcdPrint("0123456789012345");
-    LcdSetCursor(0x40);
-    LcdPrint("6789012345678901");
-    waitms(1000);
-    LcdClear();
-  }
+
+
+	LcdInit();
+	LcdClear();
+	LcdPrint("     Welcome    ");
+	LcdSetCursor(0x40);
+	LcdPrint("Dark Explorer 2");
+
+	//	TRACE_INFO("--- power on --- \r\n");
+	//	//	LcdPrint("--- power on ---");
+	//	L3G4200D_PowerOn(&twid);
+	//	L3G4200D_StreamMode(&twid);
+	//	TRACE_INFO("--- calib on --- \r\n");
+	//	//	LcdPrint("--- calib on ---");
+	//	L3G4200D_Calibrate(&twid);
+	//	TRACE_INFO("--- calib done --- \r\n");
+	//	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
+	//	TRACE_INFO("--- adc init --- \r\n");
+	//	ADC_Configure();
+	//	PIO_Set(multiplexer_ctrl);
+	//
+	//	volatile unsigned int iter = 0;
+	//	for (;;) {
+	//		//    LcdPrint("0123456789012345");
+	//		//		L3G4200D_ReadData(&twid);
+	//		//		mag_info current_mg_i = MMC212xM_GetMagneticFieldInfo(&twid);
+	//		//		TRACE_INFO("--- x: %d,  y: %d, a: %d \r\n", (int)(current_mg_i.x * 100), (int)(current_mg_i.y * 100), (int) (cangle(current_mg_i.x, current_mg_i.y) *100));
+	//		if (++iter % 100000 == 0) {
+	//			//			LcdClear();
+	//			//			char lcd_output[16];
+	//			//			gyro_data data = L3G4200D_GetData();
+	//			//			sprintf(lcd_output, "x:%3d y:%3d", data.sAngle_x, data.sAngle_y);
+	//			//			LcdPrint(lcd_output);
+	//			//			LcdSetCursor(0x40);
+	//			//			char lcd_output2[16];
+	//			//			sprintf(lcd_output2, "z: %3d a:%3d", data.sAngle_z, (int) cangle(
+	//			//					current_mg_i.x, current_mg_i.y));
+	//			//			LcdPrint(lcd_output2);
+	//
+	//			//ADC
+	//
+	//			ADC_StartTripleChannelConversion(ADC_CHANNEL_5, ADC_CHANNEL_6,
+	//					ADC_CHANNEL_7, adc_conv_done);
+	//
+	//			while (!adc_ready)
+	//				;
+	//
+	//			adc_ready = 0;
+	//			LcdClear();
+	//			char lcd_output[16];
+	//			sprintf(lcd_output, "%4d %4d", channel_5, channel_6);
+	//			LcdPrint(lcd_output);
+	//			LcdSetCursor(0x40);
+	//			char lcd_output2[16];
+	//			sprintf(lcd_output2, "%4d", channel_7);
+	//			LcdPrint(lcd_output2);
+	//
+	//			iter = 0;
+	//		}
+	//
+	//	}
 
 	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, DIODA2);
 
@@ -510,13 +595,6 @@ int main(void) {
 	//					step_detector3);
 	//		}
 
-	TRACE_INFO("--- power on --- \r\n");
-	L3G4200D_PowerOn(&twid);
-	L3G4200D_StreamMode(&twid);
-	TRACE_INFO("--- calib on --- \r\n");
-	L3G4200D_Calibrate(&twid);
-	TRACE_INFO("--- calib done --- \r\n");
-	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
 
 	int count = 0;
 	//	while (1) {
@@ -532,15 +610,14 @@ int main(void) {
 	//
 	//	}
 
-	//	AT45DB321D_Initalize();
-	//		AT45DB321D_SelfTest();
-	//	AT45DB321D_ClearChip();
-	//	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
-	//  PO6030K_Initalize();
-	//  PO6030K_InitRegisters(&twid);
-	//	PO6030K_TakePicture();
+//	AT45DB321D_Initalize();
+//	AT45DB321D_SelfTest();
+//	AT45DB321D_ClearChip();
+//	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
+//	PO6030K_Initalize();
+//	PO6030K_InitRegisters(&twid);
+//	PO6030K_TakePicture();
 	int iAmountOfPackets = 0;
-
 
 	//TODO
 	for (;;) {
