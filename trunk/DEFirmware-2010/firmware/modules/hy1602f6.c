@@ -40,19 +40,15 @@ void HY1602F6_SendNibble(char nibble) {
 	}
 
 	HY1602F6_EN(1);
-	//delay(SHORT_DELAY);
 	waitms(1);
 	HY1602F6_EN(0);
-	//delay(SHORT_DELAY);
 	waitms(1);
 }
 
 void HY1602F6_SendByte(char byte, int delay) {
 	HY1602F6_SendNibble(byte >> 4);
-	//delay(xt);
 	waitms(delay);
 	HY1602F6_SendNibble(byte);
-	//  delay(xt);
 	waitms(delay);
 }
 
@@ -67,7 +63,7 @@ void HY1602F6_WriteCmd(char cmd, int delay) {
 }
 
 void HY1602F6_ClearDisplay(void) {
-	HY1602F6_WriteCmd(0x01, 10);
+	HY1602F6_WriteCmd(0x01, 1);
 }
 
 void HY1602F6_PrintText(const char *text) {
@@ -76,72 +72,53 @@ void HY1602F6_PrintText(const char *text) {
 	}
 }
 
-//void HY1602F6_PrintChar(char character) {
-//	HY1602F6_WriteData(character);
-//}
-
 void HY1602F6_SetCursorPos(unsigned char pos) {
-	HY1602F6_WriteCmd(0x80 + pos, 10);
+	HY1602F6_WriteCmd(0x80 + pos, 1);
 }
 
 void HY1602F6_SetCursorHome(void) {
 	HY1602F6_WriteCmd(0x02, 10);
 }
 
-void HY1602F6_SetCursor(unsigned char x, unsigned char y) {
-	switch (y) {
-	case 1:
-		y = 0x40;
-		break;
-	case 2:
-		y = 0x14;
-		break;
-	}
-	HY1602F6_WriteCmd(0x80 + y + x, 10);
+void HY1602F6_StartNextLine() {
+	HY1602F6_WriteCmd(0x80 + 0x40, 10);
 }
 
 void HY1602F6_Init(void) {
-	//	unsigned int i;
-//
-//	AT91C_BASE_PMC->PMC_PCER = 1 << AT91C_ID_TWI;
-//	TWI_ConfigureMaster(AT91C_BASE_TWI, TWCK, BOARD_MCK);
-//	TWID_Initialize(&twid, AT91C_BASE_TWI);
-
-	// Wait at least 10 ms
-	//	for (i = 0; i < 100000; i++)
-	//		;
-	waitms(10);
+	TRACE_DEBUG("-- HY1602F6 Display initialization -- \r\n");
 
 	HY1602F6_EN(0);
 	TWID_Write(&twid, AT24C_ADDRESS, 0, 0, &lcd_buffer, 1, 0);
 	TWI_Stop(twid.pTwi);
-	//	delay(100000);
-	waitms(10);
-
 	HY1602F6_WriteData(0);
-
 	HY1602F6_RS(0);
 	HY1602F6_SendNibble(0x33);
-	//	delay(LONG_DELAY);
-	waitms(10);
 	HY1602F6_SendNibble(0x33);
-	//	delay(LONG_DELAY);
-	waitms(10);
 	HY1602F6_SendNibble(0x33);
-	//	delay(LONG_DELAY);
-	waitms(10);
 	HY1602F6_SendNibble(0x22);
-	//	delay(LONG_DELAY);
-	waitms(10);
 	HY1602F6_WriteData(0);
-	//	delay(LONG_DELAY);
-	waitms(10);
+	HY1602F6_WriteCmd(0x07, 1);
+	HY1602F6_WriteCmd(0x06, 1); // disable display shift and set incremental mode
+	HY1602F6_WriteCmd(0x0C, 1); // disable a blinking cursor
+	HY1602F6_WriteCmd(0x01, 1); // clear lcd display
+	HY1602F6_WriteCmd(0x02, 1); // set cursor home
 
-	/* Clear display.
-	 */
-	HY1602F6_WriteCmd(0x07, 2 * 10);
-	HY1602F6_WriteCmd(0x06, 2 * 10); // disable display shift and set incremental mode
-	HY1602F6_WriteCmd(0x0C, 2 * 10); // disable a blinking cursor
-	HY1602F6_WriteCmd(0x01, 10); // clear lcd display
-	HY1602F6_WriteCmd(0x02, 10); // set cursor home
+	TRACE_DEBUG("-- HY1602F6 Init completed -- \r\n");
+}
+
+void HY1602F6_SetProgress(unsigned char state, unsigned char clear) {
+	int level = (32 * state) / 255;
+	unsigned char iter = 0;
+	if (clear) {
+		HY1602F6_ClearDisplay();
+	} else {
+		HY1602F6_SetCursorHome();
+	}
+
+	while (level-- > 0) {
+		HY1602F6_PrintText("#");
+		if (++iter == 16) {
+			HY1602F6_StartNextLine();
+		}
+	}
 }

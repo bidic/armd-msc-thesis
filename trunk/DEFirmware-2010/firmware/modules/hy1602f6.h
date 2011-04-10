@@ -9,12 +9,8 @@
 #define HY1602F6_H_
 
 #include <pio/pio.h>
-//#include <aic/aic.h>
-//#include <pmc/pmc.h>
-//#include <pit/pit.h>
 #include <dbgu/dbgu.h>
 #include <twi/twi.h>
-//#include <utility/math.h>
 #include <utility/assert.h>
 #include <utility/trace.h>
 #include <drivers/async/async.h>
@@ -26,10 +22,9 @@
 void HY1602F6_Init(void);
 void HY1602F6_PrintText(const char*);
 void HY1602F6_ClearDisplay(void);
-void HY1602F6_SetCursorPos(unsigned char pos);
+void HY1602F6_SetCursorPos(unsigned char);
 void HY1602F6_SetCursorHome(void);
-
-
-
+void HY1602F6_StartNextLine();
+void HY1602F6_SetProgress(unsigned char val, unsigned char clear);
 
 #endif /* HY1602F6_H_ */
