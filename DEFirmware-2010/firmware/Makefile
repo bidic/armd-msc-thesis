@@ -106,7 +106,7 @@ VPATH += $(PERIPH)/cp15 $(PERIPH)/pit $(PERIPH)/pwmc $(PERIPH)/usart $(PERIPH)/s
 VPATH += $(BOARDS)/$(BOARD) $(BOARDS)/$(BOARD)/$(CHIP)
 
 # Objects built from C source files
-C_OBJECTS = main.o lcd.o
+C_OBJECTS = main.o 
 C_OBJECTS += adc_helper.o
 C_OBJECTS += obstacle_avoidance.o  pedometer.o reverse_track_reconstruction.o 
 C_OBJECTS += freescale_mma7260.o gyroscope.o sharp_gp2d12.o mmc212xm.o l3g4200d.o po6030k.o at45db321d.o cd4053b.o hy1602f6.o
