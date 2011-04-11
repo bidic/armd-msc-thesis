@@ -1,0 +1,62 @@
+\section{Biblioteka programistyczna dla platformy .NET}
+Jednym z poważniejszych problemów zauważonych podczas analizy pierwotnej
+konfiguracji robota był brak bibliotek umożliwiających tworzenie oprogramowania
+które pozwalałoby na dowolne wykorzystanie możliwości oferowanych przez
+konfigurację sprzętową robota. Brak tego rodzaju narzędzi znacząco ogranicza
+możliwości rozwoju robota gdyż każda próba tworzenia nowego oprogramowania wymaga
+od programisty zagłębiania się w szczegóły implementacji systemu wbudowanego
+który kontroluje działanie robota. Aby usunąć tak poważne ograniczenie
+zaprojektowana została biblioteka mająca na celu udostępnienie narzędzi
+pozwalających programiście na skupienie się jedynie wysokopoziomowej
+funkcjonalności bez konieczności szczegółowej analizy protokołu komunikacji i
+zasad działania poszczególnych funkcji robota.
+
+Przed przystąpieniem do implementacji konieczne jest podjęcie rozważnej decyzji z
+wyborem środowiska i języka programowania w jakim biblioteka zostanie napisana.
+Biorąc pod uwagę ciągle rosnącą popularność obiektowych języków programowania
+oczywistym wydaje się być wybór języka właśnie z tej rodziny. Decydującym
+aspektem, wpływającym na ostateczny wybór docelowej platformy rozwojowej, jest
+więc ilość dostępnych bibliotek oraz przenośność kodu pomiędzy dostępnymi na
+rynku platformami sprzętowymi. Po przeprowadzeniu wnikliwej analizy ostateczny
+wybór padł na język C\# oraz platformę .NET. Wybór motywowany jest faktem iż
+platforma .NET jest jednym z najdynamiczniej rozwijających środowisk
+programistycznych ostatnich lat. Firma Microsoft dostarcza szereg bibliotek
+dodatkowych oraz narzędzi pozwalających na szybkie tworzenie oprogramowania
+działającego zarówno na urządzeniach mobilnych jaki i stacjonarnych. Dzięki
+pracy programistów w ramach projektu Mono\footnote{Więcej informacji na temat projektu
+Mono można znaleźć pod adresem strony internetowej http://www.mono-project.com/}
+powstała platforma umożliwiająca uruchamianie aplikacji napisanych w języku C\#
+nie tylko pod kontrolą systemu Windows, ale również pod systemami z rodziny Linux
+i Mac. Dodatkowym atutem platformy .NET jest bardzo duża liczba bibliotek
+dodatkowych dostarczanych przez środowiska programistów opensource.
+
+W ramach pracy magisterskiej zaprojektowana została biblioteka programistyczna w
+języku C\#. Docelową platformą uruchomieniową dla przygotowanej biblioteki są
+systemy z rodziny Windows, Windows Mobile oraz Linux. Przy tworzeniu biblioteki
+brane pod uwagę były najnowsze trendy w dziedzinie programistycznych wzorców
+projektowych przy jednoczesnym zachowaniu spójności i uniwersalności kodu dla
+poszczególnych środowisk uruchomieniowych. W wyniku implementacji powstała
+wielowątkowa biblioteka oparta na zdarzeniach pozwalająca na dostęp do wszystkich
+funkcji robota za pomocą intuicyjnego interfejsu programistycznego. Biblioteka
+udostępnia szerokie spektrum metod pozwalających na swobodne sterowanie i
+zarządzanie dostępnymi funkcjami robota. Wśród metod bibliotecznych znaleźć można
+funkcje pozwalające na bezpośrednią interakcję z poszczególnymi podzespołami
+bazowymi, jak również takie które umożliwiają wykonywanie predefiniowanych
+sekwencji zadań przewidzianych przez autorów projektu. Biblioteka pokrywa swoją
+funkcjonalnością nie tylko wsparcie dla wszystkich dostępnych roszerzeń
+sprzętowych robota, ale również dostarcza interfejs pozwalający na automatyczną
+obsługę połączenia z robotem z wykorzystaniem technologii bluetooth. Fakt ten
+jest o tyle istotny, że proces komunikacji okazał się być najbardziej wrażliwym
+elementem podczas migracji biblioteki pomiędzy poszczególnymi platformami
+softwareowymi. Szczegółowa lista wszystkich dostępnych funkcji wraz z niezbędnym
+komentarzem zamieszczona została w dodatku poświęconym kodu źródłowemu
+stworzonego w ramach pracy magisterskiej. Taki sposób implementacji pozwala na
+tworzenie oprogramowania współpracującego z nową wersją robota nawet przez osoby
+nie posiadające dostatecznej wiedzy i umiejętności tworzenia oprogramowania do
+obsługi systemów wbudowanych.
+
+W ramach pracy magisterskiej stworzona została również przykładowa aplikacja
+sterująca prezentująca wszystkie możliwości oferowane zarówno przez warstwę
+aplikacyjną jak i sprzętową robota Dark Explorer. 
+
+\textcolor{red}{TODO: zrzut ekranu aplikacji sterującej dla .net'a}
