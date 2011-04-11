@@ -17,7 +17,7 @@ z jaką obraca się ciało. \begin{figure}[!ht]
  \caption{Siła Coriolis'a}
  \label{fig:Coriolis}
 \end{figure}
-Załóżmy że ciało o masie $m$ porusza się z prędkością $\vec{v}$ oraz układ w
+Załóżmy, że ciało o masie $m$ porusza się z prędkością $\vec{v}$ oraz układ w
 którym przemieszcza się to ciało obraca się z prędkością kątową $\vec{\omega}$. W
 takich warunkach ciało o którym mowa zostanie odchylone od kierunku
 przemieszczania się wyznaczonego przez wektor prędkości $\vec{v}$. Odchylenie to
@@ -137,6 +137,7 @@ W tym celu porównujemy wyniki pomiarów żyroskopu z pomiarami innych przyrząd
 \end{tabbing}
 
 Niestety z powodu ciągle nakładających się błędów całkowania oraz niedoskonałości samego żyroskopu, wskazywany kąt odchylenia od ułożenia początkowego będzie się oddalał od wartości rzeczywistej wraz z upływem czasu. W przypadku tej pracy dyplomowej nie jest jednak potrzebna bardzo wysoka stabilność i precyzja wartości mierzonych przez żyroskop.
+%TODO dopisałbym, że chodzi o stabilność przy pomiarach na długich odstępach czasu
 
 \subsection{Opis zastosowanego elementu i budowy modułu}
 W robocie został użyty ultra-stabilny trójosiowy żyroskop cyfrowy L3G4200D firmy STMicroelectronics. Jego główną zaletą jest bardzo dobra jakość pomiarów osiągnięta dzięki zastosowaniu innowacyjnej struktury mechanicznej. Zazwyczaj urządzenia tego typu stosują dwie lub trzy struktury odpowiedzialne za wykonywanie pomiarów. Żyroskop firmy STMicroelectronics natomiast posiada jeden taki element odpowiedzialny za pomiar na wszystkich osiach. Takie rozwiązanie eliminuje zakłócenia pomiędzy osiami, powodowane przez same elementy pomiarowe.
@@ -190,7 +191,7 @@ Schemat przedstawiony na rysunku \ref{fig:L3G4200DSchem} został stworzony na po
  \label{fig:L3G4200DPCB}
 \end{figure}
 
-Płytka modułu została zaprojektowana z wykorzystaniem elementów SMD w obudowie 1206. Rozmiar obudowy tych elementów został wymuszony przez brak kondensatorów ceramicznych o pojemności $10\mu F$ w obudowie mniejszej. Cały proces tworzenia płytki modułu żyroskopu był przeprowadzony metodami domowymi ze względu na niski koszt oraz brak konieczności czekania kilku tygodni na wykonanie takiej płytki przez specjalistyczną firmę. Opis tworzenia płytki można znaleźć w dodatku: \textcolor{red}{TODO: REFERENCJA DO DODATKU W TYM MIEJSCU!}
+Płytka modułu została zaprojektowana z wykorzystaniem elementów SMD w obudowie 1206. Rozmiar obudowy tych elementów został wymuszony przez brak kondensatorów ceramicznych o pojemności $10\mu F$ w obudowie mniejszej. Cały proces tworzenia płytki modułu żyroskopu był przeprowadzony metodami domowymi ze względu na niski koszt oraz brak konieczności czekania kilku tygodni na wykonanie takiej płytki przez specjalistyczną firmę. Opis tworzenia płytki można znaleźć w dodatku \ref{chap:pcb}
 
 \begin{table}[hb]
   \rowcolors{2}{white}{gray!20}
