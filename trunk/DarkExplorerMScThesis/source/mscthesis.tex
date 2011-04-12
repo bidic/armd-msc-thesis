@@ -30,6 +30,9 @@
 \geometry{total={210mm,297mm}, left=20mm,right=20mm,bindingoffset=10mm,
 top=25mm, bottom=25mm} 
 
+\let\stdsection\section
+\renewcommand\section{\newpage\stdsection}
+
 %\includeonly{introduction}
 
 % \makeatletter
@@ -174,19 +177,19 @@ Na kolejnych dwóch stronach proszę dołączyć kolejno recenzje pracy popełni
 \include*{ch02_analysis/s02_software}
 
 \newpage
-\chapter{Rozwój platformy robota mobilnego -- środowisko rozwojowe systemu wbudowanego}
+\chapter{Rozwój robota -- środowisko rozwojowe systemu wbudowanego}
 \include*{ch03_software/s01_windows}
 \include*{ch03_software/s02_linux}
 
 \newpage
-\chapter{Rozwój platformy robota mobilnego -- środowisko rozwojowe i uruchomieniowe dla komputerów stacjonarnych i urządzeń mobilnych}
+\chapter{Rozwój robota -- środowiska dla PC i urządzeń mobilnych}
 \include*{ch03_software/s03_java}
 \include*{ch03_software/s04_c_sharp}
 \include*{ch03_software/s05_windows_mobile}
 \include*{ch03_software/s06_java_mobile}
 
 \newpage
-\chapter{Rozwój platformy robota mobilnego -- warstwa sprzętowa}
+\chapter{Rozwój robota -- warstwa sprzętowa}
 \include*{ch04_development/s00_ins}
 \include*{ch04_development/s01_accelerometer}
 \include*{ch04_development/s02_gyroscope}
@@ -196,7 +199,7 @@ Na kolejnych dwóch stronach proszę dołączyć kolejno recenzje pracy popełni
 \include*{ch04_development/s06_extension_board}
 \include*{ch04_development/s07_casing}
 
-\chapter{Rozwój platformy robota mobilnego -- firmware}
+\chapter{Rozwój robota -- firmware}
 \include*{ch05_embeded_system/s01_communication}
 \include*{ch05_embeded_system/s02_rtr_wca}
 \include*{ch05_embeded_system/s03_image_acquisition}
@@ -212,9 +215,9 @@ Na kolejnych dwóch stronach proszę dołączyć kolejno recenzje pracy popełni
 \include*{appendix/btp_spec}
 \chapter{Wytrawianie płytek układów elektronicznych}
 \include*{appendix/pcb}
-\chapter*{Kod źródłowy}
-\chapter*{Plik konfiguracyjny programatora: triton.cfg}
+\chapter{Plik konfiguracyjny programatora: triton.cfg}
 \include*{appendix/triton-cfg}
+\chapter*{Kod źródłowy}
 %\begin{lstlisting} \end{lstlisting}
 %\lstinputlisting[language=Python]{source_filename.py}
 \listoffigures

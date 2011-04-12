@@ -175,6 +175,14 @@ celu odczytania danych pomiarowych otrzymywanych na wyjściach urządzenia.
 Szczegółowy opis działania wbudowanego w robota ADC można znaleźć w rozdziale
 poświęconym dalmierzom IR. 
 
+\begin{figure}[h!]
+ \centering
+ \includegraphics[height=75mm]{../images/ch04/mma7260_datasheet.png}
+ \caption{Wartości przyspiesznia statycznego dla układu MMA7260 dostarczone w
+ ramach specyfikacji technicznej urządzenia\cite{MMA7260DataSheet}}
+ \label{fig:MMADataSheetStaticAcc}
+\end{figure}
+
 Przed rozpoczęciem praktycznej implementacji alogrytmu wykrywania kroków
 konieczne okazało się przeprowadzenie kalibracji modułu, gdyż już wstępne testy
 czujnika zwróciły spore różnice pomiędzy wartościami podanymi w nocie
@@ -187,10 +195,10 @@ stabilność działania zaproponowanego algorytmu zliczania kroków.
 
 \begin{figure}[h!]
  \centering
- \includegraphics[height=140mm]{../images/ch04/mma7260_datasheet.png}
- \caption{Wartości przyspiesznia statycznego dla układu MMA7260 dostarczone w
- ramach specyfikacji technicznej urządzenia\cite{MMA7260DataSheet}}
- \label{fig:MMADataSheetStaticAcc}
+ \includegraphics[height=80mm]{../images/ch04/raw_acc_data.png}
+ \caption{Wartości przyspiezenia odczytywane na wyjściach akcelerometru przed
+ przeprowadzeniem kalibracji}
+ \label{fig:MMADataRaw}
 \end{figure}
 
 Wspomniany proces kalibracji polegał na ustawieniu czujnika na płaskiej,
@@ -202,14 +210,6 @@ następnie w module odpowiedzialnym za akwicyzję danych o przyspieszeniu zosta�
 zaprogramowane funkcje korygujące otrzymane dane wejściowe o wartości wyliczone
 podczas kalibracji urządzenia. Na poniższych wykresach znajdują się informacje o
 stanie wyjść przed i po przeprowadzeniu kalibracji. 
-
-\begin{figure}[h!]
- \centering
- \includegraphics[height=80mm]{../images/ch04/raw_acc_data.png}
- \caption{Wartości przyspiezenia odczytywane na wyjściach akcelerometru przed
- przeprowadzeniem kalibracji}
- \label{fig:MMADataRaw}
-\end{figure}
   
 \begin{figure}[h!]
  \centering
