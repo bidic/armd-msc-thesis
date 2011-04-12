@@ -106,8 +106,20 @@ Płytka modułu kompasu została zaprojektowana przy pomocy darmowej wersji prog
 \subsection{Nieudana próba zastosowania}
 Docelowo moduł kompasu miał być wykorzystywany jako element Inercjalnego Systemu Nawigacji w celu określania kierunku w którym robot się przemieszcza. Zasada działania miała być prosta. Robot miał zapamiętywać aktualny azymut z jakim się poruszał będąc na rekach operatora. Następnie po postawieniu na podłożu miał odtwarzać tor ruchu obracając wszystkie zapamiętane azymuty o $180\circ$. 
 
-\textcolor{red}{TODO: 2xZDJĘCIE BUSOLI NA PODŁODZE!}
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[height=75mm]{../images/ch04/compass01.jpg}
+ \caption{Busola w położeniu początkowym}
+ \label{fig:Busola1}
+\end{figure}
 
-Niestety wykonane testy pokazały, iż nie jest możliwe wykorzystanie kompasu w celu określenia azymutu robota poruszającego się po podłodze budynku. Jest to spowodowane stosowaniem metalowych prętów zbrojeniowych w stropach budynków, które zakłócają pracę kompasu. Testy zostały wykonane zarówno przy pomocy modułu elektronicznego kompasu jak i tradycyjnej wojskowej busoli. Rysunki \textcolor{red}{TODO: nr rys} przedstawiają odchylenie azymutów wyznaczonych na podłodze budynku od faktycznego kierunku północy. Po wielu nieudanych próbach wyeliminowania zakłóceń moduł kompasu został zastąpiony modułem żyroskopu.
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[height=75mm]{../images/ch04/compass02.jpg}
+ \caption{Busola przesunięta równolegle o 25 cm,}
+ \label{fig:Busola2}
+\end{figure}
+
+Niestety wykonane testy pokazały, iż nie jest możliwe wykorzystanie kompasu w celu określenia azymutu robota poruszającego się po podłodze budynku. Jest to spowodowane stosowaniem metalowych prętów zbrojeniowych w stropach budynków, które zakłócają pracę kompasu. Testy zostały wykonane zarówno przy pomocy modułu elektronicznego kompasu jak i tradycyjnej wojskowej busoli. Rysunki \ref{fig:Busola1} oraz \ref{fig:Busola2} przedstawiają odchylenie azymutów wyznaczonych na podłodze budynku. Busola przedstawiona na zdjęciach została przesunięta równolegle o 25 cm w prawo. Wskazywany kierunek północy zmienił się o ponad $90^{\circ}$. Jak widać przy tak dużych wahaniach nie jest możliwe wykorzystanie magnetometru jako elementu jednoznacznie określającego kierunek w którym robot ma się poruszać. Po wielu nieudanych próbach wyeliminowania zakłóceń moduł kompasu został zastąpiony modułem żyroskopu.
 
 % http://www.iemw.tuwien.ac.at/publication/workshop0600/Hauser.html

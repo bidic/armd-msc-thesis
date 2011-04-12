@@ -1,1 +1,13 @@
- 
+\label{chap:triton-cfg} 
+\begin{verbatim}
+#define our ports
+   telnet_port 		4444
+   gdb_port 		3333
+
+#commands specific
+
+   source [find interface/turtelizer2.cfg]
+   source [find board/atmel_at91sam7s-ek.cfg]
+
+   ft2232_device_desc 	"Triton JTAG A"
+\end{verbatim} 
