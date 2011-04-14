@@ -1,4 +1,11 @@
-\section{Biblioteka programistyczna dla platformy .NET}
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[height=125mm]{../images/ch03/dark_explorer_platform_ide_stac_mob.png}
+ \caption{Struktura platformy robota mobilnego po zakończeniu prac. Kolorem oznaczono zakres prac opisanych w bierzącym rozdziale.}
+ \label{fig:DarkExplorerPlatformStacMob}
+\end{figure}
+
+\section{Biblioteki programistyczne do zarządzania robotem}
 Jednym z poważniejszych problemów zauważonych podczas analizy pierwotnej
 konfiguracji robota był brak bibliotek umożliwiających tworzenie oprogramowania
 które pozwalałoby na dowolne wykorzystanie możliwości oferowanych przez
@@ -18,10 +25,12 @@ oczywistym wydaje się być wybór języka właśnie z tej rodziny. Decydującym
 aspektem, wpływającym na ostateczny wybór docelowej platformy rozwojowej, jest
 więc ilość dostępnych bibliotek oraz przenośność kodu pomiędzy dostępnymi na
 rynku platformami sprzętowymi. Po przeprowadzeniu wnikliwej analizy ostateczny
-wybór padł na język C\# oraz platformę .NET. Wybór motywowany jest faktem iż
-platforma .NET jest jednym z najdynamiczniej rozwijających środowisk
-programistycznych ostatnich lat. Firma Microsoft dostarcza szereg bibliotek
-dodatkowych oraz narzędzi pozwalających na szybkie tworzenie oprogramowania
+wybór padł na dwa rozwiązania: język C\# z platformą .NET oraz język Java. 
+Wybór motywowany jest faktem iż platforma .NET jest jednym z najdynamiczniej rozwijających środowisk
+programistycznych ostatnich lat natomiast Java jest niesamowicie popularna i dostępna w obecnych środowisk uruchomieniowych. 
+
+\subsection{Platforma .NET}
+Firma Microsoft dostarcza szereg bibliotek dodatkowych oraz narzędzi pozwalających na szybkie tworzenie oprogramowania
 działającego zarówno na urządzeniach mobilnych jaki i stacjonarnych. Dzięki
 pracy programistów w ramach projektu Mono\footnote{Więcej informacji na temat projektu
 Mono można znaleźć pod adresem strony internetowej http://www.mono-project.com/}
@@ -60,3 +69,29 @@ sterująca prezentująca wszystkie możliwości oferowane zarówno przez warstw�
 aplikacyjną jak i sprzętową robota Dark Explorer. 
 
 \textcolor{red}{TODO: zrzut ekranu aplikacji sterującej dla .net'a}
+
+\subsection{Bibloteka zarządzająca dla języka Java}
+Drugim rozwiązaniem programistycznym umożliwiającym sterowanie robotem za pomocą urządzeń zewnętrznych jest biblioteka napisana w języku Java. Pozwala ona na komunikowanie się z robotem przy pomocy prostych funkcji, które nie wymagają od programisty żadnej wiedzy na temat mechanizmów przesyłu danych pomiędzy robotem a resztą świata. Podobnie jak w przypadku biblioteki przygotowanej pod platformę .NET możemy bezpośrednio sterować poszczególnymi podzespołami bazowymi wysyłając własne komendy lub też korzystać z funkcji wbudowanych, odpowiedzialnych za wykonywanie konkretnych czynności, np.: manewrowanie robotem, pobieranie zdjęcia w określonej rozdzielczości, kontrolowanie serwomechanizmu.
+
+Biblioteka została podzielona na dwie klasy. Jedna z nich jest odpowiedzialna za obsługę komunikacji bluetooth pomiędzy aplikacją a robotem Dark Explorer. Druga natomiast pozwala w łatwy sposób wykorzystywać wszystkie funkcje robota.
+
+Bibloteka była tworzona docelowo na telefony komórkowe z wbudowaną maszyną wirtualną Java, które implementują API do komunikacji bluetooth JSR 82\footnote{JSR 82 - Java Specification Request, zbiór reguł których należy się trzymać podczas implementacji API do komunikacji bluetooth}. Możliwe jest również wykorzystanie tej biblioteki na komputerach stacjonarnych. W tym celu konieczne jest wyposarzenie tworzonej aplikacji w bibliotekę wspierającą JSR 82. Dostępnych jest kilka tego rodzaju biblotek (tab. \ref{tab:JSR82SDK}).
+
+\begin{table}[hb]
+  \centering
+  \caption{Biblioteki wspierające JSR-82\cite{website:javabluetooth.com}}
+  \begin{tabular}{ | c | c | c | c | c | c |} \hline
+    Nazwa & Wsparcie & Wsparcie & Platformy & Obsługiwane & Cena \\
+    & javax.bluetooth & javax.obex & Java & systemy & \\ \hline
+    Avetana & Tak & Tak & J2SE & Win-32, Mac OS X & 25\euro \\
+    & & & & Linux, Pocket PC & \\ \hline
+    BlueCove & Tak & Tak & J2SE & Win-32, Mac OS X & darmo \\ \hline
+    Electric Blue & Tak & Tak & J2SE & Win XP SP2 & 15\$ \\ \hline
+    Harald & Nie & Nie & każda z  & wiele & darmo \\
+    & & & javax.comm  &  & \\ \hline
+    JavaBluetooth.org & Tak & Nie & każda z  & wiele & darmo \\
+    & & & javax.comm  &  & \\ \hline
+    Rococo & Tak & Tak & J2SE J2ME & Linux, Palm OS & 2500\euro \\ \hline
+  \end{tabular}
+  \label{tab:JSR82SDK}
+\end{table}
