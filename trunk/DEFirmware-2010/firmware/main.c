@@ -1,13 +1,3 @@
-/**
- * Projekt    : Dark Explorer firmware
- * Plik       : main.c
- * Zawartosc  : Inicjalizacje pocz�tkowe, obs�uga przerwa� systemowych,
- : interpretacja komend, p�tla g��wna
- * Autor      : Pawe� Kmak
- * Data       : 1.11.2009
- **/
-
-// Include
 #include <de_board.h>
 #include <utils.h>
 #include <rozpoznawanie.h>
@@ -35,13 +25,13 @@
 #include "modules/at45db321d.h"
 #include "modules/po6030k.h"
 #include "modules/l3g4200d.h"
+#include "modules/hy1602f6.h"
+#include "modules/cd4053b.h"
 
 #include "algorithms/obstacle_avoidance.h"
 #include "algorithms/reverse_track_reconstruction.h"
 
 #include "peripherals/adc_helper.h"
-
-#define PIN_PA15  {PIO_PA15, AT91C_BASE_PIOA, AT91C_ID_PIOA, PIO_OUTPUT_0, PIO_DEFAULT}
 
 //flaga dla timera PIT
 int PitState = 0;
@@ -51,7 +41,6 @@ int PitState = 0;
 
 /// Pio pins to configure.
 static const Pin pins[] = { PINS_TWI };
-static const Pin multiplexer_ctrl[] = { PIN_PA15 };
 
 /// TWI driver instance.
 Twid twid;
@@ -91,26 +80,15 @@ char SilnikiEnable = 0;
 
 volatile int xmin, xmax, ymin, ymax;
 volatile char adc_ready = 0;
-volatile unsigned int channel_5;
-volatile unsigned int channel_6;
-volatile unsigned int channel_7;
+volatile char mag_enable = 0;
 
 extern char mem[60000];
-
-void adc_conv_done(unsigned int a, unsigned int b, unsigned int c) {
-	channel_5 = a;
-	channel_6 = b;
-	channel_7 = c;
-	adc_ready = 1;
-
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Przerwanie od timera PIT
 ////////////////////////////////////////////////////////////////////////////////
 __ramfunc void SYSTEM_INTERRUPT_irq_handler(void) {
 	//impuls od timera PIT pojawia si� co 18-20ms
-
 	unsigned int dummy;
 
 	//odczyt rejestru PIVR (powoduje wyzerowanie flagi ��dania przerwania)
@@ -153,47 +131,7 @@ __ramfunc void SYSTEM_INTERRUPT_irq_handler(void) {
 	//////////////////////////////////////////////////////////////////////////////
 }
 
-volatile unsigned int data_ready = 0;
-volatile unsigned int ls_data = 0;
-volatile unsigned int rs_data = 0;
-volatile unsigned int obstacle_avoid_enable = 0;
-
-void onDistanceDataReady(unsigned int rs_output, unsigned int ls_output) {
-	rs_data = rs_output;
-	ls_data = ls_output;
-
-	data_ready = 1;
-}
-
-void obstacle_avoid_TestCase() {
-	while (obstacle_avoid_enable) {
-		data_ready = 0;
-		ADC_StartDoubleChannelConversion(ADC_CHANNEL_5, ADC_CHANNEL_6,
-				onDistanceDataReady);
-		while (!data_ready)
-			;
-
-		init_oa_configuration();
-
-		unsigned int level_mask = create_level_mask(rs_data, ls_data);
-		OAA_OUTPUT output = avoid_obstacles(level_mask);
-
-		PWM_Set(0, output.speed_right);
-		Kierunek(1, output.gear_left);
-		Kierunek(2, output.gear_right);
-
-		if (output.gear_left != output.gear_right)
-			waitms(1000);
-		else
-			waitms(500);
-	}
-
-	PWM_Set(0, 0);
-	Kierunek(1, STOP_GEAR);
-	Kierunek(2, STOP_GEAR);
-
-}
-
+extern volatile unsigned int pedometer_enabled;
 ////////////////////////////////////////////////////////////////////////////////
 // Przerwanie od kanalu odbiorczego UART0
 ////////////////////////////////////////////////////////////////////////////////
@@ -201,15 +139,25 @@ __ramfunc void UART0_DMA_irq_handler(void) {
 	RX_Buffer[RX_Counter] = USART_Read(AT91C_BASE_US0, 10);//UART0_Read();
 	//USART_Write(AT91C_BASE_US0,RX_Buffer[RX_Counter],10);
 	//USART_WriteBuffer(AT91C_BASE_US0, "\n\r", 2);
+
 	RX_Counter++;
 	timeout = 0;
 	if (RX_Counter == 2) {
 		RX_Counter = 0;
 	} //2 bajty na ramke
 
+
+	//	FrameSizeToGet = 13;
+	//
+	//	return;
 	//Dekodowanie komend
 	if (RX_Counter == 0) //po odebraniu komendy i danych
 	{
+
+		//		char lcd[16];
+		//		sprintf(lcd, "%c, %d", RX_Buffer[0], RX_Buffer[1]);
+		//		HY1602F6_Log("data received", lcd);
+
 		//Sterowanie serwem
 		if (RX_Buffer[0] == 's') {
 			SerwoAngleBuffer = 1065 + ((255 - RX_Buffer[1]) * 7);
@@ -329,15 +277,17 @@ __ramfunc void UART0_DMA_irq_handler(void) {
 		//TODO
 		if (RX_Buffer[0] == 'd') {
 			//wylaczenie diody
-			if (RX_Buffer[1] == 0) {
+			if (RX_Buffer[1] != 0) {
 				//				FrameSizeToGet = 8;
-				stop_recording_track();
+				FrameSizeToGet = 8;
+
 				//AT91F_PIO_SetOutput(AT91C_BASE_PIOA, LED_POWER);
 			}
-
-			//wlaczenie diody
-			if (RX_Buffer[1] == 1) {
-				FrameSizeToGet = 8;
+			else
+			{
+				//								stop_recording_track();
+				pedometer_enabled = 0;
+				FrameSizeToGet = 14;
 				//AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, LED_POWER);
 			}
 		}
@@ -346,28 +296,22 @@ __ramfunc void UART0_DMA_irq_handler(void) {
 		if (RX_Buffer[0] == 'w') {
 			//wylaczenie
 			if (RX_Buffer[1] == 0) {
-				obstacle_avoid_enable = 0;
-				data_ready = 1;
+				mag_enable = 0;
+				//				obstacle_avoid_enable = 0;
+				//				data_ready = 1;
 				//				AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, SERWO_POWER);
 			}
 
 			//wlaczenie
 			if (RX_Buffer[1] == 1) {
-				obstacle_avoid_enable = 1;
-				FrameSizeToGet = 7;
+				//				obstacle_avoid_enable = 1;
+//				FrameSizeToGet = 7;
+				FrameSizeToGet = 20;
 				//AT91F_PIO_SetOutput(AT91C_BASE_PIOA, SERWO_POWER);
 			}
 		}
 	}
-}
 
-void step_detector3(MMA7260_OUTPUT mma7260_output) {
-	//	int output =
-	//			sqrt(pow(mma7260_output.x_normal_mv, 2) + pow(
-	//					mma7260_output.y_normal_mv, 2) + pow(
-	//					mma7260_output.z_normal_mv, 2));
-	int output = ABS(mma7260_output.z_normal_mv);
-	printf("%d \r\n", mma7260_output.z_normal_mv);
 }
 
 double cangle(double x, double y) {
@@ -394,10 +338,10 @@ int main(void) {
 	// Inicjalizacje
 
 	//	//TODO
-//	TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
-//	TRACE_INFO("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
-//	// memset(mem, 0x00, 39000);
-//	TRACE_INFO("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
+	//	TRACE_CONFIGURE(DBGU_STANDARD, 9600, BOARD_MCK);
+	//	TRACE_INFO("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
+	//	// memset(mem, 0x00, 39000);
+	//	TRACE_INFO("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
 
 	// Enable User Reset and set its minimal assertion to 960 us
 	//  AT91C_BASE_RSTC->RSTC_RMR = AT91C_RSTC_URSTEN | (0x4<<8) | (unsigned int)(0xA5<<24);
@@ -410,14 +354,13 @@ int main(void) {
 	//  AT91F_PMC_EnablePeriphClock ( AT91C_BASE_PMC, 1 << AT91C_ID_PIOA );
 
 	// W��czenie timera PIT
-	//  PIT_Init(100,MCK);
-	//		PIT_Configure(100); //pierwsze przerwanie za 100us
+//		  PIT_Init(100,MCK);
+//	PIT_Configure(100); //pierwsze przerwanie za 100us
 
 	// Wlaczenie PWM
 	PWM_Configure();
 
 	PIO_Configure(pins, PIO_LISTSIZE(pins));
-	PIO_Configure(multiplexer_ctrl, 1);
 
 	// Configure TWI
 	// In IRQ mode: to avoid problems, the priority of the TWI IRQ must be max.
@@ -434,6 +377,7 @@ int main(void) {
 
 	//wlaczenie ADC
 	ADC_Configure();
+	CD4053_Initialize();
 
 	//	// KONFIGURACJA pinow SPI dla pamieci flash oraz PA21 dla MCK kamery
 	AT91F_PIO_CfgPeriph(AT91C_BASE_PIOA, AT91C_PA12_MISO | AT91C_PA13_MOSI
@@ -528,96 +472,47 @@ int main(void) {
 	//TODO diódeczka :D :*
 
 
-	LcdInit();
-	LcdClear();
-	LcdPrint("     Welcome    ");
-	LcdSetCursor(0x40);
-	LcdPrint("Dark Explorer 2");
+	//	TRACE_INFO("-- Dark Explorer with AT91LIB v. %s --\n\r", SOFTPACK_VERSION);
+	//	// memset(mem, 0x00, 39000);
+	//	TRACE_INFO("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
 
-	//	TRACE_INFO("--- power on --- \r\n");
-	//	//	LcdPrint("--- power on ---");
-	//	L3G4200D_PowerOn(&twid);
-	//	L3G4200D_StreamMode(&twid);
-	//	TRACE_INFO("--- calib on --- \r\n");
-	//	//	LcdPrint("--- calib on ---");
-	//	L3G4200D_Calibrate(&twid);
-	//	TRACE_INFO("--- calib done --- \r\n");
-	//	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
-	//	TRACE_INFO("--- adc init --- \r\n");
-	//	ADC_Configure();
-	//	PIO_Set(multiplexer_ctrl);
-	//
-	//	volatile unsigned int iter = 0;
-	//	for (;;) {
-	//		//    LcdPrint("0123456789012345");
-	//		//		L3G4200D_ReadData(&twid);
-	//		//		mag_info current_mg_i = MMC212xM_GetMagneticFieldInfo(&twid);
-	//		//		TRACE_INFO("--- x: %d,  y: %d, a: %d \r\n", (int)(current_mg_i.x * 100), (int)(current_mg_i.y * 100), (int) (cangle(current_mg_i.x, current_mg_i.y) *100));
-	//		if (++iter % 100000 == 0) {
-	//			//			LcdClear();
-	//			//			char lcd_output[16];
-	//			//			gyro_data data = L3G4200D_GetData();
-	//			//			sprintf(lcd_output, "x:%3d y:%3d", data.sAngle_x, data.sAngle_y);
-	//			//			LcdPrint(lcd_output);
-	//			//			LcdSetCursor(0x40);
-	//			//			char lcd_output2[16];
-	//			//			sprintf(lcd_output2, "z: %3d a:%3d", data.sAngle_z, (int) cangle(
-	//			//					current_mg_i.x, current_mg_i.y));
-	//			//			LcdPrint(lcd_output2);
-	//
-	//			//ADC
-	//
-	//			ADC_StartTripleChannelConversion(ADC_CHANNEL_5, ADC_CHANNEL_6,
-	//					ADC_CHANNEL_7, adc_conv_done);
-	//
-	//			while (!adc_ready)
-	//				;
-	//
-	//			adc_ready = 0;
-	//			LcdClear();
-	//			char lcd_output[16];
-	//			sprintf(lcd_output, "%4d %4d", channel_5, channel_6);
-	//			LcdPrint(lcd_output);
-	//			LcdSetCursor(0x40);
-	//			char lcd_output2[16];
-	//			sprintf(lcd_output2, "%4d", channel_7);
-	//			LcdPrint(lcd_output2);
-	//
-	//			iter = 0;
-	//		}
-	//
-	//	}
+	HY1602F6_Init();
+	//	HY1602F6_ClearDisplay();
+	//	HY1602F6_PrintText("Dark Explorer 2");
+	char lcd_output[16];
+	sprintf(lcd_output, "v. %s %s", SOFTPACK_VERSION, __TIME__);
+	//	HY1602F6_SetCursorPos(0x40);
+	//	HY1602F6_PrintText(lcd_output);
+
+	HY1602F6_Log("Dark Explorer 2", lcd_output);
+
+	waitms(1000);
+
+	HY1602F6_ClearDisplay();
+	L3G4200D_PowerOn(&twid);
+	L3G4200D_StreamMode(&twid);
+	HY1602F6_PrintText("Calibrating gyro");
+	L3G4200D_Calibrate(&twid);
+	HY1602F6_StartNextLine();
+	HY1602F6_PrintText("calibration done");
 
 	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, DIODA2);
 
-	//	while (1) {
-	//			MMA7260_ReadOutput(ADC_CHANNEL_5, ADC_CHANNEL_6, ADC_CHANNEL_7,
-	//					step_detector3);
-	//		}
-
-
-	int count = 0;
-	//	while (1) {
-	//		L3G4200D_ReadData(&twid);
-	//		gyro_data gd = L3G4200D_GetData();
-	//		if (gd.status & 0x08)
-	//			count++;
-	//
-	//		if (count == 100) {
-	//			count = 0;
-	//			TRACE_DEBUG("x: %d, y: %d, z: %d, t: %d \r\n", gd.sAngle_x, gd.sAngle_y, gd.sAngle_z, gd.sTemperature);
-	//		}
-	//
-	//	}
-
-//	AT45DB321D_Initalize();
-//	AT45DB321D_SelfTest();
-//	AT45DB321D_ClearChip();
-//	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
-//	PO6030K_Initalize();
-//	PO6030K_InitRegisters(&twid);
-//	PO6030K_TakePicture();
+	//	int count = 0;
+	//	AT45DB321D_Initalize();
+	//	AT45DB321D_SelfTest();
+	//	AT45DB321D_ClearChip();
+	//	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
+	//	LcdClear();
+	//		LcdPrint("clear complete");
+	//	PO6030K_Initalize();
+	//	PO6030K_InitRegisters(&twid);
+	//	PO6030K_TakePicture();
+	//		LcdSetCursor(0x40);
+	//		LcdPrint("done");
 	int iAmountOfPackets = 0;
+
+	//	FrameSizeToGet = 8;
 
 	//TODO
 	for (;;) {
@@ -656,13 +551,13 @@ int main(void) {
 			break;
 		}
 		case 7: {
-			obstacle_avoid_TestCase();
+			//			obstacle_avoid_TestCase();
 			FrameSizeToGet = 0;
 			break;
 		}
 		case 8: {
 			start_recording_track();
-			FrameSizeToGet = 0;
+			FrameSizeToGet = 14;
 			break;
 		}
 		case 9: {
@@ -675,6 +570,35 @@ int main(void) {
 			FrameSizeToGet = 0;
 			break;
 		}
+		case 14: {
+//			stop_recording_track();
+			HY1602F6_Log("Rec stopped", "");
+			FrameSizeToGet = 0;
+			break;
+		}
+
+		case 20: {
+			mag_enable = 1;
+			volatile unsigned int iter = 0;
+			MMC212xM_SendSetCmd(&twid);
+			while(mag_enable){
+
+							mag_info current_mg_i = MMC212xM_GetMagneticFieldInfo(&twid);
+
+					if (++iter % 100 == 0) {
+
+						char lcd_buff1[16];
+						char lcd_buff2[16];
+						sprintf(lcd_buff1, "x: %3d y: %3d", (int)current_mg_i.x, (int)current_mg_i.y);
+						sprintf(lcd_buff2, "angle: %3d", (int) cangle(current_mg_i.x, current_mg_i.y));
+
+						HY1602F6_Log(lcd_buff1, lcd_buff2);
+					}
+			}
+			MMC212xM_SendResetCmd(&twid);
+			FrameSizeToGet = 0;
+			break;
+		}
 		default:
 			break;
 		}
@@ -683,4 +607,4 @@ int main(void) {
 			MaxIndex = Rozpoznaj();
 		}
 	} //end for
-} //end main
+}

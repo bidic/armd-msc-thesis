@@ -14,6 +14,7 @@ unsigned int read_channels = 0;
 volatile unsigned int channel_a_output;
 volatile unsigned int channel_b_output;
 volatile unsigned int channel_c_output;
+volatile unsigned char adc_data_ready = 0;
 
 void (*singleChannelCallback)(unsigned int) = NULL;
 void (*doubleChannelCallback)(unsigned int, unsigned int) = NULL;
@@ -43,6 +44,7 @@ static void ADC_SingleChannelInterruptHandler(void) {
 		//				AIC_DisableIT(AT91C_ID_ADC);
 
 		singleChannelCallback(channel_a_output);
+		adc_data_ready = 1;
 	}
 }
 
@@ -65,36 +67,38 @@ static void ADC_DoubleChannelInterruptHandler(void) {
 
 	if (read_channels == 2) {
 		doubleChannelCallback(channel_a_output, channel_b_output);
+		adc_data_ready = 1;
 	}
 }
 
 static void ADC_TripleChannelInterruptHandler(void) {
-//	TRACE_DEBUG("-- ADC_InterruptHandler --\n\r");
+	TRACE_DEBUG("-- ADC_InterruptHandler --\n\r");
 
 	if (ADC_IsChannelInterruptStatusSet(ADC_GetStatus(AT91C_BASE_ADC),
 			adc_channel_a)) {
 
 		channel_a_output = ADC_ReadChannelData(adc_channel_a);
-//		TRACE_DEBUG("-- Channel A output %d mV --\n\r", channel_a_output);
+		TRACE_DEBUG("-- Channel A output %d mV --\n\r", channel_a_output);
 	}
 
 	if (ADC_IsChannelInterruptStatusSet(ADC_GetStatus(AT91C_BASE_ADC),
 			adc_channel_b)) {
 
 		channel_b_output = ADC_ReadChannelData(adc_channel_b);
-//		TRACE_DEBUG("-- Channel B output %d mV --\n\r", channel_b_output);
+		TRACE_DEBUG("-- Channel B output %d mV --\n\r", channel_b_output);
 	}
 
 	if (ADC_IsChannelInterruptStatusSet(ADC_GetStatus(AT91C_BASE_ADC),
 			adc_channel_c)) {
 
 		channel_c_output = ADC_ReadChannelData(adc_channel_c);
-//		TRACE_DEBUG("-- Channel C output %d mV --\n\r", channel_c_output);
+		TRACE_DEBUG("-- Channel C output %d mV --\n\r", channel_c_output);
 	}
 
 	if (read_channels == 3) {
 		tripleChannelCallback(channel_a_output, channel_b_output,
 				channel_c_output);
+		adc_data_ready = 1;
 	}
 }
 
@@ -119,8 +123,10 @@ void ADC_StartSingleChannelConversion(unsigned int channel, void(*callback)(
 
 	ADC_EnableIt(AT91C_BASE_ADC, channel);
 
-//	TRACE_DEBUG("-- ADC_StartConversion --\n\r");
+	TRACE_DEBUG("-- ADC_StartConversion --\n\r");
 	ADC_StartConversion(AT91C_BASE_ADC);
+
+	adc_data_ready = 0;
 }
 
 void ADC_StartDoubleChannelConversion(unsigned int channel_a,
@@ -140,8 +146,10 @@ void ADC_StartDoubleChannelConversion(unsigned int channel_a,
 	ADC_EnableIt(AT91C_BASE_ADC, channel_a);
 	ADC_EnableIt(AT91C_BASE_ADC, channel_b);
 
-//	TRACE_DEBUG("-- ADC_StartConversion --\n\r");
+	TRACE_DEBUG("-- ADC_StartConversion --\n\r");
 	ADC_StartConversion(AT91C_BASE_ADC);
+
+	adc_data_ready = 0;
 }
 
 void ADC_StartTripleChannelConversion(unsigned int channel_a,
@@ -165,6 +173,12 @@ void ADC_StartTripleChannelConversion(unsigned int channel_a,
 	ADC_EnableIt(AT91C_BASE_ADC, channel_b);
 	ADC_EnableIt(AT91C_BASE_ADC, channel_c);
 
-//	TRACE_DEBUG("-- ADC_StartConversion --\n\r");
+	TRACE_DEBUG("-- ADC_StartConversion --\n\r");
 	ADC_StartConversion(AT91C_BASE_ADC);
+
+	adc_data_ready = 0;
+}
+
+unsigned char ADC_IsDataReady(){
+	return adc_data_ready;
 }

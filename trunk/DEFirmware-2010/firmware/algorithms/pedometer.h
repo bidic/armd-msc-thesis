@@ -8,13 +8,6 @@
 #ifndef PEDOMETER_H_
 #define PEDOMETER_H_
 
-#include <rtt/rtt.h>
-#include <adc/adc.h>
-#include <math.h>
-
-#include "modules/freescale_mma7260.h"
-#include "modules/l3g4200d.h"
-
 #define POSITIVE_PEAK 1
 #define NEGATIVE_PEAK 2
 #define ABS(n) (((n) < 0) ? -(n) : (n))
@@ -37,7 +30,5 @@ void start_steps_detection(void (*onStepCallback)(void));
 unsigned int stop_counting_steps();
 
 unsigned int get_step_count();
-
-char is_walking();
 
 #endif /* PEDOMETER_H_ */

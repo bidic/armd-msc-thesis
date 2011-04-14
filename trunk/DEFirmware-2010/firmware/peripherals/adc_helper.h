@@ -26,4 +26,6 @@ void ADC_StartDoubleChannelConversion(unsigned int, unsigned int, void(*callback
 void ADC_StartTripleChannelConversion(unsigned int, unsigned int, unsigned int,
 		void(*callback)(unsigned int, unsigned int, unsigned int));
 
+unsigned char ADC_IsDataReady();
+
 #endif /* ADC_HELPER_H_ */
