@@ -5,6 +5,18 @@
  *      Author: lhanusiak
  */
 
+#include "utils.h"
+#include "peripherals.h"
+
+#include "algorithms/pedometer.h"
+#include "algorithms/obstacle_avoidance.h"
+
+#include "modules/mmc212xm.h"
+#include "modules/gyroscope.h"
+#include "modules/l3g4200d.h"
+#include "modules/hy1602f6.h"
+#include "modules/cd4053b.h"
+
 #include "reverse_track_reconstruction.h"
 
 double steps_data[MAX_STEPS];
@@ -52,7 +64,7 @@ double get_descrete_angle(double in) {
 	double angle = ABS(in);
 	int sign = SIGN(in);
 
-	if (angle < 20) {
+	if (angle < 15) {
 		angle = 0;
 	}
 	//
@@ -96,12 +108,20 @@ void onStepDetectedCallback(void) {
 	steps_data[get_step_count() - 1] = get_descrete_angle(
 			L3G4200D_GetData().sAngle_z);
 
+	L3G4200D_Reset(&twid);
+
+	char txt_buff[16];
+	sprintf(txt_buff, "s: %2d a: %3d", get_step_count(),
+			(int) steps_data[get_step_count() - 1]);
+	HY1602F6_Log("Step detected", txt_buff);
+
 	TRACE_INFO("-- Detected angle: %4d, Descrete angle: %d -- \r\n", L3G4200D_GetData().sAngle_z, (int)steps_data[get_step_count() - 1]);
 
 }
 
 void start_recording_track() {
 	TRACE_DEBUG("-- record_track -- \r\n");
+	HY1602F6_Log("Recording start", "");
 
 	init_pedometer_config();
 	start_steps_detection(onStepDetectedCallback);
@@ -110,12 +130,16 @@ void start_recording_track() {
 void stop_recording_track() {
 	TRACE_DEBUG("-- stop_recording_track -- \r\n");
 
-	stop_counting_steps();
+	unsigned int steps = stop_counting_steps();
+
+	char output[16];
+	sprintf(output, "Steps rec: %3d", steps);
+
+	HY1602F6_Log("Recording stop", output);
 }
 
 void turn_of_angle(double angle) {
 	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, 0x1 << 29);
-	//	reset_angle();
 	L3G4200D_Reset(&twid);
 
 	PWM_Set(0, 15);
@@ -129,22 +153,11 @@ void turn_of_angle(double angle) {
 		Kierunek(RIGHT_ENGINES, REVERSE_GEAR);
 		Kierunek(LEFT_ENGINES, FORWARD_GEAR);
 	}
-	//	waitms(1000);
-	//	PWM_Set(0, 15);
-	//	int i = 0;
+
 	while (ABS(angle) - ABS(L3G4200D_GetData().sAngle_z) > 0) {
-		//		read_gyroscope_output(ADC_CHANNEL_6);
-
-
 		L3G4200D_ReadData(&twid);
-
-		//		if (!(++i % 1000)) {
-		//			TRACE_INFO("-- angle %d  curr: %d-- \r\n", (int)angle, (int)L3G4200D_GetData().sAngle_z);
-		//			i = 1;
-		//		}
 	}
 
-	//	reset_angle();
 	L3G4200D_Reset(&twid);
 	Kierunek(RIGHT_ENGINES, STOP_GEAR);
 	Kierunek(LEFT_ENGINES, STOP_GEAR);
@@ -173,9 +186,6 @@ void turn_at_magnetic_angle(double angle) {
 		current_angle = compute_angle(current_mg_i.y, current_mg_i.x);
 		turn_angle = compute_turn_angle(angle, current_angle);
 
-		//	TRACE_INFO("-- x: %d y: %d ta: %d ca: %d --\r\n", current_mg_i.y, current_mg_i.x, (int) turn_angle, (int) current_angle);
-
-
 		waitms(5);
 
 	} while (ABS(turn_angle) > 1);
@@ -185,27 +195,19 @@ void turn_at_magnetic_angle(double angle) {
 
 }
 
-volatile unsigned int oa_data_ready = 0;
-//volatile unsigned int ls_data = 0;
-//volatile unsigned int rs_data = 0;
 volatile unsigned int level_mask;
 
 void onDistanceDataRdy(unsigned int rs_output, unsigned int ls_output) {
 	level_mask = create_level_mask(rs_output, ls_output);
-	//printf("%d %d\r\n",rs_output,ls_output);
-	oa_data_ready = 1;
 }
 
-volatile int offset_angle = 0;
-
 char obstacle_detect(OAA_OUTPUT *result) {
-	ADC_StartDoubleChannelConversion(ADC_CHANNEL_5, ADC_CHANNEL_6,
+	ADC_StartDoubleChannelConversion(ADC_CHANNEL_7, ADC_CHANNEL_5,
 			onDistanceDataRdy);
 
-	while (!oa_data_ready)
+	while (!ADC_IsDataReady())
 		;
 
-	oa_data_ready = 0;
 	*result = avoid_obstacles(level_mask);
 
 	return result->gear_left != result->gear_right;
@@ -224,19 +226,15 @@ char go_prosto() {
 	if (val == 2) {
 		go_prosto_count++;
 	}
-//
-//	L3G4200D_Reset(&twid);
 
-	for (; step_count < 15; step_count++) {
-//		L3G4200D_ReadData(&twid);
+	for (; step_count < 38; step_count++) {
 
-		ADC_StartDoubleChannelConversion(ADC_CHANNEL_5, ADC_CHANNEL_6,
+		ADC_StartDoubleChannelConversion(ADC_CHANNEL_7, ADC_CHANNEL_5,
 				onDistanceDataRdy);
 
-		while (!oa_data_ready)
+		while (!ADC_IsDataReady())
 			;
 
-		oa_data_ready = 0;
 		OAA_OUTPUT oa_result = avoid_obstacles(level_mask);
 
 		if (oa_result.gear_left == oa_result.gear_right) {
@@ -248,13 +246,6 @@ char go_prosto() {
 
 		result = avoid_obstacle();
 	}
-
-//	offset_angle += L3G4200D_GetData().sAngle_z;
-//
-//	if (ABS(offset_angle) >= 1) {
-//		turn_of_angle(-offset_angle);
-//		offset_angle = 0;
-//	}
 
 	return result;
 }
@@ -270,6 +261,10 @@ char avoid_obstacle() {
 	}
 
 	if (obstacle_detect(&oa_result)) {
+		char buff[16];
+		sprintf(buff, "Obstacle %2d", call_count);
+		HY1602F6_Log(buff, "detected");
+
 		//		int angle = oa_result.speed_left == 190 ? 45 : 90;
 		int angle = 90;
 		int sign = oa_result.gear_left == FORWARD_GEAR ? 1 : -1;
@@ -311,12 +306,22 @@ char avoid_obstacle() {
 void reconstruct_reverse_track() {
 	if (get_step_count() > 0) {
 		TRACE_DEBUG("-- reconstruct_reverse_track -- \r\n");
+		char txt_buff[16];
+		sprintf(txt_buff, "Total steps: %2d", get_step_count());
+		HY1602F6_Log("Reversing track", txt_buff);
 
 		init_oa_configuration();
+		CD4053_EnableIRSensors();
+		waitms(1000);
 
 		int step_count = get_step_count() - 1;
-
 		for (; step_count >= 0; step_count--) {
+			char lcd_buff1[16];
+			sprintf(lcd_buff1, "angle: %3d", (int) steps_data[step_count]);
+			char lcd_buff2[16];
+			sprintf(lcd_buff2, "step: %3d", step_count);
+			HY1602F6_Log(lcd_buff1, lcd_buff2);
+
 			turn_of_angle(steps_data[step_count]);
 
 			go_prosto();
@@ -326,5 +331,6 @@ void reconstruct_reverse_track() {
 		Kierunek(LEFT_ENGINES, STOP_GEAR);
 	} else {
 		TRACE_WARNING("-- No steps recorded. --\r\n");
+		HY1602F6_Log("Invalid track", "No data found");
 	}
 }

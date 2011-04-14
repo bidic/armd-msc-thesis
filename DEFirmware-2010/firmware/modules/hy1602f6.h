@@ -8,14 +8,6 @@
 #ifndef HY1602F6_H_
 #define HY1602F6_H_
 
-#include <pio/pio.h>
-#include <dbgu/dbgu.h>
-#include <twi/twi.h>
-#include <utility/assert.h>
-#include <utility/trace.h>
-#include <drivers/async/async.h>
-#include <drivers/twi/twid.h>
-
 // Slave address of AT24C chips.
 #define AT24C_ADDRESS   56
 
@@ -26,5 +18,6 @@ void HY1602F6_SetCursorPos(unsigned char);
 void HY1602F6_SetCursorHome(void);
 void HY1602F6_StartNextLine();
 void HY1602F6_SetProgress(unsigned char val, unsigned char clear);
+void HY1602F6_Log(const char* line1, const char* line2);
 
 #endif /* HY1602F6_H_ */

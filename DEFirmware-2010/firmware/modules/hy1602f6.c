@@ -5,6 +5,14 @@
  *      Author: lhanusiak
  */
 
+#include <pio/pio.h>
+#include <dbgu/dbgu.h>
+#include <twi/twi.h>
+#include <utility/assert.h>
+#include <utility/trace.h>
+#include <drivers/async/async.h>
+#include <drivers/twi/twid.h>
+
 #include "hy1602f6.h"
 
 extern Twid twid;
@@ -104,6 +112,13 @@ void HY1602F6_Init(void) {
 	HY1602F6_WriteCmd(0x02, 1); // set cursor home
 
 	TRACE_DEBUG("-- HY1602F6 Init completed -- \r\n");
+}
+
+void HY1602F6_Log(const char* line1, const char* line2){
+	HY1602F6_ClearDisplay();
+	HY1602F6_PrintText(line1);
+	HY1602F6_StartNextLine();
+	HY1602F6_PrintText(line2);
 }
 
 void HY1602F6_SetProgress(unsigned char state, unsigned char clear) {

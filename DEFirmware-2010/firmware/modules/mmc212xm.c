@@ -1,6 +1,6 @@
 #include "mmc212xm.h"
 
-double mag_offset[2] = {2023,2048};
+double mag_offset[2] = {2083,2025.5};
 double mag_sensitivity[2]= {91,88};
 
 mag_info MMC212xM_GetMagneticFieldInfo(Twid *twid)
@@ -23,9 +23,9 @@ mag_info MMC212xM_GetMagneticFieldInfo(Twid *twid)
 //  if(sens[0] != 0)
 //  {
 	  double d = (rv.x - mag_offset[0]);
-	  rv.x = 1000.0 * d / mag_sensitivity[0];
+	  rv.x = d;//1000.0 * d / mag_sensitivity[0];
 	  d = (rv.y - mag_offset[1]);
-	  rv.y = 1000.0 *  d / mag_sensitivity[0];
+	  rv.y = d;//1000.0 *  d / mag_sensitivity[1];
 //  }
 
   return rv;

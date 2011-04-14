@@ -8,14 +8,6 @@
 #ifndef REVERSE_TRACK_RECONSTRUCTION_H_
 #define REVERSE_TRACK_RECONSTRUCTION_H_
 
-#include "utils.h"
-#include "peripherals.h"
-#include "modules/mmc212xm.h"
-#include "algorithms/pedometer.h"
-#include "algorithms/obstacle_avoidance.h"
-#include "modules/gyroscope.h"
-
-
 #define MAX_STEPS 300
 #ifndef ABS
 #define ABS(n) ( ((n) < 0) ? -(n) : (n))
