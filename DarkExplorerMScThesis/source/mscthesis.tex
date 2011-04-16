@@ -106,6 +106,16 @@ top=25mm, bottom=25mm}
 \end{tabular}
 \end{center}
 
+\vspace{14ex}
+
+\begin{center}
+\begin{tabular}{lr}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ &
+................................................................. \\
+~ & {\sf (czytelny podpis)}\\
+\end{tabular}
+\end{center}
+
 %% =====  TYL STRONY TYTULOWEJ PRACY MAGISTERSKIEJKIEJ ====
 
 \newpage
@@ -160,10 +170,54 @@ Termin oddania w dziekanacie: ?? kwiecień 2011\\[1cm]
 \newpage
 
 \noindent
-Na kolejnych dwóch stronach proszę dołączyć kolejno recenzje pracy popełnione przez Opiekuna oraz Recenzenta (wydrukowane z systemu MISIO i podpisane przez odpowiednio Opiekuna i Recenzenta pracy). Papierową wersję pracy (zawierającą podpisane recenzje) proszę złożyć w dziekanacie celem rejestracji co najmniej na tydzień przed planowaną obroną.
+Recenzja
+\newpage
+Recenzja
 
 \linespread{1.3}
 \selectfont
+
+\newpage
+Ze względu na obszerny zakres działań jaki obejmowała ta praca magisterska, była ona wykonywana przez zespół dwuosobowy. W celu ułatwienia zrozumienia treści zawartej w pracy nie jest ona rozdzielona na dwie części pisane przez poszczególnych autorów lecz została podzielona rozdziałami pod względem logicznym. Przypisanie opracowań redakcyjnych elementów pracy magisterskiej do autorów przedstawia poniższa lista: 
+
+\textbf{Łukasz Hanusiak opracował:}
+\begin{itemize}
+  \item Historia i rozwój robotyki (rozdział 1).
+  \item Akclelerometr trzyosiowy (podrozdział 3.2).
+  \item Czujnik odległości (podrozdział 3.5).
+  \item Rozbudowa obudowy robota (podrozdział 3.8).
+  \item Narzędzia do rozwoju systemu wbudowanego dla systemu Windows (podrozdział 4.1.1).
+  \item Protokół komunikacji bluetooth (podrozdział 4.3).
+  \item Lokalizacja twarzy na obrazie (podrozdział 4.6).
+  \item Opis biblioteki do zarządzania robotem dla platformy .NET (podrozdział 5.1.1).
+  \item Platforma mobilna - Windows Mobile (podrozdział 5.3).
+  \item Specyfikacja poleceń protokołu komunikacji (dodatek A)
+\end{itemize}
+
+\textbf{Mariusz Nowacki opracował:}
+\begin{itemize}
+  \item Analiza bazowej konfiguracji robota (rozdział 2).
+  \item Inercjalny system nawigacyjny (podrozdział 3.1).
+  \item Żyroskop (podrozdział 3.3).
+  \item Magnetometr (podrozdział 3.4).
+  \item Wyświetlacz LCD (podrozdział 3.6).
+  \item Płyta rozszerzeń (podrozdział 3.7).
+  \item Narzędzia do rozwoju systemu wbudowanego dla systemu Linux (podrozdział 4.1.2).
+  \item Opis biblioteki AT91LIB (podrozdział 4.2).
+  \item Modernizacja sposobu pobierania obrazu z kamery (podrozdział 4.5).
+  \item Opis biblioteki do zarządzania robotem dla języka Java (podrozdział 5.1.2).
+  \item Aplikacja do sterowania robotem dla komputerów PC (Java) (podrozdział 5.2).
+  \item Platforma mobilna - Java ME (podrozdział 5.4).
+  \item Wykonanie płytek drukowanych układów elektronicznych (dodatek B)
+\end{itemize}
+
+\textbf{Wspólnie opracowano:}
+\begin{itemize}
+  \item Wprowadzenie
+  \item Algorytm rekonstrukcji ścieżki powrotnej (podrozdział 4.4).
+  \item Podsumowanie
+\end{itemize}
+
 
 \newpage
 \tableofcontents
@@ -179,33 +233,32 @@ Na kolejnych dwóch stronach proszę dołączyć kolejno recenzje pracy popełni
 \include*{ch02_analysis/s02_software}
 
 \newpage
-\chapter{Środowiska rozwojowe systemu wbudowanego}
-\include*{ch03_software/s01_windows}
-\include*{ch03_software/s02_linux}
+\chapter{Rozwój sprzętowej warstwy robota mobilnego}
+\include*{ch03_development/s00_ins}
+\include*{ch03_development/s01_accelerometer}
+\include*{ch03_development/s02_gyroscope}
+\include*{ch03_development/s03_magnetometer}
+\include*{ch03_development/s04_ir_sensors}
+\include*{ch03_development/s05_lcd_display}
+\include*{ch03_development/s06_extension_board}
+\include*{ch03_development/s07_casing}
+
+\newpage
+\chapter{Rozwój oprogramowania systemu wbudowanego}
+\include*{ch04_embeded_system/s01_windows}
+\include*{ch04_embeded_system/s02_linux}
+\include*{ch04_embeded_system/s03_at91lib}
+\include*{ch04_embeded_system/s04_communication}
+\include*{ch04_embeded_system/s05_rtr_wca}
+\include*{ch04_embeded_system/s06_image_acquisition}
+\include*{ch04_embeded_system/s07_face_detection}
 
 \newpage
 \chapter{Aplikacje zarządzające robotem dla PC i urządzeń mobilnych}
-\include*{ch03_software/s03_libraries}
-\include*{ch03_software/s04_java}
-\include*{ch03_software/s05_windows_mobile}
-\include*{ch03_software/s06_java_mobile}
-
-\newpage
-\chapter{Rozwój sprzętowej warstwy robota mobilnego}
-\include*{ch04_development/s00_ins}
-\include*{ch04_development/s01_accelerometer}
-\include*{ch04_development/s02_gyroscope}
-\include*{ch04_development/s03_magnetometer}
-\include*{ch04_development/s04_ir_sensors}
-\include*{ch04_development/s05_lcd_display}
-\include*{ch04_development/s06_extension_board}
-\include*{ch04_development/s07_casing}
-
-\chapter{Rozwój oprogramowania robota mobilnego}
-\include*{ch05_embeded_system/s01_communication}
-\include*{ch05_embeded_system/s02_rtr_wca}
-\include*{ch05_embeded_system/s03_image_acquisition}
-\include*{ch05_embeded_system/s04_face_detection}
+\include*{ch05_software/s01_libraries}
+\include*{ch05_software/s02_java}
+\include*{ch05_software/s03_windows_mobile}
+\include*{ch05_software/s04_java_mobile}
 
 \newpage
 \chapter*{Podsumowanie}
