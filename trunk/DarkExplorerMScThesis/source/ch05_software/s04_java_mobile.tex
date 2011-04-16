@@ -1,11 +1,32 @@
 \section{Platforma mobilna (Java ME)}
-Jednym z elementów rozwoju możliwości robota mobilnego Dark Explorer było stworzenie aplikacji zarządzającej na urządzenia przenosne. W ramach tego zadania stworzono aplikację działającą na platformie Java ME\footnote{Java ME - Java Micro Edition}. Platforma ta jest dedykowana dla aplikacji tworzonych na urządzenia mobilne o bardzo ograniczonych zasobach, takich jak telefony komórkowe. 
+\label{sec:javame-app}
+Jednym z elementów rozwoju możliwości robota mobilnego Dark Explorer było
+stworzenie aplikacji zarządzającej na urządzenia przenosne. W ramach tego zadania
+stworzono aplikację działającą na platformie Java ME\footnote{Java ME - Java
+Micro Edition}. Platforma ta jest dedykowana dla aplikacji tworzonych na
+urządzenia mobilne o bardzo ograniczonych zasobach, takich jak telefony
+komórkowe.
 
-W związku z niską wydajnością procesorów oraz małą ilością pamięci w telefonach komórkowych Java ME posiada ograniczony w stosunku do Java SE\footnote{Java SE - Java Standard Edition, wersja platformy Java na komputery stacjonarne} zbiór klas nazywanych konfiguracją. W Java ME wyróżniamy twa typy konfiguracji: CDC\footnote{CDC -- Connected Device Configuration} dla urządzeń o lepszych parametrach (smartphone'y) oraz CLDC\footnote{CLDC -- Connected Limited Device Configuration} dla urządzeń o słabych parametrach (proste telefony komórkowe). W tej pracy wykorzystana została konfiguracja CLDC.
+W związku z niską wydajnością procesorów oraz małą ilością pamięci w telefonach
+komórkowych Java ME posiada ograniczony w stosunku do Java SE\footnote{Java SE -
+Java Standard Edition, wersja platformy Java na komputery stacjonarne} zbiór klas
+nazywanych konfiguracją. W Java ME wyróżniamy twa typy konfiguracji:
+CDC\footnote{CDC -- Connected Device Configuration} dla urządzeń o lepszych
+parametrach (smartphone'y) oraz CLDC\footnote{CLDC -- Connected Limited Device
+Configuration} dla urządzeń o słabych parametrach (proste telefony komórkowe). W
+tej pracy wykorzystana została konfiguracja CLDC.
 
-Konfiguracje Java ME są uzupełniane przez profile MIDP\footnote{MIDP -- Mobile Information Device Profile} które dodają swoje własne klasy do klas istniejących w konfiguracji. Klasy te zapewniają wykonywanie odpowiednich zadań na konkretnych elementach urządzenia mobilnego. Aplikacje wykorzystujące MIDP nazywane są MIDletami i są uruchamiane w środowisku KVM\footnote{KVM - K Virtual Machine}.
+Konfiguracje Java ME są uzupełniane przez profile MIDP\footnote{MIDP -- Mobile
+Information Device Profile} które dodają swoje własne klasy do klas istniejących
+w konfiguracji. Klasy te zapewniają wykonywanie odpowiednich zadań na konkretnych
+elementach urządzenia mobilnego. Aplikacje wykorzystujące MIDP nazywane są
+MIDletami i są uruchamiane w środowisku KVM\footnote{KVM - K Virtual Machine}.
 
-K Virtual Machine jest niczym innym jak wirtualną maszyną Java opracowaną dla konfiguracji CLDC. Jest ona bardzo ograniczona przez co posiada mniejsze wymagania sprzętowe w porównaniu ze swoimi odpowiednikami z komputerów klasy PC. Każdy producent urządzeń mobilnych musi zadbać o własną implementację maszyny wirtualnej na której będą uruchamiane MIDlety.
+K Virtual Machine jest niczym innym jak wirtualną maszyną Java opracowaną dla
+konfiguracji CLDC. Jest ona bardzo ograniczona przez co posiada mniejsze
+wymagania sprzętowe w porównaniu ze swoimi odpowiednikami z komputerów klasy PC.
+Każdy producent urządzeń mobilnych musi zadbać o własną implementację maszyny
+wirtualnej na której będą uruchamiane MIDlety.
 \subsection{Narzędzia programistyczne}
 
 \subsection{Aplikacja mobilna}

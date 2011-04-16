@@ -60,6 +60,17 @@ top=25mm, bottom=25mm}
   \setlength{\parsep}{1pt}}
 {\end{description}}
 
+\newenvironment{item-list}
+{\begin{itemize}
+  \setlength{\itemsep}{0mm}
+  \setlength{\parskip}{0pt}
+  %\setlength{\labelwidth}{15mm}
+  %\setlength{\labelsep}{10mm}
+  %\setlength{\itemindent}{5mm}
+  %\setlength{\listparindent}{\parindent}
+  \setlength{\parsep}{1pt}}
+{\end{itemize}}
+
 \begin{document}
 
 \thispagestyle{empty}
@@ -181,42 +192,48 @@ Recenzja
 Ze względu na obszerny zakres działań jaki obejmowała ta praca magisterska, była ona wykonywana przez zespół dwuosobowy. W celu ułatwienia zrozumienia treści zawartej w pracy nie jest ona rozdzielona na dwie części pisane przez poszczególnych autorów lecz została podzielona rozdziałami pod względem logicznym. Przypisanie opracowań redakcyjnych elementów pracy magisterskiej do autorów przedstawia poniższa lista: 
 
 \textbf{Łukasz Hanusiak opracował:}
-\begin{itemize}
-  \item Historia i rozwój robotyki (rozdział 1).
-  \item Akclelerometr trzyosiowy (podrozdział 3.2).
-  \item Czujnik odległości (podrozdział 3.5).
-  \item Rozbudowa obudowy robota (podrozdział 3.8).
-  \item Narzędzia do rozwoju systemu wbudowanego dla systemu Windows (podrozdział 4.1.1).
-  \item Protokół komunikacji bluetooth (podrozdział 4.3).
-  \item Lokalizacja twarzy na obrazie (podrozdział 4.6).
-  \item Opis biblioteki do zarządzania robotem dla platformy .NET (podrozdział 5.1.1).
-  \item Platforma mobilna - Windows Mobile (podrozdział 5.3).
-  \item Specyfikacja poleceń protokołu komunikacji (dodatek A)
-\end{itemize}
+\begin{item-list}
+  \item Historia i rozwój robotyki (rozdział \ref{ch:history}).
+  \item Akclelerometr trzyosiowy (podrozdział \ref{sec:accelometer}).
+  \item Czujnik odległości (podrozdział \ref{sec:ir-sensors}).
+  \item Rozbudowa obudowy robota (podrozdział \ref{sec:casing}).
+  \item Narzędzia do rozwoju systemu wbudowanego dla systemu Windows
+  (podrozdział \ref{sec:embeded-win-tools}).
+  \item Protokół komunikacji bluetooth (podrozdział \ref{sec:bt-comm}).
+  \item Lokalizacja twarzy na obrazie (podrozdział \ref{sec:face-detect}).
+  \item Opis biblioteki do zarządzania robotem dla platformy .NET (podrozdział
+  \ref{subsec:sdk-.net}).
+  \item Platforma mobilna - Windows Mobile (podrozdział \ref{sec:wm-app}).
+  \item Specyfikacja poleceń protokołu komunikacji (dodatek \ref{ch:bt-spec})
+\end{item-list}
 
 \textbf{Mariusz Nowacki opracował:}
-\begin{itemize}
-  \item Analiza bazowej konfiguracji robota (rozdział 2).
-  \item Inercjalny system nawigacyjny (podrozdział 3.1).
-  \item Żyroskop (podrozdział 3.3).
-  \item Magnetometr (podrozdział 3.4).
-  \item Wyświetlacz LCD (podrozdział 3.6).
-  \item Płyta rozszerzeń (podrozdział 3.7).
-  \item Narzędzia do rozwoju systemu wbudowanego dla systemu Linux (podrozdział 4.1.2).
-  \item Opis biblioteki AT91LIB (podrozdział 4.2).
-  \item Modernizacja sposobu pobierania obrazu z kamery (podrozdział 4.5).
-  \item Opis biblioteki do zarządzania robotem dla języka Java (podrozdział 5.1.2).
-  \item Aplikacja do sterowania robotem dla komputerów PC (Java) (podrozdział 5.2).
-  \item Platforma mobilna - Java ME (podrozdział 5.4).
-  \item Wykonanie płytek drukowanych układów elektronicznych (dodatek B)
-\end{itemize}
+\begin{item-list}
+  \item Analiza bazowej konfiguracji robota (rozdział \ref{ch:analysis}).
+  \item Inercjalny system nawigacyjny (podrozdział \ref{sec:ins}).
+  \item Żyroskop (podrozdział \ref{sec:gyro}).
+  \item Magnetometr (podrozdział \ref{sec:mag}).
+  \item Wyświetlacz LCD (podrozdział \ref{sec:lcd}).
+  \item Płyta rozszerzeń (podrozdział \ref{ch:ExpanderChapter}).
+  \item Narzędzia do rozwoju systemu wbudowanego dla systemu Linux (podrozdział
+  \ref{sec:embeded-linux-tools}).
+  \item Opis biblioteki AT91LIB (podrozdział \ref{sec:at91lib}).
+  \item Modernizacja sposobu pobierania obrazu z kamery (podrozdział
+  \ref{sec:img-acq}).
+  \item Opis biblioteki do zarządzania robotem dla języka Java (podrozdział
+  \ref{subsec:sdk-java}).
+  \item Aplikacja do sterowania robotem dla komputerów PC (Java) (podrozdział
+  \ref{sec:java-app}).
+  \item Platforma mobilna - Java ME (podrozdział \ref{sec:javame-app}).
+  \item Wykonanie płytek drukowanych układów elektronicznych (dodatek \ref{ch:boards-design})
+\end{item-list}
 
 \textbf{Wspólnie opracowano:}
-\begin{itemize}
+\begin{item-list}
   \item Wprowadzenie
-  \item Algorytm rekonstrukcji ścieżki powrotnej (podrozdział 4.4).
+  \item Algorytm rekonstrukcji ścieżki powrotnej (podrozdział \ref{sec:rtrwca}).
   \item Podsumowanie
-\end{itemize}
+\end{item-list}
 
 
 \newpage
@@ -229,6 +246,7 @@ Ze względu na obszerny zakres działań jaki obejmowała ta praca magisterska, 
 
 \newpage
 \chapter{Analiza bazowej konfiguracji robota}
+\label{ch:analysis}
 \include*{ch02_analysis/s01_hardware}
 \include*{ch02_analysis/s02_software}
 
@@ -267,8 +285,10 @@ Ze względu na obszerny zakres działań jaki obejmowała ta praca magisterska, 
 \newpage 
 \appendix
 \chapter{Specyfikacja poleceń protokołu komunikacji}
+\label{ch:bt-spec}
 \include*{appendix/btp_spec}
 \chapter{Wykonanie płytek drukowanych układów elektronicznych}
+\label{ch:boards-design}
 \include*{appendix/pcb}
 \chapter{Plik konfiguracyjny programatora: triton.cfg}
 \include*{appendix/triton-cfg}

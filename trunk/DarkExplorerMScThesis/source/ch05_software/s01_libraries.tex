@@ -30,6 +30,7 @@ Wybór motywowany jest faktem iż platforma .NET jest jednym z najdynamiczniej r
 programistycznych ostatnich lat natomiast Java jest niesamowicie popularna i dostępna w obecnych środowisk uruchomieniowych. 
 
 \subsection{Platforma .NET}
+\label{subsec:sdk-.net}
 Firma Microsoft dostarcza szereg bibliotek dodatkowych oraz narzędzi pozwalających na szybkie tworzenie oprogramowania
 działającego zarówno na urządzeniach mobilnych jaki i stacjonarnych. Dzięki
 pracy programistów w ramach projektu Mono\footnote{Więcej informacji na temat projektu
@@ -71,11 +72,28 @@ aplikacyjną jak i sprzętową robota Dark Explorer.
 \textcolor{red}{TODO: zrzut ekranu aplikacji sterującej dla .net'a}
 
 \subsection{Bibloteka zarządzająca dla języka Java}
-Drugim rozwiązaniem programistycznym umożliwiającym sterowanie robotem za pomocą urządzeń zewnętrznych jest biblioteka napisana w języku Java. Pozwala ona na komunikowanie się z robotem przy pomocy prostych funkcji, które nie wymagają od programisty żadnej wiedzy na temat mechanizmów przesyłu danych pomiędzy robotem a resztą świata. Podobnie jak w przypadku biblioteki przygotowanej pod platformę .NET możemy bezpośrednio sterować poszczególnymi podzespołami bazowymi wysyłając własne komendy lub też korzystać z funkcji wbudowanych, odpowiedzialnych za wykonywanie konkretnych czynności, np.: manewrowanie robotem, pobieranie zdjęcia w określonej rozdzielczości, kontrolowanie serwomechanizmu.
+\label{subsec:sdk-java}
+Drugim rozwiązaniem programistycznym umożliwiającym sterowanie robotem za pomocą
+urządzeń zewnętrznych jest biblioteka napisana w języku Java. Pozwala ona na
+komunikowanie się z robotem przy pomocy prostych funkcji, które nie wymagają od
+programisty żadnej wiedzy na temat mechanizmów przesyłu danych pomiędzy robotem a
+resztą świata. Podobnie jak w przypadku biblioteki przygotowanej pod platformę
+.NET możemy bezpośrednio sterować poszczególnymi podzespołami bazowymi wysyłając
+własne komendy lub też korzystać z funkcji wbudowanych, odpowiedzialnych za
+wykonywanie konkretnych czynności, np.: manewrowanie robotem, pobieranie zdjęcia
+w określonej rozdzielczości, kontrolowanie serwomechanizmu.
 
-Biblioteka została podzielona na dwie klasy. Jedna z nich jest odpowiedzialna za obsługę komunikacji bluetooth pomiędzy aplikacją a robotem Dark Explorer. Druga natomiast pozwala w łatwy sposób wykorzystywać wszystkie funkcje robota.
+Biblioteka została podzielona na dwie klasy. Jedna z nich jest odpowiedzialna za
+obsługę komunikacji bluetooth pomiędzy aplikacją a robotem Dark Explorer. Druga
+natomiast pozwala w łatwy sposób wykorzystywać wszystkie funkcje robota.
 
-Bibloteka była tworzona docelowo na telefony komórkowe z wbudowaną maszyną wirtualną Java, które implementują API do komunikacji bluetooth JSR 82\footnote{JSR 82 - Java Specification Request, zbiór reguł których należy się trzymać podczas implementacji API do komunikacji bluetooth}. Możliwe jest również wykorzystanie tej biblioteki na komputerach stacjonarnych. W tym celu konieczne jest wyposarzenie tworzonej aplikacji w bibliotekę wspierającą JSR 82. Dostępnych jest kilka tego rodzaju biblotek (tab. \ref{tab:JSR82SDK}).
+Bibloteka była tworzona docelowo na telefony komórkowe z wbudowaną maszyną
+wirtualną Java, które implementują API do komunikacji bluetooth JSR
+82\footnote{JSR 82 - Java Specification Request, zbiór reguł których należy się
+trzymać podczas implementacji API do komunikacji bluetooth}. Możliwe jest również
+wykorzystanie tej biblioteki na komputerach stacjonarnych. W tym celu konieczne
+jest wyposarzenie tworzonej aplikacji w bibliotekę wspierającą JSR 82. Dostępnych
+jest kilka tego rodzaju biblotek (tab. \ref{tab:JSR82SDK}).
 
 \begin{table}[hb]
   \centering
