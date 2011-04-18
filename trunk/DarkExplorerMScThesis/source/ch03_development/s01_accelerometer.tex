@@ -23,8 +23,8 @@ przeciętnego człowieka drży mimowolnie z częstotliwością od 10 do 20 Hz} d
 rąk użytkownika. Dlatego też większość aparatów wyposażonych jest czujniki które
 mierzą wspomniane drgania, a następnie uzyskane informacje przekazują do modułu
 sterującego położeniem soczewek i przetwornika obrazu. Następnie moduł ten
-dostosowuje parametry pracy aparatu tak aby zminimalizować wpływ nieporządanych przeunięć
-na efekt końcowy pracy jakim jest zdjęcie.
+dostosowuje parametry pracy aparatu tak aby zminimalizować wpływ niepożądanych
+przesunięć na efekt końcowy pracy jakim jest zdjęcie.
 
 Innym popularnym przykładem zastosowania akcelerometrów są pedometry, potocznie 
 nazywane krokomierzami. Dzięki zastosowanej technologii czujniki w krokomierzach
@@ -100,12 +100,12 @@ akcelerometry które dokonują pomiaru przyspieszenia w oparciu o efekt Halla.
 \begin{figure}[ht!]
  \centering
  \includegraphics[height=62mm]{../images/ch04/acc_intro.png}
- \caption{Schemat ideowy akcelerometu pojemnościowego dokonującego pomiaru
+ \caption{Schemat ideowy akcelerometru pojemnościowego dokonującego pomiaru
  wzdłuż jednej osi\cite{ElektronikaPraktyczna22010}}
  \label{fig:AkcelerometrIdeowyScheamt}
 \end{figure}
 
-Przyspieszomierze piezorezystywne mają punkt masy dołączony do potencjometru
+Przyspieszeniomierze piezorezystywne mają punkt masy dołączony do potencjometru
 który zwiększa i zmniejsza przepływ prądu w zależności od siły jaka oddziałuje
 na czujnik. Bardzo podobną zasadę działania wykazują akcelerometry pojemnościowe
 te jednak wykorzystują efekt zmiany pojemności kondensatorów zastosowanych w
@@ -141,8 +141,8 @@ przez akcelerometr w trakcie chodzenia oscyluje wokół wartości 1G\footnote{1G
 $\frac{m}{s^2}$}. Podstawową zasadą działania algorytmu jest więc wykrywanie
 cykli w jakich następuje kolejno spadek wartości odczytywanego przyspieszenia, a
 następnie jego wzrost ponad wartość spoczynkową. Do poprawnego działania
-algorytmu konieczne jest dobranie nie tylko odpowidniej stałej czasowej w której
-wykryty cykl będzie zliczany jako krok, ale również ustalenie progów
+algorytmu konieczne jest dobranie nie tylko odpowiedniej stałej czasowej w
+której wykryty cykl będzie zliczany jako krok, ale również ustalenie progów
 przyspieszenia poniżej i powyżej wartości spoczynkowej które będą traktowane
 jako odpowiednio początek i koniec cyklu.
 
@@ -153,8 +153,9 @@ MMA7260\cite{MMA7260DataSheet} został zainstalowany w robocie jako element
 modułu MOBOT-GM3A. Moduł akcelerometru jest to jedyny moduł w całości
 dostarczony przez zewnętrznego dostawce, a wybór takiej strategii podyktowany
 był jedynie względami ekonomicznymi i dostępnością tego typu urządzeń na polskim
-rynku elektronicznym. Na ilustracji zamiszczone zostało zdjęcie gotowego układu
-wraz z zaznaczonymi wyprowadzeniami.
+rynku elektronicznym. Na ilustracji zamieszczone zostało zdjęcie gotowego układu
+wraz z zaznaczonymi wyprowadzeniami które zostały wykorzystane w ramach pracy
+magisterskiej.
 
 \begin{figure}[ht!]
  \centering
@@ -163,9 +164,9 @@ wraz z zaznaczonymi wyprowadzeniami.
  \label{fig:AccView}
 \end{figure}
 
-Wykorzystany czójnik przyspieszenia oferuje cztery zakresy czułości których
-zmiana odbywa się poprzez konifguraję odpowiednich zworek w module MOBOT - GM3A.
-W~ramach implementacji wybrany został zakres czułości od $-1.5g$ do $1.5g$ gdyż
+Wykorzystany czujnik przyspieszenia oferuje cztery zakresy czułości których
+zmiana odbywa się poprzez konfigurację odpowiednich zworek w module MOBOT -
+GM3A. W~ramach implementacji wybrany został zakres czułości od $-1.5g$ do $1.5g$ gdyż
 udziela on najdokładniejszej informacji na temat przyspieszenia w przedziale w
 jakim mieszczą się przyspieszenia związane z chodzeniem. W wybranym trybie
 czułości akcelerometr wykazuje czułość rzędu 800mV/g, co przy wartości
@@ -173,18 +174,18 @@ przyspieszenia równej zero daje środek przedziału czułości na poziomie 1.65
 Ze względu na analogową charakterystykę sygnału wyjściowego z modułu
 akcelerometru konieczne jest wykorzystanie konwertera analogowo-cyfrowego w
 celu odczytania danych pomiarowych otrzymywanych na wyjściach urządzenia.
-Szczegółowy opis działania wbudowanego w robota ADC można znaleźć w rozdziale
-poświęconym dalmierzom IR. 
+Szczegółowy opis działania wbudowanego w robota ADC\footnote{Analog to Digital
+Converter} można znaleźć w rozdziale poświęconym dalmierzom IR. 
 
 \begin{figure}[ht!]
  \centering
- \includegraphics[height=75mm]{../images/ch04/mma7260_datasheet.png}
- \caption{Wartości przyspiesznia statycznego dla układu MMA7260 dostarczone w
+ \includegraphics[height=120mm]{../images/ch04/mma7260_datasheet.png}
+ \caption{Wartości przyspieszenia statycznego dla układu MMA7260 dostarczone w
  ramach specyfikacji technicznej urządzenia\cite{MMA7260DataSheet}}
  \label{fig:MMADataSheetStaticAcc}
 \end{figure}
 
-Przed rozpoczęciem praktycznej implementacji alogrytmu wykrywania kroków
+Przed rozpoczęciem praktycznej implementacji algorytmu wykrywania kroków
 konieczne okazało się przeprowadzenie kalibracji modułu, gdyż już wstępne testy
 czujnika zwróciły spore różnice pomiędzy wartościami podanymi w nocie
 katalogowej, a stanem zmierzonym na wyjściach akcelerometru. Zgodnie z rysunkiem
@@ -194,27 +195,34 @@ przedziałach. Niestety jak się okazało poszczególne osie miały bardzo znacz
 różnice w zakresie swojej czułości co mogłoby bardzo niekorzystnie wpłynąć na
 stabilność działania zaproponowanego algorytmu zliczania kroków. 
 
-\begin{figure}[ht!]
- \centering
- \includegraphics[height=80mm]{../images/ch04/raw_acc_data.png}
- \caption{Wartości przyspiezenia odczytywane na wyjściach akcelerometru przed
- przeprowadzeniem kalibracji}
- \label{fig:MMADataRaw}
-\end{figure}
-
 Wspomniany proces kalibracji polegał na ustawieniu czujnika na płaskiej,
 poziomej powierzchni oraz odczytaniu wartości przyspieszenia statycznego dla
 każdej z osi z osobna. Procedurę taką powtarzano wielokrotnie zmieniając
 orientację modułu względem wektora grawitacji. Po zebraniu wszystkich danych
 pomiarowych dla każdej osi z osobna została wyznaczona rzeczywista czułość, a
-następnie w module odpowiedzialnym za akwicyzję danych o przyspieszeniu zostały
+następnie w module odpowiedzialnym za akwizycję danych o przyspieszeniu zostały
 zaprogramowane funkcje korygujące otrzymane dane wejściowe o wartości wyliczone
-podczas kalibracji urządzenia. Na poniższych wykresach znajdują się informacje o
-stanie wyjść przed i po przeprowadzeniu kalibracji. 
+podczas kalibracji urządzenia.
+
+Na poniższych wykresach znajdują się informacje o stanie wyjść przed i po
+przeprowadzeniu kalibracji. Jak można bardzo dobrze zaobserwować rozbieżności
+pomiędzy odczytami bez i z kalibracją są dosyć znaczące, a dla rozważanego
+sposobu zastosowania wręcz krytyczne. Dlatego też istotne jest aby przed
+uruchomieniem algorytmu rozpoznawania kroków mieć pewność, że czujnik jest w
+prawidłowy sposób skalibrowany. 
   
-\begin{figure}[ht!]
+\begin{figure}[h!]
  \centering
- \includegraphics[height=80mm]{../images/ch04/calib_acc_data.png}
+ \includegraphics[width=\textwidth]{../images/ch04/raw_acc_data.png}
+ \caption{Wartości przyspieszenia odczytywane na wyjściach akcelerometru przed
+ przeprowadzeniem kalibracji}
+ \label{fig:MMADataRaw}
+\end{figure}
+  
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=\textwidth]{../images/ch04/calib_acc_data.png}
  \caption{Wartości odczytywane na wyjściach akcelerometru po przeprowadzeniu kalibracji}
  \label{fig:MMADataCalib}
 \end{figure}
+\newpage
