@@ -14,14 +14,16 @@ narzędzi wykorzystywanych przez autorów tej pracy.
 \label{sec:embeded-win-tools}
 Pierwszym krokiem do przygotowania środowiska rozwojowego umożliwiającego
 rozwijanie oprogramowania sterującego robotem jest instalacja sterowników
-wymaganych przez system Windows do obsługi interfejsu JTAG za pomocą którego
-odbywa się proces wgrywania przygotowanego oprogramowania do pamięci robota.
-Kolejnym wymaganym krokiem jest instalacja i konfiguracja narzędzi
-umożliwiających stworzenie pliku binarnego umożliwiającego uruchomienie
-przygotowanej na platformie sprzętowej robota. Ostatnim etapem przygotowań jest
-instalacja oprogramowania umożliwiającego programowanie układu za pomocą
-wspomnianego interfejsu JTAG oraz debugowanie aplikacji w trakcie jej działania
-na robocie.
+wymaganych przez system Windows do obsługi interfejsu JTAG\footnote{Joint Test
+Action Group - jest to nazwa standardu który definuje protokół wykorzystywany do
+testowania połączeń na płytkach drukowanych oraz uruchamiania i programowania
+układów i systemów mikroprocesorowych. } za pomocą którego odbywa się proces
+wgrywania przygotowanego oprogramowania do pamięci robota. Kolejnym wymaganym
+krokiem jest instalacja i konfiguracja narzędzi umożliwiających stworzenie pliku
+binarnego umożliwiającego uruchomienie przygotowanej na platformie sprzętowej
+robota. Ostatnim etapem przygotowań jest instalacja oprogramowania
+umożliwiającego programowanie układu za pomocą wspomnianego interfejsu JTAG oraz
+debugowanie aplikacji w trakcie jej działania na robocie.
 
 \subsection{Instalacja WinARM}
 Do kompilacji kodu źródłowego oprogramowania zajmującego się sterowaniem
@@ -29,14 +31,17 @@ podzespołami robota wykorzystany został zestaw narzędzi znany pod nazwą WinA
 WinARM jest zestawem narzędzi umożliwiających tworzenie oprogramowania dla
 kontrolerów opartych na platformie ARM. W odróżnieniu od innych dostępnych
 obecnie rozwiązań, środowisko to, nie wymaga dodatkowej instalacji narzędzi
-udostępnianych w ramach MinGW czy też Cygwina. Wszystkie potrzebne narzędzia
-dostarczane są w ramach SDK\footnote{SDK (z ang. Software Development Kit) -
-Zestaw narzędzi do rozwoju oprogramowania}. Narzędzia WinARM pomyślnie przeszły
-testy z kontrolerami Atmel AT91SAM7S64, AT91SAM7S256, AT91RM9200 ARM7TDMI oraz
-Philips LPC2106, Philips LPC2129, Philips LPC2138, Philips LPC2148. Dodatkowo
-dostarczane w ramach środowiska kompilatory i narzędzia powinny prawidłowo
-współpracować ze wszystkimi mikrokontrolerami opartymi o architekturę
-ARM(-TDMI/Thumb itp.).
+udostępnianych w ramach MinGW\footnote{Minimalist GNU for Windows - port GCC
+dostarczający zestaw darmowych narzędzi do komiplacji natywnych plików
+wykonywalnych dla platformy Windows} czy też Cygwina\footnote{Cygwin -
+implementacja standardu POSIX przeznaczona dla systemów z rodziny Windows}.
+Wszystkie potrzebne narzędzia dostarczane są w ramach SDK\footnote{SDK (z ang.
+Software Development Kit) - Zestaw narzędzi do rozwoju oprogramowania}. Narzędzia
+WinARM pomyślnie przeszły testy z kontrolerami Atmel AT91SAM7S64, AT91SAM7S256,
+AT91RM9200 ARM7TDMI oraz Philips LPC2106, Philips LPC2129, Philips LPC2138,
+Philips LPC2148. Dodatkowo dostarczane w ramach środowiska kompilatory i
+narzędzia powinny prawidłowo współpracować ze wszystkimi mikrokontrolerami
+opartymi o architekturę ARM(-TDMI/Thumb itp.).
 
 Instalację środowiska WinARM należy rozpocząć od pobrania archiwum z najnowszą
 wersją narzędzi ze strony
@@ -50,7 +55,17 @@ poprawności działania wszystkich narzędzi. Aby udostępnić narzędzia WinARM
 linii poleceń systemu Windows konieczne jest dodanie do zmiennej systemowej
 \url{PATH} ścieżki do katalogów z plikami wykonywalnymi biblioteki. W przypadku
 instalacji w podanym powyżej katalogu wartości powinny być następujące
-\url{C:\WinARM\bin;C:\WinARM\utils\bin;}.
+\url{C:\WinARM\bin;C:\WinARM\utils\bin;}. Jeżeli jednak katalog z pakietem
+został umieszczony w innej lokalizacji konieczne jest odpowiednie zmodyfikowanie
+wspomnianych wpisów. Szczegóły okna konfiguracji widoczne są na rysunku
+\ref{fig:winarm-config}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=0.95\textwidth]{../images/ch03/winarm-config-win32.png}
+ \caption{Konfiguracja narzędzi pakietu WinARM}
+ \label{fig:winarm-config}
+\end{figure}
 
 \subsection{Instalacja sterowników programatora}
 Programowanie oraz debugowanie aplikacji robota może zostać zrealizowane za
@@ -67,6 +82,13 @@ TriTon JTAG współpracuje z OpenOCD, pozwalając na programowanie oraz debugowa
 działającej na urządzeniu aplikacji. Urządzenie oparte jest o układ FT2232 który
 umożliwia jego współprace także z innymi środowiskami rozwoju oprogramowania dla
 platformy ARM kompatybilnymi z FT2232.
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=0.85\textwidth]{../images/ch03/jtag-install-s2.png}
+ \caption{Instalacja sterowników do programatora TriTon JTAG}
+ \label{fig:TritonInstall}
+\end{figure}
 
 Instalację programatora należy rozpocząć od pobrania sterowników do układu FT2232
 ze strony \url{http://www.ethernut.de/en/download/}. Na stronie dostępne są
@@ -90,7 +112,15 @@ realizowanej na uniwersytecie w Augsburg. Od tamtego czasu OpenOCD bardzo się
 rozwinęło i urosło do rozmiarów aktywnego projektu open-sourcowego wspieranego
 przez programistów z całego świata. Celem OpenOCD jest dostarczenie
 uniwersalnego narzędzia umożliwiającego debugowanie i programowanie systemów
-wbudowanych. 
+wbudowanych.
+ 
+\begin{figure}[h!]
+ \centering
+ \subfloat{\label{fig:OpenOCD-A}\includegraphics[width=0.7\textwidth]{../images/ch03/open-ocd-install-s1.png}}\hfill
+ \subfloat{\label{fig:OpenOCD-B}\includegraphics[width=0.7\textwidth]{../images/ch03/open-ocd-install-s2.png}}
+ \caption{Instalator Open On-Chip Debugger'a (OpenOCD)}
+ \label{fig:openocd-win32-install}
+\end{figure}
 
 Strona projektu OpenOCD dostępna jest pod adresem
 \url{http://openocd.berlios.de/web/}. Dostępne są tam zarówno źródła jak i
