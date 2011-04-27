@@ -39,7 +39,8 @@ W celu stworzenia kompasu został wykorzystany magnetometr dwuosiowy MMC2120 fir
 \caption{Parametry magnetometru MMC2120}
    	\begin{tabular}{ | c | c | c | c | p{1.75cm} |} \hline
    		Parametr & Warunki testowe & Wartość & Jednostka \\ \hline
-   		Zakres pomiarów & Wypadkowe pole magnetyczne & od $-2$ do $2$ & gauss\\ \hline
+   		Zakres pomiarów & Wypadkowe pole & od $-2$ do $2$ & gauss\\
+		& magnetyczne & & \\ \hline
    		Nieliniowość & $\pm 1$ gauss & $0.1$ & $\% FS$ \\
    		& $\pm 2$ gauss & $0.5$ & $\% FS$ \\ \hline
    		Dokładność & & od $\pm 2$ do $\pm 5$ & deg \\ \hline
@@ -51,24 +52,33 @@ W celu stworzenia kompasu został wykorzystany magnetometr dwuosiowy MMC2120 fir
 \end{table}
 
 Dla poprawnego działania kompasu niezbędna jest kalibracja magnetometru. Przeprowadzamy ją poprzez obracanie magnetometru we wszystkich możliwych stopniach swobody jednocześnie zapisując wartość maksymalną i minimalną wskazywaną zarówno na osi $X$ jak i $Y$. Dzięki tym wartością będziemy w stanie wyznaczyć, niezależnie dla obydwu osi, przesunięcie wartości zerowej oraz ich czułość.
-\textcolor{red}{TODO: WYKRES POMIARU Z NIESKALIBROWANEGO MAGNETOMETRU!}
+
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[height=75mm]{../images/ch04/mmc2120-without-callibration.png}
+ \caption{Wykres przedstawiający odczyty z rejestrów x oraz y układu MMC2120 przed kalibracją}
+ \label{fig:MMC2120NotCalibrated}
+\end{figure}
+
 Kalibrację należy wykonać po umieszczeniu modułu w robocie w celu wyeliminowania zakłóceń spowodowanych metalowymi elementami robota. MMC2120 jako wartość zerową przyjmuje liczbę $2048$. Jest to środek przedziału liczb składającego się z 12 bitów. Wartości poniżej tej liczby są uznawane za ujemne, a wartości powyżej za dodatnie.
 
-\textcolor{red}{TODO: WYKRES POMIARU ZE SKALIBROWANEGO MAGNETOMETRU!}
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[height=75mm]{../images/ch04/mmc2120-with-callibration.png}
+ \caption{Wykres przedstawiający odczyty z rejestrów x oraz y układu MMC2120 z uwzględnieniem przesunięcia wartości zerowej}
+ \label{fig:MMC2120Calibrated}
+\end{figure}
 
-Niestety z powodu niedokładności samego układu, a także negatywnego wpływu metalowych elementów konstrukcji robota i modułu, wartość zerowa magnetometru może ulec przemieszczeniu. Dlatego też musimy obliczyć odchylenie o jaki należy przesunąć każdy pomiar w celu otrzymania prawidłowego wyniku. Wspomniane odchylenie ten wyznaczamy dla każdej osi jako wartość środkową pomiędzy maksymalnym a minimalnym odczytem podczas kalibracji.
+Niestety z powodu niedokładności samego układu, a także negatywnego wpływu metalowych elementów konstrukcji robota i modułu, wartość zerowa magnetometru może ulec przemieszczeniu (rys. \ref{fig:MMC2120NotCalibrated}). Dlatego też musimy obliczyć wartość odchylenie wartości zerowej obydwu osi  w celu otrzymania prawidłowego wyniku. Wspomniane odchylenie wyznaczamy dla każdej osi jako wartość środkową pomiędzy maksymalnym a minimalnym odczytem podczas kalibracji.
 
-\textcolor{red}{TODO: WYKRES POMIARU ZE SKALIBROWANEGO I NIESKALIBROWANEGO MAGNETOMETRU Z ZAZNACZONYM OFFSETEM!}
-
-Dopiero po właściwym skalibrowaniu magnetometru jesteśmy w stanie wykorzystać go jako kompas. W celu wyznaczenia azymutu, czyli kąta pomiędzy kierunkiem wskazywanym przez oś $X$, \textcolor{red}{TODO: SPRAWDZIĆ KTÓRĄ OŚ FAKTYCZNIE!} a kierunkiem północnym, należy skorzystać z prostego wyrażenia trygonometrycznego przedstawionego na wzorze \ref{eq:azymut}.
+Dopiero po właściwym skalibrowaniu magnetometru (rys. \ref{fig:MMC2120Calibrated}) jesteśmy w stanie wykorzystać go jako kompas. W celu wyznaczenia azymutu, czyli kąta pomiędzy kierunkiem wskazywanym przez oś $Y$, a kierunkiem północnym, należy skorzystać z prostego wyrażenia trygonometrycznego przedstawionego na wzorze \ref{eq:azymut}.
 
 \begin{equation}
   \label{eq:azymut}
-  \alpha = arctg \left( \frac{y}{x} \right)
+  \alpha = arctg \left( \frac{x}{y} \right)
 \end{equation}
 
-Podczas odczytu wskazań kompasu istotne jest także wzięcie pod uwagę takich czynników jak odchylenie osi $X$ i $Y$ czujnika od kierunku równoległego do kierunku pola magnetycznego ziemi.
-\textcolor{red}{TODO: WYKRES POMIARU ZE SKALIBROWANEGO MAGNETOMETRU ALE NIERÓWNOLEGLE DO POLA!}
+Podczas odczytu wskazań kompasu istotne jest także wzięcie pod uwagę takich czynników jak odchylenie osi $X$ i $Y$ czujnika od kierunku równoległego do kierunku pola magnetycznego ziemi. W przypadku gdy płaszczyzna pomiarów magnetometru nie będzie równoległa do płaszczyzny linii pola magnetycznego, pojawią się błędy związane z brakiem pomiarów magnetometru względem osi $Z$.
 
 \subsection{Budowa modułu}
 Płytka modułu kompasu została zaprojektowana przy pomocy darmowej wersji programu Eagle na podstawie danych zawartych w nocie katalogowej czujnika MMC2120. Na rysunkach \ref{fig:MMC2120Pcb} oraz \ref{fig:MMC2120Sch} przedstawiono schemat oraz layout płytki modułu kompasu.
