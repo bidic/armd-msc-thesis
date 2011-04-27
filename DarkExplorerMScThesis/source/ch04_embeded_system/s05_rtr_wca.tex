@@ -1,9 +1,35 @@
 \section{Algorytm rekonstrukcji ścieżki powrotnej}
 \label{sec:rtrwca}
-Robot Dark Explorer został wyposażony w czujniki, które mają na celu dostarczenie informacji niezbędnych do ustalenia toru ruchu robota. Niniejszy podrozdział opisuje algorytm wykorzystujący dane z czujników w celu wyznaczenia trasy od obecnego położenia do miejsca z którego robot został przyniesiony przez operatora.
+Robot Dark Explorer został wyposażony w czujniki, które mają na celu dostarczenie
+informacji niezbędnych do ustalenia toru ruchu robota. Niniejszy podrozdział
+opisuje algorytm wykorzystujący dane z czujników w celu wyznaczenia trasy od
+obecnego położenia do miejsca z którego robot został przyniesiony przez
+operatora.
 
-Algorytm rekonstrukcji ścieżki powrotnej składa się z dwuch części. Pierwsza z nich odpowiedzialna jest za zapamiętywanie toru ruchu robota, druga natomiast za odtworzenie ścieżki na podstawie zgromadzonych danych. Cały algorytm opiera się na informacjach uzyskanych z dwuch czujników: żyroskopu oraz akcelerometru. Czujnik przyspieszenia został zastosowany w celu określenia odległości jaką przebył robot niesiony przez operatora. Natomiast żyroskop pozwala na uzyskanie informacji o zmianie kierunku.
+Algorytm rekonstrukcji ścieżki powrotnej składa się z dwóch części. Pierwsza z
+nich odpowiedzialna jest za zapamiętywanie toru ruchu robota, druga natomiast za
+odtworzenie ścieżki na podstawie zgromadzonych danych. Cały algorytm opiera się
+na informacjach uzyskanych z dwóch czujników: żyroskopu oraz akcelerometru.
+Czujnik przyspieszenia został zastosowany w celu określenia odległości jaką
+przebył robot niesiony przez operatora. Natomiast żyroskop pozwala na uzyskanie
+informacji o zmianie kierunku.
 
-W pierwszym podejściu do rozwiązania problemu wykrycia toru ruchu ciała przenoszonego przez operatora, odległość miała być obliczana bezpośrednio z informacji o przyspieszeniu uzyskanej z akcelerometru. W celu obliczenia drogi po jakiej poruszało się ciało, mając jedynie informacje o przyspieszeniu, konieczne jest wykonanie dwukrotnego całkowania wartości otrzymanych z czujnika. Niestety operacja ta wymaga bardzo krótkiego okresu czasu pomidzy pomiarami w celu zminimalizowania błędów całkowania. Istotna jest także wysoka czułość i dokładność samego czujnika przyspieszenia. Po wykonaniu wstępnych testów tego rozwiązania stwierdzono iż odległości zmierzone za pomocą tej metody są wystarczająco dobre.
+W pierwszym podejściu do rozwiązania problemu wykrycia toru ruchu ciała
+przenoszonego przez operatora, odległość miała być obliczana bezpośrednio z
+informacji o przyspieszeniu uzyskanej z akcelerometru. W celu obliczenia drogi po
+jakiej poruszało się ciało, mając jedynie informacje o przyspieszeniu, konieczne
+jest wykonanie dwukrotnego całkowania wartości otrzymanych z czujnika. Niestety
+operacja ta wymaga bardzo krótkiego okresu czasu pomiędzy pomiarami w celu
+zminimalizowania błędów całkowania. Istotna jest także wysoka czułość i
+dokładność samego czujnika przyspieszenia. Po wykonaniu wstępnych testów tego
+rozwiązania stwierdzono iż odległości zmierzone za pomocą tej metody są
+wystarczająco dobre.
 
-Finalnym rozwiązaniem okazała się metoda wykrywania ilości kroków które wykonał operator robota podczas przemieszczania go w inne miejsce. Podczas wykonywania kroków, osoba trzymająca robota wykonuje samoczynnie minimalne ruchy ręką w górę i w dół. Dzięki wykrywaniu odpowiedniej sekwencji przyspieszeń jesteśmy w stanie określić czy operator wykonał krok. Po wykryciu każdego kroku zapisywana jest wartość kąta pomiędzy kierunkiem ruchu z poprzedniego i obecnego kroku. W taki sposób cała trasa zapisywana jest jako lista zawierająca informacje o zmianie kierunku po wykonaniu przemieszczenia o odległość jednego kroku.
+Finalnym rozwiązaniem okazała się metoda wykrywania ilości kroków które wykonał
+operator robota podczas przemieszczania go w inne miejsce. Podczas wykonywania
+kroków, osoba trzymająca robota wykonuje samoczynnie minimalne ruchy ręką w górę
+i w dół. Dzięki wykrywaniu odpowiedniej sekwencji przyspieszeń jesteśmy w stanie
+określić czy operator wykonał krok. Po wykryciu każdego kroku zapisywana jest
+wartość kąta pomiędzy kierunkiem ruchu z poprzedniego i obecnego kroku. W taki
+sposób cała trasa zapisywana jest jako lista zawierająca informacje o zmianie
+kierunku po wykonaniu przemieszczenia o odległość jednego kroku.
