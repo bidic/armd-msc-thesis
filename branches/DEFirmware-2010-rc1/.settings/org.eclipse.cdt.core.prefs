@@ -1,0 +1,11 @@
+#Tue Jan 11 19:31:02 CET 2011
+eclipse.preferences.version=1
+environment/project/0.235625831=
+environment/project/0.235625831/PATH/delimiter=\:
+environment/project/0.235625831/PATH/operation=append
+environment/project/0.235625831/PATH/value=$PATH\:/opt/gnuarm-3.4.3/bin/
+environment/project/0.235625831/append=true
+environment/project/0.235625831/appendContributed=true
+environment/project/org.eclipse.cdt.cross.arm.gnu.linux.elf.debug.1577834207=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<environment append\="true" appendContributed\="true">\n<variable delimiter\="\:" name\="PATH" operation\="append" value\="${PATH}\:/opt/gnuarm-3.4.3/bin/"/>\n</environment>\n
+environment/project/org.eclipse.cdt.cross.arm.gnu.linux.elf.release.1498240308=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<environment append\="true" appendContributed\="true">\n<variable delimiter\="\:" name\="PATH" operation\="append" value\="${PATH}\:/opt/gnuarm-3.4.3/bin/"/>\n</environment>\n
+environment/project/org.eclipse.cdt.cross.arm.gnu.linux.toolchain.base.593648427=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<environment append\="true" appendContributed\="true">\n<variable delimiter\="\:" name\="PATH" operation\="append" value\="${PATH}\:/opt/gnuarm-3.4.3/bin/"/>\n</environment>\n
