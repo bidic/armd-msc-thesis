@@ -14,22 +14,70 @@ Czujnik przyspieszenia został zastosowany w celu określenia odległości jaką
 przebył robot niesiony przez operatora. Natomiast żyroskop pozwala na uzyskanie
 informacji o zmianie kierunku.
 
-W pierwszym podejściu do rozwiązania problemu wykrycia toru ruchu ciała
-przenoszonego przez operatora, odległość miała być obliczana bezpośrednio z
-informacji o przyspieszeniu uzyskanej z akcelerometru. W celu obliczenia drogi po
-jakiej poruszało się ciało, mając jedynie informacje o przyspieszeniu, konieczne
-jest wykonanie dwukrotnego całkowania wartości otrzymanych z czujnika. Niestety
-operacja ta wymaga bardzo krótkiego okresu czasu pomiędzy pomiarami w celu
-zminimalizowania błędów całkowania. Istotna jest także wysoka czułość i
-dokładność samego czujnika przyspieszenia. Po wykonaniu wstępnych testów tego
-rozwiązania stwierdzono iż odległości zmierzone za pomocą tej metody są
-wystarczająco dobre.
+\subsection{Rejestracja trasy}
+Aby możliwe stało się zrealizowanie implementacji algorytmu rekonstrukcji
+ścieżki powrotnej konieczne jest w pierwszej kolejności zapamiętanie wszystkich
+punktów charakterystycznych trasy po której poruszał się operator.
 
-Finalnym rozwiązaniem okazała się metoda wykrywania ilości kroków które wykonał
-operator robota podczas przemieszczania go w inne miejsce. Podczas wykonywania
-kroków, osoba trzymająca robota wykonuje samoczynnie minimalne ruchy ręką w górę
-i w dół. Dzięki wykrywaniu odpowiedniej sekwencji przyspieszeń jesteśmy w stanie
-określić czy operator wykonał krok. Po wykryciu każdego kroku zapisywana jest
-wartość kąta pomiędzy kierunkiem ruchu z poprzedniego i obecnego kroku. W taki
-sposób cała trasa zapisywana jest jako lista zawierająca informacje o zmianie
-kierunku po wykonaniu przemieszczenia o odległość jednego kroku.
+Pierwotnym podejściem do rozwiązania problemu wykrycia toru ruchu ciała
+przenoszonego przez operatora było wyznaczanie przemieszczenia na
+podstawie informacji o zmianach przyspieszenia uzyskanej z akcelerometru.
+W celu obliczenia drogi po jakiej poruszało się ciało, mając jedynie informacje 
+o przyspieszeniu, konieczne jest wykonanie dwukrotnego całkowania wartości 
+otrzymanych z czujnika. Niestety operacja ta wymaga przeprowadzania pomiarów w
+bardzo krótkich odstępach czasu w celu zminimalizowania błędów całkowania.
+Nie mniej istotna jest także czułość i dokładność samego czujnika
+przyspieszenia. Po wykonaniu wstępnych testów tego rozwiązania stwierdzono iż
+otrzymywane rezultaty nie są zadowalające  i nie pozwalają na stworzenie
+stabilnego rozwiązania w oparciu o opisywane podejście. 
+
+Rozwiązaniem pozwalającym na uzyskanie satysfakcjonujących rezultatów okazała
+się metoda wykrywania ilości kroków które wykonał operator robota podczas 
+przemieszczania go w inne miejsce. Użytkownik korzystając z aplikacji
+sterującej rozpoczyna proces nagrywania. Podczas wykonywania kroków, operator 
+robota wykonuje mimowolne ruchy ręką w górę i w dół które są rejestrowane przez
+czujniki robota. Dzięki wykrywaniu odpowiedniej sekwencji przyspieszeń jesteśmy
+w stanie określić czy operator wykonał krok. Po wykryciu każdego kolejnego kroku
+zapisywana jest wartość kąta pomiędzy kierunkiem ruchu z poprzedniego i obecnego
+kroku. Prezentowane podejście pozwala na zapisanie całej trasy w postaci
+sekwencji zmian kierunku następujących po przemieszczeniu się robota o odległość
+jednego kroku. Rozwiązanie to pozwala zarejestrowanie wszystkich punktów
+charakterystycznych trasy przy jednoczesnym ograniczeniu ilości danych
+potrzebnych do stworzenia jej logicznej reprezentacji.
+
+Algorytm wykrywania kroków zrealizowany został w oparciu o zainstalowany w
+robocie akcelerometr trójosiowych. Szczegółowy opis zasady działania
+akcelerometru oraz sposobu implementacji procedury zliczania kroków zamieszczony
+został w rozdziale \ref{sec:accelometer}. Informacje na temat kąta obrotu jaki
+wykonał użytkownik podczas nagrywania trasy mogą być pobierane z jednego z dwóch
+czujników. Domyślnym czujnikiem jest żyroskop, który pozwala z niezwykłą
+dokładnością wykonywać pomiary prędkości kątowej, a co za tym idzie umożliwia
+precyzyjne wyznaczenie kąta o jaki dokonany został obrót. Więcej informacji na
+temat zasady działania żyroskopu można znaleźć w rozdziale \ref{sec:gyro}.
+Sensorem zapasowym jest magnetometr. Pozwala on wyznaczyć obecną orientację 
+urządzenia względem bieguna magnetycznego ziemi. Robot jest w stanie na 
+podstawie danych otrzymywanych z kompasu jednoznacznie wyznaczyć kąt o jaki 
+został obrócony. Z zasadami działania magnetometru oraz
+napotkanymi problemami które dyskryminują ten czujnik jako podstawowy przy
+rejestrowaniu i odtwarzaniu toru ruchu można zapoznać się w rozdziale
+\ref{sec:mag}.
+
+\subsection{Rekonstrukcja trasy}
+Zakończenie nagrywanie trasy użytkownik sygnalizuje za pomocą odpowiedniego
+komunikatu wysłanego za pośrednictwem dowolnej aplikacji sterującej. Robot
+poinformuje użytkownika o zakończeniu nagrywania ścieżki wyświetlając na ekranie
+LCD informacje na temat liczby kroków zapamiętanych w trakcie ostatniej sesji.
+Następnie, operator, ustawia robota na podłożu, przodem, w kierunku którym robot
+będzie miał wracać. Rozpoczęcie procedury odtwarzania zapamiętanego toru ruchu
+rozpocznie się po wysłaniu polecenia inicjalizującego algorytm rekonstrukcji
+ścieżki powrotnej. Robot korzystając z informacji dostarczanych na bieżąco z
+żyroskopu oraz danych zapisanych w postaci nagranej ścieżki będzie starał się
+powrócić do miejsca z którego wystartował użytkownik. Dodatkowo, jeżeli na
+zapamiętanej ścieżce pojawi się przeszkoda uniemożliwiająca odtworzenie ścieżki
+zostanie ona wykryta za pomocą dołączonych czujników odległości i rozpocznie się
+procedura mająca na celu uniknięcie kolizji z przeszkodą. W chwili gdy robot
+ominie przeszkodę będzie starał się, jeżeli to możliwe, powrócić na oryginalną
+ścieżkę ruchu. Procedura ta ma na celu zagwarantowanie, że robot prawidłowo
+dotrze do miejsca z którego wyruszył. W przypadku gdy robot stwierdzi, że powrót
+na oryginalną ścieżkę nie jest możliwy lub ominięcie przeszkody nie jest możliwe
+procedura rekonstrukcji zostanie automatycznie zakończona. 
