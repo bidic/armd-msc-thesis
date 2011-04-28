@@ -64,7 +64,7 @@ rejestrowaniu i odtwarzaniu toru ruchu można zapoznać się w rozdziale
 
 \subsection{Rekonstrukcja trasy}
 Zakończenie nagrywanie trasy użytkownik sygnalizuje za pomocą odpowiedniego
-komunikatu wysłanego za pośrednictwem dowolnej aplikacji sterującej. Robot
+komunikatu wysłanego za pośrednictwem aplikacji sterującej. Robot
 poinformuje użytkownika o zakończeniu nagrywania ścieżki wyświetlając na ekranie
 LCD informacje na temat liczby kroków zapamiętanych w trakcie ostatniej sesji.
 Następnie, operator, ustawia robota na podłożu, przodem, w kierunku którym robot
@@ -80,4 +80,23 @@ ominie przeszkodę będzie starał się, jeżeli to możliwe, powrócić na oryg
 ścieżkę ruchu. Procedura ta ma na celu zagwarantowanie, że robot prawidłowo
 dotrze do miejsca z którego wyruszył. W przypadku gdy robot stwierdzi, że powrót
 na oryginalną ścieżkę nie jest możliwy lub ominięcie przeszkody nie jest możliwe
-procedura rekonstrukcji zostanie automatycznie zakończona. 
+procedura rekonstrukcji zostanie automatycznie zakończona. Na rysunku
+\ref{fig:rtrwca_avoid_obstacle} zobrazowany został sposób ominięcia przeszkody która znalazła się
+na drodze rekonstrukcji ścieżki. 
+
+\begin{figure}[ht!]
+ \centering \includegraphics[height=100mm]{../images/ch04/rtrwca1.png}
+ \caption{Diagram obrazujący ominięcie napotkanej przeszkody}
+ \label{fig:rtrwca_avoid_obstacle}
+\end{figure}
+
+Algorytm pozwalający robotowi uniknąć zderzenia z przeszkodą opisany został ze
+wszystkimi szczegółami w ramach rozdziału poświęconego czujnikom odległości. Opisany w
+ramach rozdziału \ref{sec:ir-sensors} algorytm omijania przeszkód został, na
+potrzeby implementacji procesu rekonstrukcji ścieżki, uzupełniony o wywoływaną w
+sposób rekurencyjny metodę pozwalającą robotowi powrócić na oryginalną ścieżkę
+po ominięciu przeszkody. Dodatkowym zabezpieczeniem gwarantującym zakończenie
+procedury rekonstrukcji trasy jest zatoczenie przez robota pełnego koła podczas
+próby omijania przeszkód lub przekroczenie zdefiniowanego progu złożoności
+przeszkody szacowanego na podstawie liczby rekurencyjnych wywołań potrzebnych do
+powrotu na pierwotny tor jazdy. 
