@@ -123,5 +123,35 @@ formatów odpowiedzi w przypadku prawidłowego wykonania polecenia.
 	\end{desc}
 \end{basedescript}
 
+\subsection{Obsługa nagrywania i rekonstrukcji ścieżki powrotnej}
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=\textwidth]{../images/appendix/cmd_0x05.png}
+ \caption{Schemat ramki odpowiedzialnej za obsługe nagrywania i rekonstrukcji ścieżki powrotnej}
+ \label{fig:CMD_0x05}
+\end{figure}
+
+\begin{basedescript}{\desclabelstyle{\pushlabel}\desclabelwidth{25mm}}
+\setlength{\parsep}{0pt}
+\setlength{\itemsep}{0mm}
+\setlength{\parskip}{0pt}
+\item[ACK]
+	Wartość 0x1 jeśli komunikat wymaga potwierdzenia
+\item[EXT] 
+	Wartość 0x1 jeśli komunikat zawiera dane rozszerzone
+\item[RFU] 
+	Bity zarezerwowane do przyszłego użycia
+\item[CMD] 
+	Unikalny identyfikator akcji która ma zostać wykonana w związku z obsługą
+	algorytmu rekonstrukcji ścieżki, według następującej specyfikacji:
+	\begin{desc}
+	\item[0x0] - rozpoczęcie nagrywania ścieżki
+	\item[0x1] - zakończenie nagrywania ścieżki
+	\item[0x2] - usunięcie danych ścieżki
+	\item[0x3] - rozpoczęcie odtwarzania ścieżki
+	\item[0x4] - zakończenie (przerwanie) odtwarzania ścieżki
+	\item[0x5] - przesłanie do klienta danch ścieżki
+	\end{desc}
+\end{basedescript}
 
 \section{Komunikaty specjalne}
