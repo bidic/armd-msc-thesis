@@ -7,6 +7,14 @@ zostaną wszystkie dostępne polecenia sterujące wraz z~przykładami
 formatów odpowiedzi w przypadku prawidłowego wykonania polecenia.
 
 \section{Komunikaty sterujące}
+W tej części zamieszczone zostały wszystkie komunikaty pozwalające w
+sposób bezpośredni sterować zachowaniem robota oraz przełączać go pomiędzy
+różnymi trybami pracy. Każde dostępne polecenie oraz powiązany z nim
+komunikat został zobrazowane za pomocą graficznej reprezentacji jego logicznej
+struktury. Dodatkowo każdy element struktury komunikatu został opatrzony
+testowym komentarzem dokładnie wyjaśniającym jego funkcje. W przypadkach gdy jest to
+konieczne zmieszczono również komunikat format komunikatu zwrotnego.
+
 \subsection{Sterowanie silnikami}
 \begin{figure}[h!]
  \centering
@@ -127,7 +135,7 @@ formatów odpowiedzi w przypadku prawidłowego wykonania polecenia.
 \begin{figure}[h!]
  \centering
  \includegraphics[width=\textwidth]{../images/appendix/cmd_0x05.png}
- \caption{Schemat ramki odpowiedzialnej za obsługe nagrywania i rekonstrukcji ścieżki powrotnej}
+ \caption{Schemat ramki odpowiedzialnej za obsługę nagrywania i rekonstrukcji ścieżki powrotnej}
  \label{fig:CMD_0x05}
 \end{figure}
 
@@ -150,8 +158,70 @@ formatów odpowiedzi w przypadku prawidłowego wykonania polecenia.
 	\item[0x2] - usunięcie danych ścieżki
 	\item[0x3] - rozpoczęcie odtwarzania ścieżki
 	\item[0x4] - zakończenie (przerwanie) odtwarzania ścieżki
-	\item[0x5] - przesłanie do klienta danch ścieżki
+	\item[0x5] - przesłanie do klienta danych ścieżki
+	\end{desc}
+\end{basedescript}
+
+\subsection{Obsługa trybu autonomicznego}
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=\textwidth]{../images/appendix/cmd_0x06.png}
+ \caption{Schemat ramki odpowiedzialnej za obsługę trybu autonomicznego}
+ \label{fig:CMD_0x06}
+\end{figure}
+
+\begin{basedescript}{\desclabelstyle{\pushlabel}\desclabelwidth{25mm}}
+\setlength{\parsep}{0pt}
+\setlength{\itemsep}{0mm}
+\setlength{\parskip}{0pt}
+\item[ACK]
+	Wartość 0x1 jeśli komunikat wymaga potwierdzenia
+\item[EXT] 
+	Wartość 0x1 jeśli komunikat zawiera dane rozszerzone
+\item[RFU] 
+	Bity zarezerwowane do przyszłego użycia
+\item[CMD] 
+	Unikalny identyfikator akcji która ma zostać wykonana w związku z obsługą
+	trybu autonomicznego, według następującej specyfikacji:
+	\begin{desc}
+	\item[0x0] - wyłączenie trybu autonomicznego
+	\item[0x1] - włączenie trybu autonomicznego dla kształtów
+	\item[0x2] - włączenie trybu autonomicznego dla twarzy
+	\item[0x3] - pobranie współrzędnych zlokalizowanego obiektu
+	\item[0x4] - pobranie zbinaryzowanej wersji obrazu 
 	\end{desc}
 \end{basedescript}
 
 \section{Komunikaty specjalne}
+W tej części zamieszczone zostały komunikaty nie wpływające bezpośrednio na
+zachowanie robota, ale mające za zadanie przekazanie informacji o aktualnym
+stanie robota. Znajdują się tutaj między innymi komunikaty informujące o
+błędach powstałych w czasie wykonania poleceń, jak również takie które pozwalają
+sprawdzić aktualny stan połączenia oraz robota.
+
+\subsection{Komunikat powitalny}
+Celem komunikatu jest sprawdzenie poprawności nawiązanego połączenia. Polecenie
+może zostać również wykorzystane do podtrzymania aktywności połączenia bluetooth
+lub sprawdzenia poprawności działania robota po wystąpieniu krytycznego błędu.
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=\textwidth]{../images/appendix/cmd_0x00.png}
+ \caption{Schemat ramki komuniaktu powitalnego (kontroli połączenia)} 
+ \label{fig:CMD_0x00}
+\end{figure}
+
+\begin{basedescript}{\desclabelstyle{\pushlabel}\desclabelwidth{25mm}}
+\setlength{\parsep}{0pt}
+\setlength{\itemsep}{0mm}
+\setlength{\parskip}{0pt}
+\item[ACK]
+	Wartość 0x1 jeśli komunikat wymaga potwierdzenia
+\item[EXT] 
+	Wartość 0x1 jeśli komunikat zawiera dane o mocy silników
+\item[RFU] 
+	Bity zarezerwowane do przyszłego użycia
+\item[PATTERN] 
+	Losowa sekwencja bitów która ma zostać odesłana przez robota w celu
+	potwierdzenia poprawności połączenia i gotowości robota do dalszej pracy.
+\end{basedescript}
