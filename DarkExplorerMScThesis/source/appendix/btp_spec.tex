@@ -96,7 +96,17 @@ konieczne zmieszczono również komunikat format komunikatu zwrotnego.
 	\item[0x1] - 320x240
 	\item[0x2] - 640x480
 	\end{desc} 
+\item[PART NO] 
+	Numer fragmentu obrazu do pobrania w przypadku włączonego trybu transmisji
+	obrazu
 \end{basedescript}
+
+\subsubsection{Format transmisji danych obrazu}
+Ze względu na duży rozmiar danych do przesłania klient musi wysyłać
+żądania pobrania każdego z elementów oddzielnie. Do zadań klienta należy
+pobranie wszystkich elementów obrazu i złożenie ich w odpowiedniej kolejności.
+Zdjęcie przesyłane jest w postaci kolejnych wierszy obrazu pobranego z kamery.
+Do zakodowania każdego z pikseli obrazu wykorzystany został model kolorów YCbCr. 
 
 \subsection{Sterowanie czujnikami}
 \begin{figure}[h!] 
@@ -128,9 +138,42 @@ konieczne zmieszczono również komunikat format komunikatu zwrotnego.
 	\item[0x2] - pomiar przyspieszenia statycznego
 	\item[0x3] - informacje o odległości od najbliższej przeszkody
 	\item[0x4] - informacje o położeniu na podstawie magnetometru
+	\item[0x5] - informacje o kącie obrotu na podstawie
+	żyroskopu\footnote{Pierwsze żądanie powoduje wyzerowanie stanu żyroskopu, drugie spowoduje pobranie kąta obrotu zarejestrowanego przez czujnik}
 	\end{desc}
 \end{basedescript}
 
+\subsubsection{Format odpowiedzi dla poszczególnych czujników}
+W zależności od wybranego typu czujnika znaczenie oraz typ przesyłanych w
+odpowiedzi danych może być różny. Dlatego też informacja o formacie danych
+została zróżnicowana ze względu na rodzaj pomiaru jaki czujnik przeprowadza. 
+\begin{basedescript}{\desclabelstyle{\pushlabel}\desclabelwidth{25mm}}
+\setlength{\parsep}{0pt}
+\setlength{\itemsep}{0mm}
+\setlength{\parskip}{0pt}
+\item[Bateria]
+	Na pierwszych 2 bajtach znajduje się wartość napięcia odczytanego na baterii
+	(unsigned short), na kolejnym bajcie znajduje się wartość procentowa
+	reprezentująca poziom naładowania baterii. 
+\item[Czujnik temperatury]
+	Wartość w zakresie [-127, 127] reprezentująca temperaturę w
+	stopniach Celsjusza.
+\item[Akcelerometr] 
+	Kolejne pary bajtów zawierają wartość napięcia (unsigned short) odczytane na
+	kolejnych osiach X, Y, Z czujnika przyspieszenia w wyniku działania przyspieszenia statycznego. 
+\item[Czujniki odległości] 
+	Na pierwszych 4 bajtach znajduje się napięcie odczytane kolejno na lewym i
+	prawym czujniku odległości (unsigned short). Kolejne 2 bajty zawierają
+	odległość od przeszkody odpowiednio dla lewego i prawego czujnika wyrażoną w
+	centymetrach (unsigned char).
+\item[Magnetometr]
+	Kolejne pary bajtów zawierają wartość (short) składowych X oraz Y wektora
+	indukcji pola magnetycznego. 
+\item[Żyroskop]
+	Kolejne pary bajtów zawierają wartość kąta (short) o jaki robot został
+	obrócony odpowiednio wokół osi X, Y oraz Z. 
+\end{basedescript}
+\newpage
 \subsection{Obsługa nagrywania i rekonstrukcji ścieżki powrotnej}
 \begin{figure}[h!]
  \centering
@@ -188,9 +231,19 @@ konieczne zmieszczono również komunikat format komunikatu zwrotnego.
 	\item[0x1] - włączenie trybu autonomicznego dla kształtów
 	\item[0x2] - włączenie trybu autonomicznego dla twarzy
 	\item[0x3] - pobranie współrzędnych zlokalizowanego obiektu
-	\item[0x4] - pobranie zbinaryzowanej wersji obrazu 
+	\item[0x4] - pobranie binarnej wersji obrazu 
 	\end{desc}
 \end{basedescript}
+
+\subsubsection{Format komunikatów zwrotnych}
+Pobieranie zbianryzowanej wersji obrazu powoduje przesłanie strumienia 0 i 1
+będących binarną reprezentacją analizowanego obrazu. Obraz przesyłany jest w
+postaci strumienia, więc aplikacja klienta nie musi wysyłać żądań dla kolejnych
+części obrazu.
+
+Współrzędne zlokalizowanego obiektu są przesyłane w postaci 2 par punktów
+pozwalających na jednoznaczne wyznaczenie prostokąta (bounding box) wokół
+zlokalizowanego na obrazie obiektu.
 
 \section{Komunikaty specjalne}
 W tej części zamieszczone zostały komunikaty nie wpływające bezpośrednio na
@@ -207,7 +260,7 @@ lub sprawdzenia poprawności działania robota po wystąpieniu krytycznego błę
 \begin{figure}[h!]
  \centering
  \includegraphics[width=\textwidth]{../images/appendix/cmd_0x00.png}
- \caption{Schemat ramki komuniaktu powitalnego (kontroli połączenia)} 
+ \caption{Schemat ramki komunikatu powitalnego (kontroli połączenia)} 
  \label{fig:CMD_0x00}
 \end{figure}
 
@@ -225,3 +278,20 @@ lub sprawdzenia poprawności działania robota po wystąpieniu krytycznego błę
 	Losowa sekwencja bitów która ma zostać odesłana przez robota w celu
 	potwierdzenia poprawności połączenia i gotowości robota do dalszej pracy.
 \end{basedescript}
+
+\subsubsection{Definicja odpowiedzi}
+Prawidłową odpowiedzią na komunikat powitalny powinna być ramka z polem STATE
+ustawionym na wartość 0 i EOT na 1. W polu SIZE ramki odpowiedzi powinien
+znaleźć się wzorzec który został przesłany do robota w ramach żądania.
+Wszystkie nieprawidłowości w stosunku do tej definicji powinny być uznawane za
+błędy. Polecenie zwrotne powinno zostać odesłane natychmiastowo, w przypadku
+przedłużania się czasu odpowiedzi należy uznać to za błąd komunikacji. 
+
+\subsection{Komunikaty błędów}
+W przypadku wystąpienia błędów ogólnych w działaniu robota lub w działaniu
+poszczególnych funkcji robot może informować o wystąpieniu błędu za pomocą
+specjalnego komunikatu. Pakiet zawierający informację o błędzie w swoim nagłówku
+będzie zawierał identyfikator polecenia które wywołało błąd lub 0x0 w przypadku
+błędów ogólnych. Dodatkowo w polu STATE i EOT będzie znajdować się 1. W polu
+SIZE natomiast zamieszczony zostanie unikalny kod błędu identyfikujący
+problem lub przyczynę powstania błędu.
