@@ -1,9 +1,14 @@
-Niniejszy rozdział opisuje zakres działań podjętych w celu stworzenia aplikacji sterujących robotem Dark Explorer. Przedstawiony jest zestaw narzędzi niezbędnych do rozwoju oprogramowania dedykowanego dla robota na urządzenia mobilne oraz komputery stacjonarne. Opisano także możliwości stworzonych aplikacji, sposób instalacji i użytkowania.
+Niniejszy rozdział opisuje zakres działań podjętych w celu stworzenia aplikacji
+sterujących robotem Dark Explorer. Przedstawiony jest zestaw narzędzi niezbędnych
+do rozwoju oprogramowania dedykowanego dla robota na urządzenia mobilne oraz
+komputery stacjonarne. Opisano także możliwości stworzonych aplikacji, sposób
+instalacji i użytkowania.
 
 \begin{figure}[!ht]
  \centering
  \includegraphics[height=125mm]{../images/ch03/dark_explorer_platform_ide_stac_mob.png}
- \caption{Struktura platformy robota mobilnego po zakończeniu prac. Kolorem niebieskim oznaczono zakres prac opisanych w bierzącym rozdziale.}
+ \caption{Struktura platformy robota mobilnego po zakończeniu prac. Kolorem
+ niebieskim oznaczono zakres prac opisanych w bieżącym rozdziale.}
  \label{fig:DarkExplorerPlatformStacMob}
 \end{figure}
 
@@ -55,7 +60,7 @@ zarządzanie dostępnymi funkcjami robota. Wśród metod bibliotecznych znaleź�
 funkcje pozwalające na bezpośrednią interakcję z poszczególnymi podzespołami
 bazowymi, jak również takie które umożliwiają wykonywanie predefiniowanych
 sekwencji zadań przewidzianych przez autorów projektu. Biblioteka pokrywa swoją
-funkcjonalnością nie tylko wsparcie dla wszystkich dostępnych roszerzeń
+funkcjonalnością nie tylko wsparcie dla wszystkich dostępnych rozszerzeń
 sprzętowych robota, ale również dostarcza interfejs pozwalający na automatyczną
 obsługę połączenia z robotem z wykorzystaniem technologii bluetooth. Fakt ten
 jest o tyle istotny, że proces komunikacji okazał się być najbardziej wrażliwym
@@ -73,7 +78,7 @@ aplikacyjną jak i sprzętową robota Dark Explorer.
 
 \textcolor{red}{TODO: zrzut ekranu aplikacji sterującej dla .net'a}
 
-\subsection{Bibloteka zarządzająca dla języka Java}
+\subsection{Biblioteka zarządzająca dla języka Java}
 \label{subsec:sdk-java}
 Drugim rozwiązaniem programistycznym umożliwiającym sterowanie robotem za pomocą
 urządzeń zewnętrznych jest biblioteka napisana w języku Java. Pozwala ona na
@@ -89,29 +94,32 @@ Biblioteka została podzielona na dwie klasy. Jedna z nich jest odpowiedzialna z
 obsługę komunikacji bluetooth pomiędzy aplikacją a robotem Dark Explorer. Druga
 natomiast pozwala w łatwy sposób wykorzystywać wszystkie funkcje robota.
 
-Bibloteka była tworzona docelowo na telefony komórkowe z wbudowaną maszyną
+Biblioteka była tworzona docelowo na telefony komórkowe z wbudowaną maszyną
 wirtualną Java, które implementują API do komunikacji bluetooth JSR
 82\footnote{JSR 82 - Java Specification Request, zbiór reguł których należy się
 trzymać podczas implementacji API do komunikacji bluetooth}. Możliwe jest również
 wykorzystanie tej biblioteki na komputerach stacjonarnych. W tym celu konieczne
-jest wyposarzenie tworzonej aplikacji w bibliotekę wspierającą JSR 82. Dostępnych
-jest kilka tego rodzaju biblotek (tab. \ref{tab:JSR82SDK}).
+jest wyposażenie tworzonej aplikacji w bibliotekę wspierającą JSR 82. Dostępnych
+jest kilka tego rodzaju bibliotek (tab. \ref{tab:JSR82SDK}).
 
 \begin{table}[hb]
   \centering
   \caption{Biblioteki wspierające JSR-82\cite{website:javabluetooth.com}}
   \begin{tabular}{ | c | c | c | c | c | c |} \hline
     Nazwa & Wsparcie & Wsparcie & Platformy & Obsługiwane & Cena \\
-    & javax.bluetooth & javax.obex & Java & systemy & \\ \hline
-    Avetana & Tak & Tak & J2SE & Win-32, Mac OS X & 25\euro \\
-    & & & & Linux, Pocket PC & \\ \hline
-    BlueCove & Tak & Tak & J2SE & Win-32, Mac OS X & darmo \\ \hline
+    & bluetooth\footnotemark & OBEX\footnotemark & Java & systemy & \\ \hline Avetana & Tak & Tak &
+    J2SE & Win-32, Mac OS X & 25\euro \\ & & & & Linux, Pocket PC & \\ \hline BlueCove & Tak & Tak & J2SE & Win-32, Mac OS X & darmowa \\ \hline
     Electric Blue & Tak & Tak & J2SE & Win XP SP2 & 15\$ \\ \hline
-    Harald & Nie & Nie & każda z  & wiele & darmo \\
+    Harald & Nie & Nie & każda z  & wiele & darmowa \\
     & & & javax.comm  &  & \\ \hline
-    JavaBluetooth.org & Tak & Nie & każda z  & wiele & darmo \\
+    JavaBluetooth.org & Tak & Nie & każda z  & wiele & darmowa \\
     & & & javax.comm  &  & \\ \hline
     Rococo & Tak & Tak & J2SE J2ME & Linux, Palm OS & 2500\euro \\ \hline
   \end{tabular}
   \label{tab:JSR82SDK}
-\end{table}
+\end{table} 
+
+\footnotetext[3]{Mowa tutaj o klasach i interfejsach dostępnych w
+    ramach pakietu javax.bluetooth zgodnych z wymaganiami JSR 82}
+\footnotetext[4]{Mowa tutaj o klasach i interfejsach dostępnych w
+    ramach pakietu javax.obex zgodnych z wymaganiami JSR 82}
