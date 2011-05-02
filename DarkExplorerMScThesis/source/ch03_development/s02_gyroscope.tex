@@ -12,15 +12,18 @@ robocie mobilnym.
 
 % http://elektronikab2b.pl/technika/12098-yroskopy-i-akcelerometry-mems-w-elektronice-uytkowej
 % wykorzystać rysunki z powyższej strony
-Żyroskopy MEMS korzystają z pozornej siły Coriolis'a do pomiaru prędkości kątowej
-z jaką obraca się ciało. \begin{figure}[!ht]
- \centering \includegraphics[height=50mm]{../images/ch04/coriolis.png}
+Żyroskopy MEMS korzystają z pozornej siły Coriolis'a (rys. \ref{fig:Coriolis}) do
+pomiaru prędkości kątowej z jaką obraca się ciało. 
+
+\begin{figure}[!ht]
+ \centering \includegraphics[height=75mm]{../images/ch04/coriolis.png}
  \caption{Siła Coriolis'a}
  \label{fig:Coriolis}
 \end{figure}
+
 Załóżmy, że ciało o masie $m$ porusza się z prędkością $\vec{v}$ oraz układ w
 którym przemieszcza się to ciało obraca się z prędkością kątową $\vec{\omega}$. W
-takich warunkach ciało o którym mowa zostanie odchylone od kierunku
+takich warunkach ciało o~którym mowa zostanie odchylone od kierunku
 przemieszczania się wyznaczonego przez wektor prędkości $\vec{v}$. Odchylenie to
 będzie spowodowane siłą Coriolis'a $\vec{F_{c}}$ którą można opisać przy pomocy
 wzoru \ref{eq:coriolis}. Żyroskopy MEMS wykorzystują to zjawisko określając
@@ -30,42 +33,83 @@ kondensatora, jako zmianę pojemności.
   \label{eq:coriolis}
   \vec{F_{c}} = -2m \left(\vec{\omega}\times\vec{v}\right)
 \end{equation}
-\\
+\newpage
 Żyroskopy tego typu posiadają dwa oscylujące miniaturowe elementy które poruszają się w przeciwnych względem siebie kierunkach (rys. \ref{fig:ZyroOsc}). 
 \begin{figure}[!ht]
  \centering
- \includegraphics[height=50mm]{../images/ch04/mems_osc.jpg}
+ \includegraphics[height=75mm]{../images/ch04/mems_osc.jpg}
  \caption{Budowa elementu pomiarowego żyroskopu\cite{website::elektronikab2b.pl}}
  \label{fig:ZyroOsc}
 \end{figure}
-Jeżeli urządzenie do którego przymocowany jest żyroskop zacznie się obracać, spowoduje to wychylenie się oscylujących elementów w przeciwnych kierunkach(rys. \ref{fig:ZyroCoriolis}). Wychylenie to z kolei powoduje zmianę pojemności, a różnica pomiędzy pojemnościami zmierzonymi przy pomocy obydwu ruchomych elementów jest proporcjonalna do prędkości kątowej. W ten sposób zmierzona szybkość obrotu jest następnie reprezentowana jako wynik analogowy (napięcie) lub cyfrowy (wartość liczbowa).
-\begin{figure}[!ht]
+
+Jeżeli urządzenie do którego przymocowany jest żyroskopq zacznie się obracać,
+spowoduje to wychylenie się oscylujących elementów w przeciwnych kierunkach
+(rys. \ref{fig:ZyroCoriolis}). Wychylenie to z kolei powoduje zmianę pojemności, a
+różnica pomiędzy pojemnościami zmierzonymi przy pomocy obydwu ruchomych
+elementów jest proporcjonalna do prędkości kątowej. W ten sposób zmierzona
+szybkość obrotu jest następnie reprezentowana jako wynik analogowy (napięcie)
+lub cyfrowy (wartość liczbowa). \begin{figure}[!ht]
  \centering
- \includegraphics[height=50mm]{../images/ch04/gyro-coriolis.png}
+ \includegraphics[height=75mm]{../images/ch04/gyro-coriolis.png}
  \caption{Dwie oscylujące masy odchylane przez siłę Coriolis'a}
  \label{fig:ZyroCoriolis}
 \end{figure}
+
+Wynik działania żyroskopu MEMS jest obojętny na zmianę przyspieszenia liniowego,
+w szczególności na przyspieszenie ziemskie. Przyspieszenie liniowe wywoła
+wychylenie się jednocześnie obydwu elementów oscylujących w tym samym kierunku. W~ten sposób nie~będzie wykryta żadna różnica pojemności. Prędkość kątowa
+wskazywana przez żyroskop nie ulegnie zmianie. Dzięki temu żyroskopy MEMS są
+odporne na wstrząsy, uderzenia oraz wibracje.
 \\
-Wynik działania żyroskopu MEMS jest obojętny na zmianę przyspieszenia liniowego, w szczególności na przyspieszenie ziemskie. Przyspieszenie liniowe wywoła wychylenie się jednocześnie obydwu elementów oscylujących w tym samym kierunku. W ten sposób nie będzie wykryta żadna różnica pojemności. Prędkość kątowa wskazywana przez żyroskop nie ulegnie zmianie. Dzięki temu żyroskopy MEMS są odporne na wstrząsy, uderzenia oraz wibracje.
-\\
+
 Podstawowe wielkości charakteryzujące żyroskop:
-\begin{itemize}
- \item zakres $[dps\footnote{dps - stopień na sekundę}]$ -- definiuje wartość maksymalną i minimalną jaką żyroskop jest w stanie
- zmierzyć. Często żyroskop ma kilka zakresów z których możemy wybrać jeden odpowiadający naszym potrzebom.
- \item czułość $[\frac{mdps}{digit}]$ -- wielkość określająca wartość minimalną jaką żyroskop może zmierzyć
- \item zmiana czułości względem temperatury $[\%]$ -- określa jak bardzo pomiary urządzenia są podatne na zmianę temperatury
- \item zakres poziomu zero $[dps]$ -- określa zakres w jakim pomiary mogą się wahać w chwili gdy żyroskop pozostaje w spoczynku
- \item zmiana zakresu poziomu zero względem temperatury $[\frac{dps}{^{\circ}C}]$ -- definiuje zmiany pomiarów żyroskopu pozostającego w spoczynku względem temperatury
- \item nieliniowość $[\% FS]$ -- parametr określa maksymalne procentowe odchylenie wartości na wyjściu żyroskopu od dopasowanej do nich linii prostej
- \item przepustowość $[Hz]$ -- definiuje częstotliwość z jaką są wykonywane pomiary
-\end{itemize}
+% \begin{itemize}
+%  \item zakres $[dps\footnote{dps - stopień na sekundę}]$ -- definiuje wartość maksymalną i minimalną jaką żyroskop jest w stanie
+%  zmierzyć. Często żyroskop ma kilka zakresów z których możemy wybrać jeden odpowiadający naszym potrzebom.
+%  \item czułość $[\frac{mdps}{digit}]$ -- wielkość określająca wartość minimalną jaką żyroskop może zmierzyć
+%  \item zmiana czułości względem temperatury $[\%]$ -- określa jak bardzo pomiary urządzenia są podatne na zmianę temperatury
+%  \item zakres poziomu zero $[dps]$ -- określa zakres w jakim pomiary mogą się wahać w chwili gdy żyroskop pozostaje w spoczynku
+%  \item zmiana zakresu poziomu zero względem temperatury $[\frac{dps}{^{\circ}C}]$ -- definiuje zmiany pomiarów żyroskopu pozostającego w spoczynku względem temperatury
+%  \item nieliniowość $[\% FS]$ -- parametr określa maksymalne procentowe odchylenie wartości na wyjściu żyroskopu od dopasowanej do nich linii prostej
+%  \item przepustowość $[Hz]$ -- definiuje częstotliwość z jaką są wykonywane pomiary
+% \end{itemize}
+
+\begin{basedescript}{\desclabelstyle{\pushlabel}\desclabelwidth{45mm}}
+\setlength{\parsep}{2pt}
+\setlength{\itemsep}{6mm}
+\setlength{\parskip}{2pt}
+\item[Zakres {$[dps\footnote{dps - stopień na sekundę}]$}]
+	Definiuje wartość maksymalną i minimalną prędkości kątowej jaką żyroskop
+	jest w stanie zmierzyć. Często żyroskop ma kilka zakresów z których możemy wybrać jeden odpowiadający naszym potrzebom.
+\item[Czułość {$[\frac{mdps}{digit}]$}] 
+	Wielkość określająca wartość minimalną prędkości kątowej jaką żyroskop może
+	zmierzyć.
+\item[Zmiana czułości względem temperatury {$[\%]$}] \hfill \\
+	Określa jak bardzo pomiary urządzenia są podatne na zmianę temperatury.
+\item[Zkres poziomu zero {$[dps]$}] \hfill \\
+	Definiuje zakres w jakim pomiary mogą się wahać w chwili gdy~żyroskop pozostaje
+	w spoczynku.
+\item[Zmiana zakresu poziomu zero względem temperatury
+{$[\frac{dps}{^{\circ}C}]$}] \hfill \\
+	Określa zmiany pomiarów żyroskopu pozostającego w spoczynku względem
+	temperatury.
+\item[Nieliniowość {$[\% FS]$}] 
+	Parametr określa maksymalne procentowe odchylenie wartości na wyjściu żyroskopu
+	od dopasowanej do nich linii prostej.
+\item[Przepustowość {$[Hz]$}] 
+	Definiuje częstotliwość z jaką żyroskom może wykonywać kolejne pomiary.
+\end{basedescript}
 
 \subsection{Kalibracja i odczytywanie wyników}
 Żyroskopy są zazwyczaj fabrycznie testowane i kalibrowane pod kątem zakresów pomiarów poziomu zerowego oraz czułości. 
-Jednak po umieszczeniu elementu ma płytce PCB zostaje on poddany naprężeniom przez co może być potrzebna dodatkowa kalibracja układu.
+Jednak po umieszczeniu elementu na płytce PCB\footnote{PCB (z ang. Printed
+Circuit Board) - płyta obwodu drukowanego} zostaje on poddany naprężeniom przez
+co może być potrzebna dodatkowa kalibracja układu.
 
-Wartości wyjściowe żyroskopu można przedstawić za pomocą równania:
+Wartości wyjściowe żyroskopu można przedstawić za pomocą równania
+\ref{eq:gyro-output}:
 \begin{equation}
+	\label{eq:gyro-output}
   \omega_{t} = \omega_{m} - \omega_{0}
 \end{equation}
 \begin{tabbing}
@@ -75,36 +119,45 @@ Wartości wyjściowe żyroskopu można przedstawić za pomocą równania:
     \> $\omega_{0}$ -- wartość zerowa reprezentująca brak ruchu,\\
 \end{tabbing}
 
-W celu kompensacji niestabilności żyroskopu należy pozostawić urządzenie nieruchome i wykonać ok 1000 pomiarów. Następnie
-konieczne jest obliczenie wartości średniej z wykonanych pomiarów. W ten sposób określimy średnie wychylenie od wartości
-zerowej żyroskopu, czyli nasze $\omega_{0}$.
+W celu kompensacji niestabilności żyroskopu należy pozostawić urządzenie
+nieruchome i wykonać około tysiąc pomiarów. Następnie konieczne jest obliczenie
+wartości średniej z wykonanych pomiarów. W ten sposób określimy średnie wychylenie od wartości zerowej żyroskopu, czyli nasze $\omega_{0}$.
 
 Podczas używania żyroskopu do pomiaru bardzo małych kątów należy jeszcze wziąć pod uwagę minimalne odchylenia wartości w
 zależności od zmiany temperatury.
 
-Prędkość kątową opisujemy wzorem: 
+Prędkość kątową opisujemy wzorem \ref{eq:predkosckatowa}: 
 \begin{equation}
   \label{eq:predkosckatowa}
   \omega = \frac{d\varphi}{dt}
 \end{equation}
 
-Wzór na kąt o jaki zostało obrócone ciało poruszające się z prędkością kątową $\omega$ wyprowadzamy całkując obustronnie równanie \ref{eq:predkosckatowa}.
+Wzór na kąt o jaki zostało obrócone ciało poruszające się z prędkością kątową
+$\omega$ (równanie \ref{eq:katcalkowanie}) wyprowadzamy całkując obustronnie
+równanie \ref{eq:predkosckatowa}.
 \begin{equation}
+  \label{eq:katcalkowanie}
   \varphi = \int \omega dt
 \end{equation}
 
-Do obliczenia kąta można wykorzystać jedną z numerycznych metod całkowania, np. metodę trapezów. Metoda ta polega na podzieleniu pola pod wykresem całkowanej funkcji na wąskie trapezy, a następnie zsumowanie pól tych trapezów.
+Do obliczenia kąta obrotu można wykorzystać jedną z numerycznych metod
+całkowania, np. metodę trapezów (rys. \ref{fig:CalkowanieTrapezy}). Metoda ta
+polega na podzieleniu pola pod wykresem całkowanej funkcji na wąskie trapezy, a następnie zsumowanie pól tych
+trapezów.
 
 \begin{figure}[h!]
  \centering
- \includegraphics[height=50mm]{../images/ch04/calkowanie-metoda-trapezow.png}
+ \includegraphics[height=70mm]{../images/ch04/calkowanie-metoda-trapezow.png}
  \caption[Całkowanie przy pomocy metody trapezów]{Całkowanie przy pomocy metody trapezów\footnotemark}
  \label{fig:CalkowanieTrapezy}
 \end{figure}
 \footnotetext{źródło: http://mateusz-lach.blogspot.com/2010/09/cakowanie-numeryczne.html}
 
-Po wykorzystaniu metody trapezów, wzór na kąt o jaki żyroskop został obrócony w czasie pomiędzy dwoma pomiarami, można zapisać następująco:
+Po wykorzystaniu metody trapezów, wzór na kąt o jaki żyroskop został obrócony
+w~czasie pomiędzy dwoma pomiarami, można zapisać w postaci równania \ref{eq:angle-gyro}:
+
 \begin{equation}
+ \label{eq:angle-gyro}
   \varphi = C_{f} \cdot \frac{\omega_{i-1} + \omega_{i}}{2} \cdot \Delta t
 \end{equation}
 \begin{tabbing}
@@ -115,8 +168,11 @@ Po wykorzystaniu metody trapezów, wzór na kąt o jaki żyroskop został obróc
     \> $\omega_{i}$ -- szybkość kątowa odczytana z obecnego pomiaru,\\
 \end{tabbing}
 
-W taki sposób otrzymujemy wzór na kąt o jaki ciało zostało obrócone w czasie $\Delta t$. Kąt całkowity pomiędzy orientacją początkowa a orientacją końcową ciała jest sumą wszystkich wykonanych pomiarów kątów.
+W taki sposób otrzymujemy wzór \ref{eq:total-gyro-angle}, na kąt o jaki ciało
+zostało obrócone w czasie $\Delta t$. Kąt całkowity pomiędzy orientacją początkowa a orientacją
+końcową ciała jest sumą wszystkich wykonanych pomiarów kątów.
 \begin{equation}
+  \label{eq:total-gyro-angle}
   \varphi_{c} = \varphi_{0} + \sum_{i=1}^{n} \varphi_{i} 
 \end{equation}
 \begin{tabbing}
@@ -124,7 +180,6 @@ W taki sposób otrzymujemy wzór na kąt o jaki ciało zostało obrócone w czas
     \> $\varphi_{0}$ -- kąt początkowy,\\
     \> $\varphi_{i}$ -- wartość kąta z pojedynczego pomiaru\\
 \end{tabbing}
-
 Do otrzymania jak najlepszych wyników konieczne jest określenie współczynnika korygującego pomiar żyroskopu.
 W tym celu porównujemy wyniki pomiarów żyroskopu z pomiarami innych przyrządów np. magnetometru wykorzystując wzór:
 \begin{equation}
