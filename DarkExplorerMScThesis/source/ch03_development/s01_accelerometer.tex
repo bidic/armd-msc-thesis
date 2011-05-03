@@ -177,8 +177,7 @@ Converter} można znaleźć w rozdziale poświęconym dalmierzom IR.
 \begin{figure}[ht!]
  \centering
  \includegraphics[width=\textwidth]{../images/ch04/mma7260_datasheet.png}
- \caption{Wartości przyspieszenia statycznego dla układu MMA7260 dostarczone w
- ramach specyfikacji technicznej urządzenia\cite{MMA7260DataSheet}}
+ \caption{Wartości przyspieszenia statycznego dla układu MMA7260 dostarczone w~ramach specyfikacji technicznej urządzenia\cite{MMA7260DataSheet}}
  \label{fig:MMADataSheetStaticAcc}
 \end{figure}
 
@@ -186,40 +185,53 @@ Przed rozpoczęciem praktycznej implementacji algorytmu wykrywania kroków
 konieczne okazało się przeprowadzenie kalibracji modułu, gdyż już wstępne testy
 czujnika zwróciły spore różnice pomiędzy wartościami podanymi w nocie
 katalogowej, a stanem zmierzonym na wyjściach akcelerometru. Zgodnie z rysunkiem
-znalezionym w dokumentacji udostępnionej przez producenta czułość oraz zakres
-napięć na poszczególnych osiach powinien być w stałych, jednakowych
-przedziałach. Niestety, jak się okazało, poszczególne osie miały bardzo znaczące
-różnice w zakresie swojej czułości co mogłoby bardzo niekorzystnie wpłynąć na
+\ref{fig:MMADataSheetStaticAcc} znalezionym w dokumentacji udostępnionej przez producenta czułość
+oraz zakres napięć na poszczególnych osiach powinien być w stałych, jednakowych
+przedziałach. Niestety, jak się okazało, poszczególne osie miały bardzo
+znaczące różnice w zakresie swojej czułości co mogłoby bardzo niekorzystnie wpłynąć na
 stabilność działania zaproponowanego algorytmu zliczania kroków. 
 
 Wspomniany proces kalibracji polegał na ustawieniu czujnika na płaskiej,
 poziomej powierzchni oraz odczytaniu wartości przyspieszenia statycznego dla
-każdej z osi z osobna. Procedurę taką powtarzano wielokrotnie zmieniając
+każdej z osi z~osobna. Procedurę taką powtarzano wielokrotnie zmieniając
 orientację modułu względem wektora grawitacji. Po zebraniu wszystkich danych
 pomiarowych dla każdej osi z osobna, została wyznaczona rzeczywista czułość, a
 następnie w module odpowiedzialnym za akwizycję danych o przyspieszeniu zostały
 zaprogramowane funkcje korygujące otrzymane dane wejściowe o wartości wyliczone
 podczas kalibracji urządzenia.
 
-Na poniższych wykresach znajdują się informacje o stanie wyjść przed i po
-przeprowadzeniu kalibracji. Jak można bardzo dobrze zaobserwować rozbieżności
-pomiędzy odczytami bez i z kalibracją są dosyć znaczące, a dla rozważanego
-sposobu zastosowania wręcz krytyczne. Dlatego też istotne jest aby przed
-uruchomieniem algorytmu rozpoznawania kroków mieć pewność, że czujnik jest w
-prawidłowy sposób skalibrowany. 
-\newpage
+Na wykresach \ref{fig:MMADataRaw} oraz \ref{fig:MMADataCalib} znajdują się
+informacje o stanie wyjść przed i po przeprowadzeniu kalibracji. Wykresy
+przedstawiają przyspieszenie statyczne jakie ustaliło się na poszczególnych
+osiach akcelerometru w stanie spoczynku jak również zmianę tego przyspieszenia w
+chwili ustalania nowej orientacji czujnika. Wartość przyspieszenia statycznego
+została wyznaczona na podstawie napięcia odczytanego za pomocą konwertera ADC z
+odpowiednich wyjść akcelerometru. Jak można wnioskować na podstawie rysunku
+\ref{fig:MMADataSheetStaticAcc} oraz wartości przyspieszeń na osiach X, Y, Z
+prezentowanych na wykresach \ref{fig:MMADataRaw}, \ref{fig:MMADataCalib} w~chwili
+czasowej 0 akcelerometr był ustawiony bokiem z a zwrot  i kierunek osi X był
+zgody z~kierunkiem wektora grawitacji. W chwili czasowej 400 rozpoczyna się obrót
+akcelerometru o $90\,^{\circ}$ wokół osi Y, aż do ustalenia się nowej orientacji
+czujnika w chwili czasowej 600. Oczekiwaną wartością wypadkową przyspieszeń na
+poszczególnych osiach w chwili gdy akcelerometr znajduje się w stanie spoczynku
+jest wartość przyspiesznia w przybliżeniu równą 1000 mg, podczas gdy wartości
+przed kalibracją, widoczne na wykresie \ref{fig:MMADataRaw}, w pierwszej pozycji
+ustalonej dają przyspieszenie wypadkowe rzędu 700 mg natomiast w drugiej pozycji
+ustalonej -1300 mg. Jak można zaobserwować rozbieżności pomiędzy odczytami bez i
+z kalibracją są dosyć znaczące, a dla rozważanego sposobu zastosowania wręcz
+krytyczne. Dlatego też istotne jest aby przed uruchomieniem algorytmu
+rozpoznawania kroków mieć pewność, że czujnik jest w prawidłowy sposób
+skalibrowany. \newpage
   
 \begin{figure}[h!]
- \centering
- \includegraphics[width=\textwidth]{../images/ch04/raw_acc_data.png}
+ \centering \includegraphics[width=\textwidth]{../images/ch04/raw_acc_data.png}
  \caption{Wartości przyspieszenia odczytywane na wyjściach akcelerometru przed
  przeprowadzeniem kalibracji}
  \label{fig:MMADataRaw}
 \end{figure}
   
 \begin{figure}[h!]
- \centering
- \includegraphics[width=\textwidth]{../images/ch04/calib_acc_data.png}
+ \centering \includegraphics[width=\textwidth]{../images/ch04/calib_acc_data.png}
  \caption{Wartości odczytywane na wyjściach akcelerometru po przeprowadzeniu kalibracji}
  \label{fig:MMADataCalib}
 \end{figure}

@@ -1,15 +1,16 @@
 \section{Magnetometr}
 \label{sec:mag}
+
 Jednym z elementów większości Inercjalnych Systemów Nawigacyjnych jest
 magnetometr. Wykorzystuje się go do określenia kierunku w którym porusza się dane
 ciało. Typów czujników mierzących pole magnetyczne jest wiele. Dla INS istotny
 jest jedynie czujnik, będący w stanie wykonać pomiary w zakresie indukcji pola
-magnetycznego ziemi, która wynosi od $30\mu T$ do $60\mu T$.
-\\
+magnetycznego ziemi (rys. \ref{fig:WykresMagnet}), która wynosi od $30\mu T$ do
+$60\mu T$. 
 
 \begin{figure}[!ht]
  \centering
- \includegraphics[height=100mm]{../images/ch04/magnetic_sens_types.png}
+ \includegraphics[width=\textwidth]{../images/ch04/magnetic_sens_types.png}
  \caption{Zakresy czujników pola magnetycznego różnego typu \cite{WstepnyProjektModuluIMU}}
  \label{fig:WykresMagnet}
 \end{figure}
@@ -17,32 +18,37 @@ magnetycznego ziemi, która wynosi od $30\mu T$ do $60\mu T$.
 Na rysunku \ref{fig:WykresMagnet} przedstawione są zakresy pomiarowe czujników
 pola magnetycznego różnego typu. Jak widać tylko dwa rodzaje magnetometrów z
 wyżej wymienionych działają w przedziale obejmującym zakres indukcji pola
-magnetycznego ziemi. Są to magnetometry transduktorowe oraz AMR\footnote{AMR -
+magnetycznego ziemi. Są~to~magnetometry transduktorowe oraz AMR\footnote{AMR -
 Anisotropic Magneto Resistance, anizotropowy magnetoopór}. Z powodu małych
 rozmiarów, przystępnej ceny i dostępności, w tej pracy wykorzystany został
 magnetometr AMR.
-\\
 
 \subsection{Zasada działania}
-Czujnik AMR wykorzystuje zjawisko anizotropowego magnetooporu w celu pomiaru indukcji pola magnetycznego. Zjawisko to objawia się zmianą rezystancji materiału pod wpływem zmiany orientacji działającego pola magnetycznego względem kierunku prądu płynącego przez ten materiał.
-\\
+Czujnik AMR wykorzystuje zjawisko anizotropowego magnetooporu w celu pomiaru
+indukcji pola magnetycznego. Zjawisko to objawia się zmianą rezystancji materiału
+pod wpływem zmiany orientacji działającego pola magnetycznego względem kierunku
+prądu płynącego przez ten materiał. 
 
-Czujniki tego typu charakteryzują się wysoką dokładnością i szybkością działania jednocześnie pobierając mniejszy prąd w stosunku do alternatywnych technologii.
+Czujniki tego typu charakteryzują się wysoką
+dokładnością i~szybkością działania jednocześnie pobierając mniejszy prąd w
+stosunku do alternatywnych technologii.
 
 \subsection{Opis elementu}
-W celu stworzenia kompasu został wykorzystany magnetometr dwuosiowy MMC2120 firmy Memsic. Dane z magnetometru są przesyłane przy pomocy interfejsu $I^{2}C$ w postaci dwóch 12-bitowych liczb. Jedna z nich określa wartość indukcji pola magnetycznego zmierzonego na osi $X$ druga zaś na osi $Y$. 
-\\
+W celu stworzenia modułu kompasu został wykorzystany magnetometr dwuosiowy
+MMC2120 firmy Memsic. Parametry techniczne zastosowanego magnetometru uzyskane na podstawie
+noty katalogowej producenta \cite{MMC2120DataSheet} zostały podsumowane w ramach 
+tabeli \ref{tab:MMC2120Char}. Dane z magnetometru są przesyłane przy pomocy interfejsu $I^{2}C$ w postaci dwóch
+12-bitowych liczb. Jedna z nich określa wartość indukcji pola magnetycznego
+zmierzonego na osi $X$ druga zaś na osi $Y$. \hfill
 
-\begin{table}[hb]
+\begin{table}[!ht]
 \rowcolors{2}{white}{gray!20}
 \centering
 \caption{Parametry magnetometru MMC2120}
    	\begin{tabular}{ | c | c | c | c | p{1.75cm} |} \hline
    		Parametr & Warunki testowe & Wartość & Jednostka \\ \hline
-   		Zakres pomiarów & Wypadkowe pole & od $-2$ do $2$ & gauss\\
-		& magnetyczne & & \\ \hline
-   		Nieliniowość & $\pm 1$ gauss & $0.1$ & $\% FS$ \\
-   		& $\pm 2$ gauss & $0.5$ & $\% FS$ \\ \hline
+   		Zakres pomiarów & Wypadkowe pole & od $-2$ do $2$ & gauss\\	& magnetyczne & & \\ \hline
+   		Nieliniowość & $\pm 1$ gauss & $0.1$ & $\% FS$ \\ & $\pm 2$ gauss & $0.5$ & $\% FS$ \\ \hline
    		Dokładność & & od $\pm 2$ do $\pm 5$ & deg \\ \hline
    		Czułość & & od $\frac{1}{461}$ do $\frac{1}{563}$ & gauss \\ \hline
    		Wartość na wyjściu przy & & od $-0.2$ do $0.2$ & gauss \\
@@ -51,52 +57,81 @@ W celu stworzenia kompasu został wykorzystany magnetometr dwuosiowy MMC2120 fir
 \label{tab:MMC2120Char}
 \end{table}
 
-Dla poprawnego działania kompasu niezbędna jest kalibracja magnetometru. Przeprowadzamy ją poprzez obracanie magnetometru we wszystkich możliwych stopniach swobody jednocześnie zapisując wartość maksymalną i minimalną wskazywaną zarówno na osi $X$ jak i $Y$. Dzięki tym wartością będziemy w stanie wyznaczyć, niezależnie dla obydwu osi, przesunięcie wartości zerowej oraz ich czułość.
+Dla poprawnego działania kompasu niezbędna jest kalibracja magnetometru.
+Przeprowadzamy ją poprzez obracanie magnetometru we wszystkich możliwych
+stopniach swobody jednocześnie zapisując wartość maksymalną i minimalną
+wskazywaną zarówno na~osi $X$ jak i $Y$. Dzięki tym wartością będziemy w stanie
+wyznaczyć, niezależnie dla obydwu osi, przesunięcie wartości zerowej oraz ich
+czułość. 
 
+\newpage
 \begin{figure}[!ht]
  \centering
- \includegraphics[height=75mm]{../images/ch04/mmc2120-without-callibration.png}
+ \includegraphics[height=90mm]{../images/ch04/mmc2120-without-callibration.png}
  \caption{Wykres przedstawiający odczyty z rejestrów x oraz y układu MMC2120 przed kalibracją}
  \label{fig:MMC2120NotCalibrated}
 \end{figure}
 
-Kalibrację należy wykonać po umieszczeniu modułu w robocie w celu wyeliminowania zakłóceń spowodowanych metalowymi elementami robota. MMC2120 jako wartość zerową przyjmuje liczbę $2048$. Jest to środek przedziału liczb składającego się z 12 bitów. Wartości poniżej tej liczby są uznawane za ujemne, a wartości powyżej za dodatnie.
+Kalibrację należy wykonać po umieszczeniu modułu w robocie w celu wyeliminowania
+zakłóceń spowodowanych metalowymi elementami robota. MMC2120 jako wartość zerową
+przyjęta została liczba $2048$. Jest to środek przedziału liczb składającego się
+z~12~bitów. Wartości poniżej tej liczby są uznawane za ujemne, a wartości powyżej za
+dodatnie.
 
 \begin{figure}[!ht]
  \centering
- \includegraphics[height=75mm]{../images/ch04/mmc2120-with-callibration.png}
- \caption{Wykres przedstawiający odczyty z rejestrów x oraz y układu MMC2120 z uwzględnieniem przesunięcia wartości zerowej}
+ \includegraphics[height=90mm]{../images/ch04/mmc2120-with-callibration.png}
+ \caption{Wykres przedstawiający odczyty z rejestrów x oraz y układu MMC2120 z~uwzględnieniem przesunięcia wartości zerowej}
  \label{fig:MMC2120Calibrated}
 \end{figure}
 
-Niestety z powodu niedokładności samego układu, a także negatywnego wpływu metalowych elementów konstrukcji robota i modułu, wartość zerowa magnetometru może ulec przemieszczeniu (rys. \ref{fig:MMC2120NotCalibrated}). Dlatego też musimy obliczyć odchylenie wartości zerowej obydwu osi no w celu otrzymania prawidłowego wyniku. Wspomniane odchylenie wyznaczamy dla każdej osi jako wartość środkową pomiędzy maksymalnym a minimalnym odczytem podczas kalibracji.
-
-Dopiero po właściwym skalibrowaniu magnetometru (rys. \ref{fig:MMC2120Calibrated}) jesteśmy w stanie wykorzystać go jako kompas. W celu wyznaczenia azymutu, czyli kąta pomiędzy kierunkiem wskazywanym przez oś $Y$, a kierunkiem północnym, należy skorzystać z prostego wyrażenia trygonometrycznego przedstawionego na wzorze \ref{eq:azymut}.
+Niestety z powodu niedokładności samego układu, a także negatywnego wpływu
+metalowych elementów konstrukcji robota i modułu, wartość zerowa magnetometru
+może ulec przemieszczeniu (rys. \ref{fig:MMC2120NotCalibrated}). Dlatego też
+musimy obliczyć wartość odchylenia wartości zerowej obydwu osi  w celu otrzymania
+prawidłowego wyniku. Wspomniane odchylenie wyznaczamy dla każdej osi jako wartość
+środkową pomiędzy maksymalnym a minimalnym odczytem podczas kalibracji.
+Dopiero po właściwym skalibrowaniu magnetometru (rys.
+\ref{fig:MMC2120Calibrated}) jesteśmy w stanie wykorzystać go jako kompas. W celu
+wyznaczenia azymutu, czyli kąta pomiędzy kierunkiem wskazywanym przez oś $Y$, a
+kierunkiem północnym, należy skorzystać z prostego wyrażenia trygonometrycznego
+przedstawionego na wzorze \ref{eq:azymut}.
 
 \begin{equation}
   \label{eq:azymut}
   \alpha = arctg \left( \frac{x}{y} \right)
 \end{equation}
 
-Podczas odczytu wskazań kompasu istotne jest także wzięcie pod uwagę takich czynników jak odchylenie osi $X$ i $Y$ czujnika od kierunku równoległego do kierunku pola magnetycznego ziemi. W przypadku gdy płaszczyzna pomiarów magnetometru nie będzie równoległa do płaszczyzny linii pola magnetycznego, pojawią się błędy związane z brakiem pomiarów magnetometru względem osi $Z$.
+Podczas odczytu wskazań kompasu istotne jest także wzięcie pod uwagę takich
+czynników jak odchylenie osi $X$ i $Y$ czujnika od kierunku równoległego do
+kierunku pola magnetycznego ziemi. W przypadku gdy płaszczyzna pomiarów
+magnetometru nie będzie równoległa do płaszczyzny linii pola magnetycznego,
+pojawią się błędy związane z brakiem pomiarów magnetometru względem osi $Z$.
 
 \subsection{Budowa modułu}
-Płytka modułu kompasu została zaprojektowana przy pomocy darmowej wersji programu Eagle na podstawie danych zawartych w nocie katalogowej czujnika MMC2120. Na rysunkach \ref{fig:MMC2120Pcb} oraz \ref{fig:MMC2120Sch} przedstawiono schemat oraz layout płytki modułu kompasu.
+Płytka modułu kompasu została zaprojektowana przy pomocy darmowej wersji programu
+Eagle na podstawie danych zawartych w nocie katalogowej czujnika MMC2120.
+Na~rysunkach \ref{fig:MMC2120Pcb} oraz \ref{fig:MMC2120Sch} przedstawiono schemat
+oraz layout płytki modułu kompasu.
 
 \begin{figure}[!ht]
  \centering
- \includegraphics[height=75mm]{../images/ch04/mmc2120mgsch.png}
- \caption{Schemat modułu kompasu}
- \label{fig:MMC2120Sch}
-\end{figure}
-
-\begin{figure}[!ht]
- \centering
- \includegraphics[height=50mm]{../images/ch04/mmc2120mgpcb.png}
+ \includegraphics[height=70mm]{../images/ch04/mmc2120mgpcb.png}
  \caption{Projekt płytki kompasu elektronicznego}
  \label{fig:MMC2120Pcb}
 \end{figure}
 
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[width=0.75\textwidth]{../images/ch04/mmc2120mgsch.png}
+ \caption{Schemat układu podłączeniowego dla magnetometru MMC2120}
+ \label{fig:MMC2120Sch}
+\end{figure}
+
+Zdjęcie \ref{fig:MMC2120Module} prezentuje gotowy do pracy moduł kompasu.
+Natomiast w tabeli \ref{tab:MMC2120ModOut} opisane są poszczególne wyjścia
+wyprowadzone z przygotowanego modułu.
+ 
 \begin{table}[hb]
   \rowcolors{2}{white}{gray!20}
   \centering
@@ -111,31 +146,46 @@ Płytka modułu kompasu została zaprojektowana przy pomocy darmowej wersji prog
   \end{tabular}
   \label{tab:MMC2120ModOut}
 \end{table}
-
 \begin{figure}[!ht]
  \centering
- \includegraphics[height=50mm]{../images/ch04/compassmodule.jpg}
+ \includegraphics[height=65mm]{../images/ch04/compassmodule.jpg}
  \caption{Gotowy moduł kompasu}
  \label{fig:MMC2120Module}
 \end{figure}
 
 \subsection{Nieudana próba zastosowania}
-Docelowo moduł kompasu miał być wykorzystywany jako element Inercjalnego Systemu Nawigacji w celu określania kierunku w którym robot się przemieszcza. Zasada działania miała być prosta. Robot miał zapamiętywać aktualny azymut z jakim się poruszał będąc na rekach operatora. Następnie po postawieniu na podłożu miał odtwarzać tor ruchu obracając wszystkie zapamiętane azymuty o $180\circ$. 
+Docelowo moduł kompasu miał być wykorzystywany jako element Inercjalnego Systemu
+Nawigacji w celu określania kierunku w którym robot się przemieszcza. Zasada
+działania miała być prosta. Robot miał zapamiętywać aktualny azymut z jakim się
+poruszał będąc na rekach operatora. Następnie po postawieniu na podłożu miał
+odtwarzać tor ruchu obracając wszystkie zapamiętane azymuty o $180^{\circ}$.
 
+Niestety wykonane testy pokazały, iż
+nie jest możliwe wykorzystanie kompasu w celu określenia azymutu robota poruszającego się po podłodze budynku. Jest to
+spowodowane stosowaniem metalowych prętów zbrojeniowych w stropach budynków,
+które zakłócają pracę kompasu. Testy zostały wykonane zarówno przy pomocy modułu
+elektronicznego kompasu jak i tradycyjnej wojskowej busoli. Rysunki
+\ref{fig:Busola1} oraz \ref{fig:Busola2} przedstawiają odchylenie azymutów
+wyznaczonych na podłodze budynku.
 \begin{figure}[!ht]
  \centering
- \includegraphics[height=60mm]{../images/ch04/compass01.jpg}
+ \includegraphics[height=110mm]{../images/ch04/compass01.jpg}
  \caption{Busola w położeniu początkowym}
  \label{fig:Busola1}
 \end{figure}
-
+\newpage
 \begin{figure}[!ht]
  \centering
- \includegraphics[height=60mm]{../images/ch04/compass02.jpg}
- \caption{Busola przesunięta równolegle o 25 cm,}
+ \includegraphics[height=110mm]{../images/ch04/compass02.jpg}
+ \caption{Busola przesunięta równolegle o 25 cm}
  \label{fig:Busola2}
 \end{figure}
 
-Niestety wykonane testy pokazały, iż nie jest możliwe wykorzystanie kompasu w celu określenia azymutu robota poruszającego się po podłodze budynku. Jest to spowodowane stosowaniem metalowych prętów zbrojeniowych w stropach budynków, które zakłócają pracę kompasu. Testy zostały wykonane zarówno przy pomocy modułu elektronicznego kompasu jak i tradycyjnej wojskowej busoli. Rysunki \ref{fig:Busola1} oraz \ref{fig:Busola2} przedstawiają odchylenie azymutów wyznaczonych na podłodze budynku. Busola przedstawiona na zdjęciach została przesunięta równolegle o 25 cm w prawo. Wskazywany kierunek północy zmienił się o ponad $90^{\circ}$. Jak widać przy tak dużych wahaniach nie jest możliwe wykorzystanie magnetometru jako elementu jednoznacznie określającego kierunek w którym robot ma się poruszać. Po wielu nieudanych próbach wyeliminowania zakłóceń moduł kompasu został zastąpiony modułem żyroskopu.
+Busola przedstawiona na zdjęciach została
+przesunięta równolegle o 25 cm w prawo. Wskazywany kierunek północy zmienił się o
+ponad $90^{\circ}$. Jak widać przy tak dużych wahaniach nie jest możliwe
+wykorzystanie magnetometru jako elementu jednoznacznie określającego kierunek w
+którym robot ma się poruszać. Po wielu nieudanych próbach wyeliminowania zakłóceń
+moduł kompasu został zastąpiony modułem żyroskopu.
 
 % http://www.iemw.tuwien.ac.at/publication/workshop0600/Hauser.html

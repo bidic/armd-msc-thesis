@@ -42,7 +42,7 @@ kondensatora, jako zmianę pojemności.
  \label{fig:ZyroOsc}
 \end{figure}
 
-Jeżeli urządzenie do którego przymocowany jest żyroskopq zacznie się obracać,
+Jeżeli urządzenie do którego przymocowany jest żyroskop zacznie się obracać,
 spowoduje to wychylenie się oscylujących elementów w przeciwnych kierunkach
 (rys. \ref{fig:ZyroCoriolis}). Wychylenie to z kolei powoduje zmianę pojemności, a
 różnica pomiędzy pojemnościami zmierzonymi przy pomocy obydwu ruchomych
@@ -60,7 +60,6 @@ w szczególności na przyspieszenie ziemskie. Przyspieszenie liniowe wywoła
 wychylenie się jednocześnie obydwu elementów oscylujących w tym samym kierunku. W~ten sposób nie~będzie wykryta żadna różnica pojemności. Prędkość kątowa
 wskazywana przez żyroskop nie ulegnie zmianie. Dzięki temu żyroskopy MEMS są
 odporne na wstrząsy, uderzenia oraz wibracje.
-\\
 
 Podstawowe wielkości charakteryzujące żyroskop:
 % \begin{itemize}
@@ -97,17 +96,17 @@ Podstawowe wielkości charakteryzujące żyroskop:
 	Parametr określa maksymalne procentowe odchylenie wartości na wyjściu żyroskopu
 	od dopasowanej do nich linii prostej.
 \item[Przepustowość {$[Hz]$}] 
-	Definiuje częstotliwość z jaką żyroskom może wykonywać kolejne pomiary.
+	Definiuje częstotliwość z jaką żyroskop może wykonywać kolejne pomiary.
 \end{basedescript}
 
 \subsection{Kalibracja i odczytywanie wyników}
 Żyroskopy są zazwyczaj fabrycznie testowane i kalibrowane pod kątem zakresów pomiarów poziomu zerowego oraz czułości. 
 Jednak po umieszczeniu elementu na płytce PCB\footnote{PCB (z ang. Printed
 Circuit Board) - płyta obwodu drukowanego} zostaje on poddany naprężeniom przez
-co może być potrzebna dodatkowa kalibracja układu.
+co może być potrzebna dodatkowa kalibracja układu. Wartości wyjściowe
+otrzymywane w wyniku pomiaru przeprowadzonego za~pomocą żyroskopu można
+przedstawić za~pomocą równania \ref{eq:gyro-output}:
 
-Wartości wyjściowe żyroskopu można przedstawić za pomocą równania
-\ref{eq:gyro-output}:
 \begin{equation}
 	\label{eq:gyro-output}
   \omega_{t} = \omega_{m} - \omega_{0}
@@ -123,9 +122,8 @@ W celu kompensacji niestabilności żyroskopu należy pozostawić urządzenie
 nieruchome i wykonać około tysiąc pomiarów. Następnie konieczne jest obliczenie
 wartości średniej z wykonanych pomiarów. W ten sposób określimy średnie wychylenie od wartości zerowej żyroskopu, czyli nasze $\omega_{0}$.
 
-Podczas używania żyroskopu do pomiaru bardzo małych kątów należy jeszcze wziąć pod uwagę minimalne odchylenia wartości w
-zależności od zmiany temperatury.
-
+Podczas używania żyroskopu do pomiaru bardzo małych prędkości kątowych należy
+jeszcze wziąć pod uwagę minimalne odchylenia wartości w zależności od zmiany temperatury.
 Prędkość kątową opisujemy wzorem \ref{eq:predkosckatowa}: 
 \begin{equation}
   \label{eq:predkosckatowa}
@@ -145,17 +143,17 @@ całkowania, np. metodę trapezów (rys. \ref{fig:CalkowanieTrapezy}). Metoda ta
 polega na podzieleniu pola pod wykresem całkowanej funkcji na wąskie trapezy, a następnie zsumowanie pól tych
 trapezów.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
  \centering
  \includegraphics[height=70mm]{../images/ch04/calkowanie-metoda-trapezow.png}
  \caption[Całkowanie przy pomocy metody trapezów]{Całkowanie przy pomocy metody trapezów\footnotemark}
  \label{fig:CalkowanieTrapezy}
 \end{figure}
-\footnotetext{źródło: http://mateusz-lach.blogspot.com/2010/09/cakowanie-numeryczne.html}
 
 Po wykorzystaniu metody trapezów, wzór na kąt o jaki żyroskop został obrócony
 w~czasie pomiędzy dwoma pomiarami, można zapisać w postaci równania \ref{eq:angle-gyro}:
 
+\footnotetext{źródło: http://mateusz-lach.blogspot.com/2010/09/cakowanie-numeryczne.html}
 \begin{equation}
  \label{eq:angle-gyro}
   \varphi = C_{f} \cdot \frac{\omega_{i-1} + \omega_{i}}{2} \cdot \Delta t
@@ -181,7 +179,7 @@ końcową ciała jest sumą wszystkich wykonanych pomiarów kątów.
     \> $\varphi_{i}$ -- wartość kąta z pojedynczego pomiaru\\
 \end{tabbing}
 Do otrzymania jak najlepszych wyników konieczne jest określenie współczynnika korygującego pomiar żyroskopu.
-W tym celu porównujemy wyniki pomiarów żyroskopu z pomiarami innych przyrządów np. magnetometru wykorzystując wzór:
+W tym celu porównujemy wyniki pomiarów żyroskopu z~pomiarami innych przyrządów np. magnetometru wykorzystując wzór:
 \begin{equation}
   C_{f} = \frac{\varphi_{o}}{\varphi_{g}}
 \end{equation}
@@ -192,20 +190,54 @@ W tym celu porównujemy wyniki pomiarów żyroskopu z pomiarami innych przyrząd
     \> $\varphi_{g}$ -- kąt wyznaczony przez żyroskop,\\
 \end{tabbing}
 
-Niestety z powodu ciągle nakładających się błędów całkowania oraz niedoskonałości samego żyroskopu, wskazywany kąt odchylenia od ułożenia początkowego będzie się oddalał od wartości rzeczywistej wraz z upływem czasu. W przypadku tej pracy dyplomowej nie jest jednak potrzebna bardzo wysoka stabilność i precyzja wartości mierzonych przez żyroskop.
-%TODO dopisałbym, że chodzi o stabilność przy pomiarach na długich odstępach czasu
+Niestety z powodu ciągle nakładających się błędów całkowania oraz niedoskonałości
+samego żyroskopu, wskazywany kąt odchylenia od ułożenia początkowego będzie się
+oddalał od wartości rzeczywistej wraz z upływem czasu. W przypadku tej pracy
+dyplomowej nie jest jednak potrzebna bardzo wysoka stabilność i precyzja wartości
+mierzonych przez żyroskop dla długich okresów pomiarowych.
+
+ \begin{figure}[h!]
+ \centering
+ \subfloat[Zmiany wartości rejestrów podczas obrotu]{\label{fig:gyro-angle-vel}
+ 	\includegraphics[width=0.49\textwidth]{../images/ch04/gyro-angle-velocity.png}}
+ %\hfill \\
+ \subfloat[Zmiany kąta wychylenia z pozycji startowej]{\label{fig:gyro-angle}
+ 	\includegraphics[width=0.49\textwidth]{../images/ch04/gyro-angle.png}}
+ \caption{Dane o obrocie zarejestrowane za pomocą modułu żyroskopu}
+ \label{fig:gyro-angle-plot}
+\end{figure}
+
+Rysunek \ref{fig:gyro-angle-plot} przedstawiają informacje o obrocie robota uzyskane za pomocą
+żyroskopu. Robot został najpierw obrócony o $90^{\circ}$ w lewo po czym
+przekręcono go do położenia pierwotnego, następnie obrócono go o $90^{\circ}$ w prawo i
+ponownie przywrócono jego pierwotne ustawienie. Na rysunku \ref{fig:gyro-angle-vel} zostały
+przedstawione kolejne wartości rejestrów żyroskopu odzwierciedlających prędkość
+kątową z jaką poruszał się czujnik wokół osi~Z~podczas wykonywania pomiarów.
+Wykres przedstawiony na rysunku \ref{fig:gyro-angle}, pokazuje efekt działania
+algorytmu odpowiedzialnego za całkowanie pomiarów z żyroskopu i przeliczanie ich~na~wartość
+kąta. Na osi Y wykresu widzimy wartość kąta obrotu, natomiast oś~X~określa
+numer kolejnego pomiaru.
 
 \subsection{Opis zastosowanego elementu i budowy modułu}
-W robocie został użyty ultra-stabilny trójosiowy żyroskop cyfrowy L3G4200D firmy STMicroelectronics. Jego główną zaletą jest bardzo dobra jakość pomiarów osiągnięta dzięki zastosowaniu innowacyjnej struktury mechanicznej. Zazwyczaj urządzenia tego typu stosują dwie lub trzy struktury odpowiedzialne za wykonywanie pomiarów. Żyroskop firmy STMicroelectronics natomiast posiada jeden taki element odpowiedzialny za pomiar na wszystkich osiach. Takie rozwiązanie eliminuje zakłócenia pomiędzy osiami, powodowane przez same elementy pomiarowe.
-\\
+W robocie został użyty ultra-stabilny trójosiowy żyroskop cyfrowy L3G4200D firmy
+STMicroelectronics. Jego główną zaletą jest bardzo dobra jakość pomiarów
+osiągnięta dzięki zastosowaniu innowacyjnej struktury mechanicznej. Zazwyczaj
+urządzenia tego typu stosują dwie lub trzy struktury odpowiedzialne za
+wykonywanie pomiarów. Żyroskop firmy STMicroelectronics natomiast posiada jeden
+taki element odpowiedzialny za pomiar na wszystkich osiach. Takie rozwiązanie
+eliminuje zakłócenia pomiędzy osiami, powodowane przez same elementy pomiarowe.
 
-Zgodnie z notą katalogową\cite{L3G4200DDataSheet} żyroskop zamontowany w robocie posiada charakterystykę mechaniczną taką jak w tabeli \ref{tab:L3G4200DMechChar}:
+Zgodnie z notą katalogową\cite{L3G4200DDataSheet} dostępną na stronie
+internetowej producenta żyroskop L3G4200D zamontowany w robocie posiada
+charakterystykę mechaniczną taką jak zaprezentowano w tabeli
+\ref{tab:L3G4200DMechChar}:
 
 \begin{table}[hb]
 \rowcolors{2}{white}{gray!20}
 \centering
-\caption{Charakterystyka mechaniczna żyroskopu L3G4200D dla napięcia zasilania $3.0V$ i temperatury pracy $25^{\circ}C$}
-   	\begin{tabular}{ | c | c | c | c | c | p{1.75cm} |} \hline
+\caption{Charakterystyka mechaniczna żyroskopu L3G4200D dla napięcia zasilania
+$3.0 V$ i temperatury pracy $25^{\circ}C$}
+ \begin{tabular}{ | c | c | c | c | c | p{1.75cm} |} \hline
    		Symbol & Parametr & Warunki testowe & Wartość & Jednostka \\ \hline
    		& & & $\pm 250$ & \\
    		FS & Skala & & $\pm 500$ & dps\\
@@ -224,31 +256,45 @@ Zgodnie z notą katalogową\cite{L3G4200DDataSheet} żyroskop zamontowany w robo
 		Rn & Współczynnik szumów & $BW = 50 Hz$ & $\pm 0.03$ & $\frac{dps}{\sqrt{Hz}}$ \\ \hline
 		ODR & Częstotliwość odświeżania & & $100/200$ & $Hz$ \\
 		& danych na wyjściu & & $400/800$ & \\ \hline
-		Top & Zakres temperatur & & $-40^{\circ} C$ do $+85^{\circ} C$ & $^{\circ} C$ \\
-		& operacyjnych & & & \\ \hline
+		Top & Zakres temperatur & & od $-40^{\circ} C$& $^{\circ} C$ \\
+		& operacyjnych & & do $+85^{\circ} C$ & \\ \hline
    	\end{tabular}
 \label{tab:L3G4200DMechChar}
 \end{table}
-
-Do żyroskopu została zaprojektowana płytka podłączeniowa PCB w programie Eagle.
+\newpage
+Aby możliwe stało się podłączenie żyroskopu do robota, została zaprojektowana w~programie Eagle specjalna płytka podłączeniowa widoczna na rysunku \ref{fig:L3G4200DPCB}.
 \begin{figure}[!ht]
  \centering
- \includegraphics[height=60mm]{../images/ch04/L3G4200Dschematic.png}
- \caption{Schemat płytki PCB modułu żyroskopu}
- \label{fig:L3G4200DSchem}
-\end{figure}
-
-Schemat przedstawiony na rysunku \ref{fig:L3G4200DSchem} został stworzony na podstawie noty katalogowej.
-
-\begin{figure}[!ht]
- \centering
- \includegraphics[height=50mm]{../images/ch04/L3G4200Dpcb.png}
+ \includegraphics[height=65mm]{../images/ch04/L3G4200Dpcb.png}
  \caption{Płytka PCB modułu żyroskopu trójosiowego}
  \label{fig:L3G4200DPCB}
 \end{figure}
 
-Płytka modułu została zaprojektowana z wykorzystaniem elementów SMD w obudowie 1206. Rozmiar obudowy tych elementów został wymuszony przez brak kondensatorów ceramicznych o pojemności $10\mu F$ w obudowie mniejszej. Cały proces tworzenia płytki modułu żyroskopu był przeprowadzony metodami domowymi ze względu na niski koszt oraz brak konieczności czekania kilku tygodni na wykonanie takiej płytki przez specjalistyczną firmę. Opis tworzenia płytki można znaleźć w dodatku \ref{chap:pcb}
+Schemat układu umożliwiającego podłączenie czujnika został przedstawiony na
+rysunku \ref{fig:L3G4200DSchem}. Jego projekt został stworzony na podstawie
+wspomnianej wcześniej noty katalogowej. \begin{figure}[!ht]
+ \centering
+ \includegraphics[width=\textwidth]{../images/ch04/L3G4200Dschematic.png}
+ \caption{Schemat płytki PCB modułu żyroskopu}
+ \label{fig:L3G4200DSchem}
+\end{figure}
 
+Płytka modułu została zaprojektowana z wykorzystaniem elementów
+SMD\footnote{SMD -- Surface Mount Device} w obudowie 1206. Rozmiar obudowy tych
+elementów został wymuszony przez brak kondensatorów ceramicznych o pojemności $10\mu F$ w obudowie mniejszej. Cały proces tworzenia
+płytki modułu żyroskopu był przeprowadzony metodami domowymi ze względu na niski
+koszt oraz brak konieczności czekania kilku tygodni na wykonanie takiej płytki
+przez specjalistyczną firmę. Szczegółowy opis procesu tworzenia płytki metodami
+domowymi można znaleźć w~dodatku \ref{chap:pcb}. Poniżej zamieszczone zostało
+zdjęcie \ref{fig:L3G4200DModule} przedstawiające gotowy moduł żyroskopu oraz
+tabela \ref{tab:L3G4200DModOut} omawiająca szczegółowo wyprowadzenia modułu
+umożliwiające jego podłączenie do robota.
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[height=95mm]{../images/ch04/gyromodule.jpg}
+ \caption{Gotowy moduł żyroskopu}
+ \label{fig:L3G4200DModule}
+\end{figure} 
 \begin{table}[hb]
   \rowcolors{2}{white}{gray!20}
   \centering
@@ -266,10 +312,3 @@ Płytka modułu została zaprojektowana z wykorzystaniem elementów SMD w obudow
   \end{tabular}
   \label{tab:L3G4200DModOut}
 \end{table}
-
-\begin{figure}[!ht]
- \centering
- \includegraphics[height=50mm]{../images/ch04/gyromodule.jpg}
- \caption{Gotowy moduł żyroskopu}
- \label{fig:L3G4200DModule}
-\end{figure}
