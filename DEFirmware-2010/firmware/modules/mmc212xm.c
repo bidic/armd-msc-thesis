@@ -1,6 +1,7 @@
 #include "mmc212xm.h"
 
-double mag_offset[2] = {2083,2025.5};
+//double mag_offset[2] = {2083,2026};
+double mag_offset[2] = {2048, 2048};
 double mag_sensitivity[2]= {91,88};
 
 mag_info MMC212xM_GetMagneticFieldInfo(Twid *twid)
@@ -33,35 +34,37 @@ mag_info MMC212xM_GetMagneticFieldInfo(Twid *twid)
 
 void MMC212xM_Calibrate(Twid *twid)
 {
-//	mag_info mi;
-//	long i = 0;
-//	int maxv[2] = {-65000, -65000};
-//	int minv[2] = {65000, 65000};
-//	for(i=0;i<2;i++)
-//	{
-//		sens[i] = 0;
-//		offs[i] = 0;
-//	}
-//
-//	for(i = 0; i< 1000; i++)
-//	{
-//		mi =  MMC212xM_GetMagneticFieldInfo(twid);
-//		if ( maxv[0] < mi.x )
-//		   maxv[0] = mi.x;
-//		if ( minv[0] > mi.x )
-//		   minv[0] = mi.x;
-//		if ( maxv[1] < mi.y )
-//		   maxv[1] = mi.y;
-//		if ( minv[1] > mi.y )
-//		   minv[1] = mi.y;
-//
-//	}
-//
-//	for(i = 0; i< 2; i++)
-//	{
-//		sens[i] = (maxv[i] - minv[i]) / 2;
-//		offs[i] = (maxv[i] + minv[i]) / 2;
-//	}
+	mag_info mi;
+	long i = 0;
+	int maxv[2] = {-65000, -65000};
+	int minv[2] = {65000, 65000};
+	for(i=0;i<2;i++)
+	{
+	  mag_offset[i] = 0;
+	  mag_sensitivity[i] = 0;
+	}
+
+	HY1602F6_Log("Calib. compass", "");
+	for(i = 0; i< 10000; i++)
+	{
+		mi =  MMC212xM_GetMagneticFieldInfo(twid);
+		if ( maxv[0] < mi.x )
+		   maxv[0] = mi.x;
+		if ( minv[0] > mi.x )
+		   minv[0] = mi.x;
+		if ( maxv[1] < mi.y )
+		   maxv[1] = mi.y;
+		if ( minv[1] > mi.y )
+		   minv[1] = mi.y;
+
+	}
+	HY1602F6_Log("Calib. compass", "Calib. done");
+
+	for(i = 0; i< 2; i++)
+	{
+	  mag_sensitivity[i] = (maxv[i] - minv[i]) / 2.;
+		mag_offset[i] = (maxv[i] + minv[i]) / 2.;
+	}
 }
 
 void  MMC212xM_SendSetCmd(Twid *twid)
