@@ -1,6 +1,6 @@
 \section{Narzędzia dla systemu Linux}
 \label{sec:embeded-linux-tools}
-Jednym z wymagań pracy dyplomowej było przygotowanie zestawu narzędzi dla systemu
+Jednym z wymagań pracy dyplomowej było przygotowanie zestawu narzędzi dla~systemu
 Linux, dzięki którym będzie możliwy dalszy rozwój robota. Zbiór programów
 potrzebnych do rozwoju projektu to: zintegrowane środowisko programistyczne
 (IDE), kompilator oraz oprogramowanie pozwalające zaprogramować mikrokontroler.
@@ -30,17 +30,16 @@ rozwoju oprogramowania na mikrokontrolery ARM.
 Wybrane środowisko programistyczne (Eclipse) jest udostępniane pod adresem:
 \url{http://www.eclipse.org/downloads/}. Ściągnięte archiwum rozpakowujemy w
 wybranym przez nas miejscu. Przechodzimy następnie do katalogu który został
-wydobyty z archiwum i uruchamiamy Eclipse'a.
+wydobyty z~archiwum i uruchamiamy Eclipse'a.
 
 Oprogramowanie zaraz po pierwszym uruchomieniu zapyta nas o miejsce w którym będą
 przechowywane źródła naszego projektu tzw. Workspace. Dobrym pomysłem jest
 potwierdzenie ustawień domyślnych i zapamiętanie tej ścieżki.
-
 \begin{figure}[ht!]
  \centering
- \includegraphics[width=150.0mm]{../images/ch03/Eclipse-MainWindow.jpg}
- \caption{Okno główne IDE Eclipse z dodanym projektem}
- \label{fig:Eclipse-MainWindow}
+ \includegraphics[height=75mm]{../images/ch03/Eclipse-CPP-Project.jpg}
+ \caption{Okno dialogowe C++ Project}
+ \label{fig:Eclipse-CPP-Project}
 \end{figure}
 
 \subsubsection{Dodawanie projektu z firmware'm Dark Explorer'a}
@@ -48,45 +47,43 @@ Do workspace'u Eclipse'a należy skopiować katalog z kodem sterującym robota.
 Następnie dodajemy nowy projekt w IDE wybierając kolejno \textit{File --> New -->
 C++ Project}. W oknie dialogowym \textit{C++ Project} (rysunek
 \ref{fig:Eclipse-CPP-Project}), należy podać nazwę projektu która powinna być
-zgodna z nazwą katalogu zawierającego kod robota. Następnie z listy Project type,
-wybieramy \textit{Makefile project --> Empty Project}, a jako \textit{Toolchain}
+zgodna z nazwą katalogu zawierającego kod robota. Następnie z listy Project
+type, wybieramy \textit{Makefile project --> Empty Project}, a jako \textit{Toolchain}
 wybieramy \textit{Other toolchain}. Całą operację zatwierdzamy przyciskiem
 \textit{Finish}.
 
 \begin{figure}[ht!]
  \centering
- \includegraphics[height=100.0mm]{../images/ch03/Eclipse-CPP-Project.jpg}
- \caption{Okno dialogowe C++ Project}
- \label{fig:Eclipse-CPP-Project}
+ \includegraphics[width=145mm]{../images/ch03/Eclipse-MainWindow.jpg}
+ \caption{Okno główne IDE Eclipse z dodanym projektem}
+ \label{fig:Eclipse-MainWindow}
 \end{figure}
 
 Po poprawnym dodaniu projektu naszym oczom powinno się ukazać okno podobne do
-tego na rysunku \ref{fig:Eclipse-MainWindow}
+tego na rysunku \ref{fig:Eclipse-MainWindow}. 
 
 W przypadku gdy przed uruchomieniem Eclipse'a nie ustawiliśmy ścieżki do
-odpowiedniego toolchain'a w zmiennych środowiskowych systemu. podjąć dodatkowe
-kroki. Eclipse umożliwia konfigurowanie tych zmiennych dla pojedynczych
-projektów. W celu ustawienia wymaganej ścieżki klikamy prawym klawiszem myszy na
-nazwie naszego projektu w \textit{Project Explorer'ze} i wybieramy
+odpowiedniego toolchain'a w zmiennych środowiskowych systemu należy podjąć
+dodatkowe kroki mające na celu uzupełnienie brakującej konfiguracji. Eclipse
+umożliwia konfigurowanie tych zmiennych dla pojedynczych projektów. W celu ustawienia wymaganej ścieżki klikamy prawym klawiszem myszy na
+nazwie naszego projektu w \textit{Project Explorer} i~wybieramy
 \textit{Properties}.
-
 \begin{figure}[ht!]
  \centering
- \includegraphics[width=150.0mm]{../images/ch03/Eclipse-Project-Properties.jpg}
+ \includegraphics[width=\textwidth]{../images/ch03/Eclipse-Project-Properties.jpg}
  \caption{Okno dialogowe Properties}
  \label{fig:Eclipse-Project-Properties}
 \end{figure}
 
-Po ukazaniu się okna dialogowego \textit{Properties} (rysunek
-\ref{fig:Eclipse-Project-Properties}) wybieramy \textit{C/C++ Build -->
+Po ukazaniu się okna dialogowego \textit{Properties} (rys. \ref{fig:Eclipse-Project-Properties}) wybieramy \textit{C/C++ Build -->
 Environment}. Następnie modyfikujemy zmienną \textit{PATH}, dodając na końcu
-ścieżkę do naszego toolchain'a.
+ścieżkę do~naszego toolchain'a.
 
 W celu przetestowania poprawności naszej konfiguracji możemy spróbować
 skompilować kod, klikając prawym klawiszem myszy na nazwę projektu, a następnie
 wybierając z menu kontekstowego opcję \textit{Build Project}. W wyniku powinniśmy
 otrzymać dwa pliki binarne w katalogu \textit{firmware/bin}. Są to pliki gotowe
-do umieszczenia w pamięci flash robota.
+do umieszczenia w pamięci flash robota. \newpage
 
 \subsection{Instalacja i konfiguracja toolchain'a}
 W celu przetworzenia kodu do formy współpracującej z mikrokontrolerem ARM
@@ -97,20 +94,18 @@ stronie
 \url{http://www.gnuarm.com/bu-2.15_gcc-3.4.3-c-c++-java_nl-1.12.0_gi-6.1.tar.bz2}
 
 Po ściągnięciu archiwum ze strony producenta należy rozpakować je do dowolnego
-katalogu, na potrzeby tej pracy załóżmy że będzie to katalog \url{/usr/local/} W
-celu zapewnienia dostępu do toolchain'a wszystkim programom wskazane jest
+katalogu, na potrzeby tej pracy załóżmy że będzie to katalog \url{/usr/local/}.
+W celu zapewnienia dostępu do toolchain'a wszystkim programom wskazane jest
 dodanie ścieżki /usr/local/bin do zmiennej środowiskowej PATH (komenda 
-\verb|export PATH=$PATH:/usr/local/bin|).
-
-W celu sprawdzenia poprawności instalacji należy wykonać komendę:
+\verb|export PATH=$PATH:/usr/local/bin|). W celu sprawdzenia poprawności instalacji należy wykonać komendę:
 \begin{verbatim}
 arm-elf-gcc --version 
 \end{verbatim}
 której wynikiem powinien być komunikat podobny do tego na rysunku \ref{fig:arm-elf-gcc-test}.
 
-\begin{figure}
+\begin{figure}[ht!]
  \centering
- \includegraphics[width=150.0mm]{../images/ch03/arm-elf-gcc-test.jpg}
+ \includegraphics[width=\textwidth]{../images/ch03/arm-elf-gcc-test.jpg}
  \caption{Okno pokazujące odpowiedź prawidłowo zainstalowanego kompilatora}
  \label{fig:arm-elf-gcc-test}
 \end{figure}
@@ -125,11 +120,9 @@ samodzielnie. Ewentualne dodatkowe informacje można znaleźć pod adresem
 \label{roz:opendocd-install}
 Pamięć robota była programowana przy pomocy tego samego narzędzia które służy do
 sprawdzania poprawności działania napisanego kodu. Mowa tu o oprogramowaniu Open
-On--Chip Debugger.
-
-Źródła programu należy pobrać ze strony:
+On--Chip Debugger. Źródła programu należy pobrać z oficjalnej strony projektu:
 \url{http://sourceforge.net/projects/openocd/}. Autorzy programu nie zamieścili
-wersji binarnych, wiec kompilacje będziemy musieli przeprowadzić sami.
+wersji binarnych, więc kompilacje będziemy musieli przeprowadzić sami.
 
 Po ściągnięciu i rozpakowaniu źródeł uruchamiamy skrypt configure z odpowiednimi
 argumentami przy pomocy komendy:
@@ -161,20 +154,21 @@ upewnieniu się że robot jest włączony wykonujemy komendę:
 openocd -s /usr/local/share/openocd/scripts -f board/atmel_at91sam7s-ek.cfg
 -f interface/triton.cfg 
 \end{verbatim}
-
-\begin{figure}[h!]
+W wyniku wykonania polecenia na ekranie powinniśmy otrzymać widok podobny do
+tego który przedstawiony jest na rysunku \ref{fig:openocd}.
+\begin{figure}[ht!]
  \centering
- \includegraphics[width=150.0mm]{../images/ch03/openocd.jpg}
- \caption{Poprawnie uruchomiony openocd}
+ \includegraphics[width=0.8\textwidth]{../images/ch03/openocd.jpg}
+ \caption{Poprawnie uruchomiony OpenOCD}
  \label{fig:openocd}
 \end{figure}
 
 \subsubsection{Programowanie pamięci Dark Explorer'a}
 W celu wgrania programu do pamięci robota musimy uruchomić dwa narzędzia: telnet
-oraz openocd. Procedura instalacji i uruchamiania openocd została opisana
+oraz OpenOCD. Procedura instalacji i uruchamiania OpenOCD została opisana
 wcześniej w rozdziale \ref{roz:opendocd-install}. W pierwszym kroku uruchamiamy
-openocd w celu podłączenia się do robota. Następnie startujemy telnet za pomocą
-polecenia:
+openocd w celu podłączenia się do robota. Następnie uruchamiamy program telnet
+za pomocą polecenia:
 
 \begin{verbatim}
  telnet localhost 4444
