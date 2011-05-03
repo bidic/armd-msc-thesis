@@ -4,13 +4,13 @@ W celu zwiększenia możliwości robota Dark Explorer w dziedzinie przetwarzania
 obrazu niezbędne było polepszenie rozdzielczości zdjęć otrzymywanych z wbudowanej
 kamery. W wersji bazowej maksymalne rozdzielczości z jakimi było możliwe
 pobieranie obrazów to 160x100 pikseli w kolorze oraz 320x200 pikseli w odcieniach
-szarości. Wartości te zostały najprawdopodobniej narzucone przez ograniczenia
+szarości. Wartości te~zostały najprawdopodobniej narzucone przez ograniczenia
 pamięci podręcznej mikrokontrolera ARM, który posiada jedynie 64kB szybkiej
 pamięci SRAM. Ilość ta wystarczyła na pobranie maksymalnie $320*200=64000$ bajtów
 danych pozostawiając 1536 bajtów na zmienne niezbędne do poprawnego działania
 oprogramowania systemu wbudowanego.
 
-Wykorzystywana kamera posiada osiem wyjść równoległych odpowiadających za jeden
+Wykorzystywana kamera posiada osiem wyjść równoległych odpowiadających za~jeden
 bajt danych. Wszystkie osiem bitów na wyjściu zmienia się z każdym taktem zegara
 sterującego kamery, podanego na jej wejście. W taki sposób z każdym cyklem 
 zegara, kamera oddaje do naszej dyspozycji dane z kolejnej porcji obrazu. W
@@ -18,7 +18,7 @@ konfiguracji początkowej zegar wejściowy kamery był tworzony w sposób czysto
 programowy. Jedno z wyjść GPIO mikrokontrolera było ustawiane na przemian raz w
 stan wysoki, a raz w stan niski. Niewątpliwie podejście to znacząco ułatwia
 synchronizację pomiędzy sygnałem zegarowym a momentem pobierania danych
-eliminując możliwość sczytania danych z wyjścia kamery w momencie w którym
+eliminując możliwość wczytania danych z wyjścia kamery w momencie w którym
 wyjścia te są w stanie nieustalonym.
 
 \begin{figure}[ht!]
@@ -47,11 +47,10 @@ na rysunku \ref{fig:DataFlashConstantWrite}
 \end{figure}
 
 Czas zapisu danych na stronie pamięci układu AT45DB321B nie jest stały. Wymusza
-to zmianę podejścia do zegara sterującego kamerą z koncepcji programowej na
-sprzętową, tak aby okres zegara był jednorodny. Niejednorodny zegar spowodowałby
+to zmianę podejścia do zegara sterującego kamerą z koncepcji programowej na~sprzętową, tak aby okres zegara był stały. Niejednorodny zegar spowodowałby
 przebarwienia na obrazie wynikające ze sposobu działania mechanizmu dobierania
-ekspozycji, wbudowanego w kamerze PO6030K. W celu uzyskania sprzętowego zegara
-zostało użyte urządzenie peryferyjne mikrokontrolera AT91SAM7S generującego
+ekspozycji, wbudowanego w kamere PO6030K. W celu uzyskania sprzętowego zegara
+zostało użyte urządzenie peryferyjne mikrokontrolera AT91SAM7S generujące
 sygnał prostokątny o określonej częstotliwości. Z powodu multipleksowania tego
 urządzenia z jednym z pinów GPIO mikrokontrolera podłączonego do wyjścia danych z
 kamery, konieczne było zastosowanie przeplotu w taśmie podłączeniowej kamery w
@@ -66,7 +65,7 @@ konfiguracji podstawowej silniki te były kontrolowane przez 4 niezależne sygna
 PWM pozwalające na obracanie się każdego koła robota z inną prędkością.
 Stwierdzono, iż taka funkcjonalność nie jest niezbędna i wykorzystano trzy zbędne
 wyjścia sygnałów PWM do obsługi interfejsu SPI, a przy pomocy własnoręcznie
-wykonanej zworki dostarczono jeden sygnał PWM to wszystkich czterech silników.
+wykonanej zworki dostarczono jeden sygnał PWM dla wszystkich czterech silników.
 
 Dane z kamery są początkowo umieszczane w pamięci SRAM do momentu uzbierania
 grupy 512 bajtów (rozmiar strony pamięci układu AT45DB321B). Zabieg ten jest
