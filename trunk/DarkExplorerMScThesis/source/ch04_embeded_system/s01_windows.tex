@@ -19,10 +19,9 @@ Action Group - jest to nazwa standardu który definuje protokół wykorzystywany
 testowania połączeń na płytkach drukowanych oraz uruchamiania i programowania
 układów i systemów mikroprocesorowych. } za pomocą którego odbywa się proces
 wgrywania przygotowanego oprogramowania do pamięci robota. Kolejnym wymaganym
-krokiem jest instalacja i konfiguracja narzędzi umożliwiających stworzenie pliku
-binarnego umożliwiającego uruchomienie przygotowanej na platformie sprzętowej
-robota. Ostatnim etapem przygotowań jest instalacja oprogramowania
-umożliwiającego programowanie układu za pomocą wspomnianego interfejsu JTAG oraz
+krokiem jest instalacja i konfiguracja narzędzi umożliwiających tworzenie
+programów które będą mogły być uruchomiene w ramach platformy sprzętowej
+robota. Ostatnim etapem przygotowań jest instalacja oprogramowania umożliwiającego programowanie układu za~pomocą wspomnianego interfejsu JTAG oraz
 debugowanie aplikacji w trakcie jej działania na robocie.
 
 \subsection{Instalacja WinARM}
@@ -35,7 +34,7 @@ udostępnianych w ramach MinGW\footnote{Minimalist GNU for Windows - port GCC
 dostarczający zestaw darmowych narzędzi do komiplacji natywnych plików
 wykonywalnych dla platformy Windows} czy też Cygwina\footnote{Cygwin -
 implementacja standardu POSIX przeznaczona dla systemów z rodziny Windows}.
-Wszystkie potrzebne narzędzia dostarczane są w ramach SDK\footnote{SDK (z ang.
+Wszystkie potrzebne narzędzia dostarczane są~w~ramach SDK\footnote{SDK (z ang.
 Software Development Kit) - Zestaw narzędzi do rozwoju oprogramowania}. Narzędzia
 WinARM pomyślnie przeszły testy z kontrolerami Atmel AT91SAM7S64, AT91SAM7S256,
 AT91RM9200 ARM7TDMI oraz Philips LPC2106, Philips LPC2129, Philips LPC2138,
@@ -48,8 +47,9 @@ wersją narzędzi ze strony
 \url{http://gandalf.arubi.uni-kl.de/avr_projects/arm_projects/}. W chwili pisania
 pracy dostępna była wersja środowiska WinARM w wersji 20060606. Po zakończeniu
 procesu pobierania, archiwum należy rozpakować w taki sposób aby wszystkie
-podstawowe narzędzia dostępne były w katalogu \url{C:\WinARM\bin}. Umieszczenie
-katalogu z narzędziami WinARM w innej lokalizacji jest również możliwe, ale może
+podstawowe narzędzia dostępne były w katalogu \url{C:\WinARM\bin}. 
+
+Umieszczenie katalogu z narzędziami WinARM w innej lokalizacji jest również możliwe, ale może
 wymagać wykonania dodatkowych operacji konfiguracyjnych w celu zapewnienia
 poprawności działania wszystkich narzędzi. Aby udostępnić narzędzia WinARM z
 linii poleceń systemu Windows konieczne jest dodanie do zmiennej systemowej
@@ -76,12 +76,14 @@ interfejs USB, które to wymagają przed pierwszym użyciem zainstalowania
 sterowników umożliwiających prawidłowe rozpoznanie programatora przez system
 Windows. Jednym z bardziej popularnych programatorów USB jest TriTon JTAG. TriTon
 JTAG to programator przeznaczony dla procesorów zbudowanych w oparciu o rdzeń ARM
-podłączany do komputera za pomocą portu USB. TriTon JTAG posiada standardowe 20
-pinowe złącze JTAG wraz z wyprowadzeniami sygnałów RxD i TxD interfejsu UART.
-TriTon JTAG współpracuje z OpenOCD, pozwalając na programowanie oraz debugowanie
-działającej na urządzeniu aplikacji. Urządzenie oparte jest o układ FT2232 który
-umożliwia jego współprace także z innymi środowiskami rozwoju oprogramowania dla
-platformy ARM kompatybilnymi z FT2232.
+podłączany do komputera za pomocą portu USB.
+
+ TriTon JTAG posiada standardowe 20-pinowe złącze JTAG wraz z wyprowadzeniami
+ sygnałów RxD i TxD interfejsu UART. TriTon JTAG współpracuje z
+ OpenOCD\footnote{OpenOCD - Open On-Chip Debbuger}, pozwalając na programowanie
+ oraz debugowanie działającej na urządzeniu aplikacji. Urządzenie oparte jest o
+ układ FT2232 który umożliwia jego współprace także z innymi środowiskami rozwoju
+ oprogramowania dla platformy ARM, kompatybilnymi z FT2232.
 
 \begin{figure}[h!]
  \centering
@@ -95,12 +97,17 @@ ze strony \url{http://www.ethernut.de/en/download/}. Na stronie dostępne są
 sterowniki przeznaczone dla systemów Windows 2000, XP, Server 2003, Vista oraz
 Server 2008. Po rozpakowaniu archiwum ze sterownikami należy za pomocą interfejsu
 USB podłączyć programator do komputera. Po wykryciu system Windows trzykrotnie
-poprosi o podanie ścieżki do sterowników do urządzeń Triton JTAG, Triton USB
+poprosi o~podanie ścieżki do sterowników do urządzeń Triton JTAG, Triton USB
 RS232 Adapter oraz USB Serial Port. Należy wtedy skazać ścieżkę do katalogu w
-którym rozpakowane zostały sterowniki pobrane ze strony wspomnianej wcześniej. Po
-poprawnym zakończeniu instalacji w Menadżerze urządzeń systemu Windows widoczne
-będą następujące elementy
+którym rozpakowane zostały sterowniki pobrane ze strony wspomnianej wcześniej.
+W przypadku pojawienia się ostrzeżenia o braku testów zgodności, należy
+kontynuować instalację klikając na przycisk ,,Mimo to kontyuuj'' (rys.
+\ref{fig:TritonInstall}). Po poprawnym zakończeniu instalacji w Menadżerze urządzeń
+systemu Windows widoczne będą następujące elementy:
 \begin{itemize}
+\setlength{\parsep}{0pt}
+\setlength{\itemsep}{0mm}
+\setlength{\parskip}{0pt}
   \item Triton USB JTAG Adapter,
   \item Triton USB RS232 Adapter,
   \item Triton JTAG
@@ -124,11 +131,11 @@ wbudowanych.
 
 Strona projektu OpenOCD dostępna jest pod adresem
 \url{http://openocd.berlios.de/web/}. Dostępne są tam zarówno źródła jak i
-dokumentacja do projektu. Niestety w chwili pisania pracy magisterskiej autorzy
+dokumentacja do projektu. Niestety w~chwili pisania pracy magisterskiej autorzy
 nie udostępniali wersji skompilowanej dla systemu Windows. Dlatego też użyta
 została niezależna wersja OpenOCD z przygotowanym instalatorem dla systemu
-Windows. Instalator OpenOCD dla Windows jest do pobrania ze strony
-\url{http://www.ethernut.de/en/download/}. Po uruchomieniu instalatora wybieramy
+Windows. Instalator OpenOCD dla Windows jest do~pobrania ze strony
+\url{http://www.ethernut.de/en/download/}. Po~uruchomieniu instalatora wybieramy
 lokalizację docelową w której OpenOCD ma zostać zainstalowane. Po zakończeniu
 instalacji konieczne jest uzupełnienie wartości zmiennej systemowej PATH ścieżką
 do miejsca instalacji OpenOCD, domyślnie \url{C:\ethernut\nut\tools\win32}.

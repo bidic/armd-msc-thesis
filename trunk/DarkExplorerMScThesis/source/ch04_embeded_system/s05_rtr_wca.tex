@@ -1,6 +1,10 @@
 \section{Algorytm rekonstrukcji ścieżki powrotnej}
 \label{sec:rtrwca}
-Problem śledzenia aktualnego położenia na przykładzie robota mobilnego jest często poruszany. W poszukiwaniu rozwiązań tego problemu badacze oraz inżynierowie rozwinęli szeroką gamę systemów, sensorów i technik wyszukiwania aktualnej pozycji robota mobilnego. Można wyszczególnić siedem kategorii systemów do pozycjonowania:
+Problem śledzenia aktualnego położenia na przykładzie robota mobilnego jest
+często poruszany. W poszukiwaniu rozwiązań tego problemu badacze oraz
+inżynierowie rozwinęli szeroką gamę systemów, sensorów i technik wyszukiwania
+aktualnej pozycji robota mobilnego. Można wyszczególnić siedem kategorii systemów
+do pozycjonowania:
 \begin{enumerate}
   \item Pozycjonowanie relatywne:
   \begin{itemize}
@@ -18,22 +22,80 @@ Problem śledzenia aktualnego położenia na przykładzie robota mobilnego jest 
 \end{enumerate}
 Poniżej zostaną pokrótce opisane wyszczególnione techniki pozycjonowania robotów mobilnych.
 
-Odometria bazuje na obliczaniu położenia robota przy pomocy wzorów transformujących informacje o obrotach jego kół na przemieszczenie relatywne w stosunku do podłoża. Rozwiązanie wydaje się być proste w realizacji oraz skuteczne, jednak posiada kilka wad. Podczas stosowania tej metody nie jest możliwe określenie położenia robota gdy nie dotyka on podłoża. Problemem jest również ślizganie się kół robota, co będzie skutkowało błędami podczas obliczania jego położenia.
+Odometria bazuje na obliczaniu położenia robota przy pomocy wzorów
+transformujących informacje o obrotach jego kół na przemieszczenie relatywne w
+stosunku do podłoża. Rozwiązanie wydaje się być proste w realizacji oraz
+skuteczne, jednak posiada kilka wad. Podczas stosowania tej metody nie jest
+możliwe określenie położenia robota gdy nie dotyka on podłoża. Problemem jest
+również ślizganie się kół robota, co będzie skutkowało błędami podczas obliczania
+jego położenia.
 
-Nawigacja inercjalna wykorzystuje czujniki przyspieszenia oraz żyroskopy w celu pomiaru odpowiednio przyspieszenia i prędkości kątowej robota. Dane te są następnie całkowane raz (lub w przypadku akcelerometru dwa razy) w celu wyznaczenia pozycji robota. Zaletami tej metody jest brak jakiejkolwiek zależności od świata zewnętrznego. Wszystkie pomiary są wykonywane bez użycia jakichkolwiek zewnętrznych punktów odniesienia, poza podaniem początkowej prędkości i punktu startowego robota. Niestety błędy wynikające niedoskonałości czujników oraz z całkowania, kumulują się w raz z upływem czasu. Uniemożliwia to wykorzystanie nawigacji inercjalnej w zastosowaniach, wymagających określania pozycji robota w dłuższych okresach czasu.
+Nawigacja inercjalna wykorzystuje czujniki przyspieszenia oraz żyroskopy w celu
+pomiaru odpowiednio przyspieszenia i prędkości kątowej robota. Dane te są
+następnie całkowane raz (lub w przypadku akcelerometru dwa razy) w celu
+wyznaczenia pozycji robota. Zaletami tej metody jest brak jakiejkolwiek
+zależności od świata zewnętrznego. Wszystkie pomiary są wykonywane bez użycia
+jakichkolwiek zewnętrznych punktów odniesienia, poza podaniem początkowej
+prędkości i punktu startowego robota. Niestety błędy wynikające niedoskonałości
+czujników oraz z całkowania, kumulują się w raz z upływem czasu. Uniemożliwia to
+wykorzystanie nawigacji inercjalnej w zastosowaniach, wymagających określania
+pozycji robota w dłuższych okresach czasu.
 
-Kompasy magnetyczne są wykorzystywane podczas stosowania metody pozycjonowania absolutnego tj. takiego, które w przeciwieństwie do pozycjonowania relatywnego nie wymaga informacji o położeniu początkowym robota. Magnetometry stosowane w kompasach pozwalają uzyskać informacje o zwrocie i kierunku robota. Próba wykorzystania magnetometru do pozycjonowania robota w pomieszczeniach nie jest jednak dobrym pomysłem. Magnetometr jest podatny na zakłócenia pola magnetycznego, generowane przez instalacje elektryczną oraz metalową konstrukcję budynku.
+Kompasy magnetyczne są wykorzystywane podczas stosowania metody pozycjonowania
+absolutnego tj. takiego, które w przeciwieństwie do pozycjonowania relatywnego
+nie wymaga informacji o położeniu początkowym robota. Magnetometry stosowane w
+kompasach pozwalają uzyskać informacje o zwrocie i kierunku robota. Próba
+wykorzystania magnetometru do pozycjonowania robota w pomieszczeniach nie jest
+jednak dobrym pomysłem. Magnetometr jest podatny na zakłócenia pola
+magnetycznego, generowane przez instalacje elektryczną oraz metalową konstrukcję
+budynku.
 
-Pozycjonowanie z zewnętrznym sygnałem nawigacyjnym (Active Beacon) jest powszechnym sposobem wspomagania nawigacji na statkach oraz w samolotach. Technika ta jest również wykorzystywana w komercyjnych rozwiązaniach robotów mobilnych. Polega ona na ustalaniu pozycji robota, przy wykorzystaniu sygnałów zewnętrznych, jednoznacznie określających jego położenie na podstawie odległości od nadajników. Takie podejście jest bardzo dokładne, jednak wymaga przygotowania odpowiedniej infrastruktury, która może być bardzo kosztowna.
+Pozycjonowanie z zewnętrznym sygnałem nawigacyjnym (Active Beacon) jest
+powszechnym sposobem wspomagania nawigacji na statkach oraz w samolotach.
+Technika ta jest również wykorzystywana w komercyjnych rozwiązaniach robotów
+mobilnych. Polega ona na ustalaniu pozycji robota, przy wykorzystaniu sygnałów
+zewnętrznych, jednoznacznie określających jego położenie na podstawie odległości
+od nadajników. Takie podejście jest bardzo dokładne, jednak wymaga przygotowania
+odpowiedniej infrastruktury, która może być bardzo kosztowna.
 
-System globalnego pozycjonowania (GPS) jest odpowiednikiem metody Active Beacon na skalę globalną. W tym przypadku infrastruktura w postaci satelitów okołoziemskich jest udostępniana między innymi przez rząd Stanów Zjednoczonych.si Eliminuje to konieczność tworzenia własnej infrastruktury tak jak w przypadku techniki Active Beacon. Niestety odbiorniki GPS nie są w stanie odebrać sygnału z satelitów wewnątrz pomieszczeń, co eliminuje tą metodę w przypadku zastosowań dla robotów mobilnych pracujących w budynkach.
+System globalnego pozycjonowania (GPS) jest odpowiednikiem metody Active Beacon
+na skalę globalną. W tym przypadku infrastruktura w postaci satelitów
+okołoziemskich jest udostępniana między innymi przez rząd Stanów Zjednoczonych.
+Eliminuje to konieczność tworzenia własnej infrastruktury tak jak w przypadku
+techniki Active Beacon. Niestety odbiorniki GPS nie są w stanie odebrać sygnału z
+satelitów wewnątrz pomieszczeń, co eliminuje tą metodę w przypadku zastosowań dla
+robotów mobilnych pracujących w budynkach.
 
-Nawigacja przy pomocy zewnętrznego znacznika (Landmark Navigation) polega na wykrywaniu i rozpoznawaniu przez robota obiektów, będących kształtami geometrycznymi (np. linie, okręgi, prostokąty), których położenie jest dobrze znane lub zakodowane w samym znaczniku, np. przy pomocy kodu kreskowego lub QR Code'u\footnote{QR Code -- dwuwymiarowy kod kreskowy wynaleziony przez japońską firmę Denso-Wave w 1994 roku}. Znaczniki można podzielić na dwa rodzaje: naturalne oraz stworzone specjalnie do spełnienia wymagań postawionych przez tą metodę pozycjonowania.
+Nawigacja przy pomocy zewnętrznego znacznika (Landmark Navigation) polega na
+wykrywaniu i rozpoznawaniu przez robota obiektów, będących kształtami
+geometrycznymi (np. linie, okręgi, prostokąty), których położenie jest dobrze
+znane lub zakodowane w samym znaczniku, np. przy pomocy kodu kreskowego lub QR
+Code'u\footnote{QR Code -- dwuwymiarowy kod kreskowy wynaleziony przez japońską
+firmę Denso-Wave w 1994 roku}. Znaczniki można podzielić na dwa rodzaje:
+naturalne oraz stworzone specjalnie do spełnienia wymagań postawionych przez tą
+metodę pozycjonowania.
 
-Wykrywanie pozycji na podstawie przygotowanych map (Map Matching), wykorzystuje czujniki wbudowane w robocie mobilnym w celu stworzenia mapy lokalnego otoczenia. Mapa ta jest następnie porównywana z wcześniej zapisaną przez robota mapą globalną. Jeżeli robot przyporządkuje zbudowaną przez siebie mapę lokalną do elementu mapy globalnej, może na tej podstawie obliczyć swoje aktualne położenie. Zaletą tej metody, jest wykorzystywanie naturalnych struktur znajdujących się wewnątrz budynku w celu określenia położenia oraz to, że robot mobilny może sam tworzyć nowe mapy i na ich podstawie określać swoją pozycję. W celu znalezienia punktów charakterystycznych podczas porównywania dwóch map, wymagana jest duża różnorodność struktury środowiska w którym porusza się robot mobilny, co jest dużym minusem. Konieczne jest także stosowanie bardzo dokładnych czujników budujących mapy.
+Wykrywanie pozycji na podstawie przygotowanych map (Map Matching), wykorzystuje
+czujniki wbudowane w robocie mobilnym w celu stworzenia mapy lokalnego otoczenia.
+Mapa ta jest następnie porównywana z wcześniej zapisaną przez robota mapą
+globalną. Jeżeli robot przyporządkuje zbudowaną przez siebie mapę lokalną do
+elementu mapy globalnej, może na tej podstawie obliczyć swoje aktualne położenie.
+Zaletą tej metody, jest wykorzystywanie naturalnych struktur znajdujących się
+wewnątrz budynku w celu określenia położenia oraz to, że robot mobilny może sam
+tworzyć nowe mapy i na ich podstawie określać swoją pozycję. W celu znalezienia
+punktów charakterystycznych podczas porównywania dwóch map, wymagana jest duża
+różnorodność struktury środowiska w którym porusza się robot mobilny, co jest
+dużym minusem. Konieczne jest także stosowanie bardzo dokładnych czujników
+budujących mapy.
 
 \subsection{Wybrane rozwiązanie}
-Ostateczne rozwiązanie zastosowane w robocie Dark Explorer jest połączeniem odometrii oraz nawigacji inercjalnej. Robot wykorzystuje wbudowany żyroskop w celu określenia kierunku w którym się porusza oraz akcelerometru do określenia dystansu o jaki się przesunął. Rozwiązanie to pozwala na określenie przybliżenia pozycji relatywnej względem punktu startowego. Metoda ta została wybrana ze względu na brak konieczności przygotowywania zewnętrznej infrastruktury, co zagwarantowało uniwersalność rozwiązania.
+Ostateczne rozwiązanie zastosowane w robocie Dark Explorer jest połączeniem
+odometrii oraz nawigacji inercjalnej. Robot wykorzystuje wbudowany żyroskop w
+celu określenia kierunku w którym się porusza oraz akcelerometru do określenia
+dystansu o jaki się przesunął. Rozwiązanie to pozwala na określenie przybliżenia
+pozycji relatywnej względem punktu startowego. Metoda ta została wybrana ze
+względu na brak konieczności przygotowywania zewnętrznej infrastruktury, co
+zagwarantowało uniwersalność rozwiązania.
 
 Robot Dark Explorer został wyposażony w czujniki, które mają na celu dostarczenie
 informacji niezbędnych do ustalenia toru ruchu robota. Niniejszy podrozdział
