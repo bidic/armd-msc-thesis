@@ -1,8 +1,8 @@
 Niniejszy rozdział opisuje zakres działań podjętych w celu stworzenia aplikacji
-sterujących robotem Dark Explorer. Przedstawiony jest zestaw narzędzi niezbędnych
-do rozwoju oprogramowania dedykowanego dla robota na urządzenia mobilne oraz
+sterujących robotem Dark Explorer (rys. \ref{fig:DarkExplorerPlatformStacMob}). Przedstawiony jest
+zestaw narzędzi niezbędnych do rozwoju oprogramowania dedykowanego dla robota na urządzenia mobilne oraz
 komputery stacjonarne. Opisano także możliwości stworzonych aplikacji, sposób
-instalacji i użytkowania.
+instalacji i~użytkowania.
 
 \begin{figure}[!ht]
  \centering
@@ -74,9 +74,31 @@ obsługi systemów wbudowanych.
 
 W ramach pracy magisterskiej stworzona została również przykładowa aplikacja
 sterująca prezentująca wszystkie możliwości oferowane zarówno przez warstwę
-aplikacyjną jak i sprzętową robota Dark Explorer. 
+aplikacyjną jak i sprzętową robota Dark Explorer. Do wykonania aplikacji
+klienckiej wykorzystana została omawiana powyżej biblioteka programistyczna.
+Stanowi ona przewodnik dla początkującego programisty pokazujący w jaki sposób
+można wykorzystać udostępnione funkcje biblioteczne. Okno główne aplikacji
+widoczne jest na rysunku \ref{fig:win-ctrl-app}. Program umożliwia
+sterowanie zarówno manualne jak i sterowanie półautomatyczne
+po włączeniu trybu rekonstrukcji ścieżki czy rozpoznawania obrazu. Korzystając z
+menu głównego aplikacji użytkownik może dokonywać kalibracji czujników i
+przeprowadzać za ich pomocą dowolne pomiary. Dodatkowo w aplikacji udostępniona
+została historia wykonywanych akcji. Jest to bardzo przydatne narzędzie
+pozwalające na bieżąco śledzić nie tylko stan aplikacji ale~również robota. Dla
+wygody użytkownika większość dostępnych funkcji została zgrupowana w
+menu głównym aplikacji. Dzięki takiemu podejściu użytkownik może bardzo szybko
+uzyskać dostęp do interesującej go funkcji bez konieczności przedzierania się
+przez dużą ilość kontrolek w oknie głównym aplikacji. 
+\newpage
 
-\textcolor{red}{TODO: zrzut ekranu aplikacji sterującej dla .net'a}
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[height=150mm]{../images/ch05/win-ctrl-app.png}
+ \caption{Okno główne aplikacji sterującej napisanej w języku C\#}
+ \label{fig:win-ctrl-app}
+\end{figure}
+
+\newpage
 
 \subsection{Biblioteka zarządzająca dla języka Java}
 \label{subsec:sdk-java}
@@ -103,6 +125,7 @@ jest wyposażenie tworzonej aplikacji w bibliotekę wspierającą JSR 82. Dostę
 jest kilka tego rodzaju bibliotek (tab. \ref{tab:JSR82SDK}).
 
 \begin{table}[hb]
+  \rowcolors{2}{white}{gray!20}
   \centering
   \caption{Biblioteki wspierające JSR-82\cite{website:javabluetooth.com}}
   \begin{tabular}{ | c | c | c | c | c | c |} \hline
