@@ -121,6 +121,7 @@ otrzymanej liczby przez sumę wartości wszystkich kanałów danego punktu.
 Korzystając z takiego przepisu otrzymujemy zestaw równań \ref{eq:rgb-norm-r},
 \ref{eq:rgb-norm-g}, \ref{eq:rgb-norm-b} opisujący normalizację każdego kanału z
 palety RGB.
+
 \begin{eqnarray}
 \label{eq:rgb-norm-r}
 r = \frac{R}{R + G +B}\\
@@ -168,7 +169,7 @@ kolorze niebieskim, żółtym i szarym również została błędnie sklasyfikowa
 Aby wyeliminować tego rodzaju efekt należy wykorzystać kryteria klasyfikacji oparte
 o przestrzeń kolorów HSI \footnote{HSI (z ang. Hue Saturation Intensity) -
 model przestrzeni bar nawiązujący do sposobu w jaki widzi ludzki narząd wzroku }.
-W równaniu \ref{eq:rgb2hsi} przdstawiono zależność pomiędzy modelem RGB a HSI.
+W równaniu \ref{eq:rgb2hsi} przedstawiono zależność pomiędzy modelem RGB a HSI.
 \begin{equation}
 \label{eq:rgb2hsi}
 \begin{array}{l}
@@ -195,7 +196,7 @@ S = \left\{
 \end{equation}
 Przy tak zdefiniowanym klasyfikatorze dokonywana jest binaryzacja całego obrazu.
 Po~przeprowadzeniu binaryzacji przeprowadzana jest kwantyzacja obrazu za pomocą
-próbki o rozmiarze i wysokości pięciu pikseli. Pozwala to zminiejszyć
+próbki o rozmiarze i wysokości pięciu pikseli. Pozwala to zmniejszyć
 rozdzielczość obrazu, a~co~za~tym idzie wyeliminować pewne rodzaje szumu oraz
 znacznie uprościć dalsze obliczenia. Wspomniany proces kwantyzacji polega na
 przeliczeniu liczby pikseli w kolorze skóry i~kolorze czarnym w ramach 25
@@ -214,7 +215,6 @@ Do wykrywania potencjalnych obszarów w którym znajdują się włosy wykorzysty
 jest składowa intensywności modelu HSI. Zależność pomiędzy składowymi modelu RGB
 a wspomnianą intensywnością opisana jest za pomocą równania
 \ref{eq:rgb-intensity-hsi}
-
 \begin{equation}
 	\label{eq:rgb-intensity-hsi}
 	I = \frac{1}{3}\left(R+G+B\right)
@@ -225,7 +225,6 @@ jasności obrazka, a co za tym idzie może posłużyć do odnalezienia ciemnych
 obszarów które mogą stanowić obszar włosów. W oparciu o dane eksperymentalne
 zostało zdefiniowane następujące równanie opisujące zakres
 kolorów w którym mogących stanowić włosy. 
-
 \begin{equation}
 \label{eq:hair-bin}
 H = \left\{ 
@@ -235,9 +234,58 @@ H = \left\{
   \mbox{dla pozostałych}\\ \end{array} \right.
 \end{equation}
 
-Po przeprowadzeiu binaryzacji za pomocą równania \ref{eq:hair-bin},  podobnie
+Po przeprowadzeniu binaryzacji za pomocą równania \ref{eq:hair-bin},  podobnie
 jak to miało miejsce w przypadku detekcji skóry, przeprowadzana jest kwantyzacja
 otrzymanego obrazu. Następnym krokiem algorytmu jest wyszukanie wszystkich
 obszarów które zostały zaklasyfikowane jako kolor skóry i odnalezienie
-korespondującego z nimi obszaru włosów. Dla każdego obszru wyznaczane jest
-prostokąt minimalizujący 
+korespondującego z nimi obszaru włosów. Dla każdego obszaru wyznaczany jest
+minimalny prostokąt otaczający, a następnie sprawdzany jest w jakiej relacji
+jest on z pozostałymi elementami. W przypadku gdy obszar reprezentujący skórę oraz
+włosy znajdą się w jednej z dozwolonych konfiguracji (rys.
+\ref{fig:supported-relations}) obszar jest klasyfikowany jako twarz. 
+
+\begin{figure}[ht!]
+ \centering
+ \includegraphics[width=\textwidth]{../images/ch04/bounding-boxes.png}
+ \caption{Dopuszczalne relacje pomiędzy wykrytymi obszarami skóry i włosów
+ (źródło: \cite{SimpleFaceDetectionAlgorithm})}
+ \label{fig:supported-relations}
+\end{figure}
+
+\subsection{Wnioski i podsumowanie}
+Opisana implementacja poddawana była licznym testom mających na celu wyznaczenie
+skuteczności z jaką algorytm lokalizuje twarz na zdjęciach różnych osób w
+różnych warunkach oświetleniowych. Już pierwsze testy wykazały, że gdy akwizycja
+obrazu odbywa się w warunkach laboratoryjnych algorytm bez problemów znajduje
+twarze na zdefiniowanym obrazie (rys. \ref{fig:face-detect-result}).
+\begin{figure}[ht!]
+ \centering
+ \subfloat[Obraz początkowy]{\label{fig:fd1}
+ 	\includegraphics[width=0.32\textwidth]{../images/ch03/start.jpg}}
+ 	\subfloat[Obraz po binaryzacji]{\label{fig:fd2}
+ 	\includegraphics[width=0.32\textwidth]{../images/ch03/step2.jpg}}
+ \subfloat[Wykryta twarz]{\label{fig:f3}
+ 	\includegraphics[width=0.32\textwidth]{../images/ch03/final.jpg}}
+ \caption[caption-fdetect]{Weryfikacja działaniu algorytmu dla zdjęcia
+ wykonanego w warunkach laboratoryjnych \footnotemark}
+ \label{fig:face-detect-result}
+\end{figure}
+\footnotetext{źródło obrazu początkowego: Beauty Check - \url{http://www.uni-regensburg.de/}}
+
+Niestety w przypadku gdy zdjęcie zostało wykonane w złych warunkach
+oświetleniowych lub w tle znajdują się elementy w drewniane lub czarne algorytm
+nie sprawdza się i z bardzo małą skutecznością lokalizuje twarz. Źródłem takiego
+stanu rzeczy jest oparcie działania całego algorytmu o analizę kolorów. W
+celu osiągnięcia większej skuteczność w działaniu algorytmu konieczne byłoby
+wykorzystanie metod bazujących nie tylko na kolorach ale również na geometrii
+twarzy. Aby to stało się możliwe konieczne jest zwiększenie dostępnej ilości
+pamięci ponieważ w obecnej konfiguracji jest ona nie wystarczająca. Należałoby
+rozważyć również wykorzystanie szybszego procesora gdyż niektóre metody bazujące
+np. na porównywaniu szablonów wymagają przeprowadzania transformacji
+geometrycznych na obrazie co przy wykorzystaniu obecnej jednostki obliczeniowej
+może być niezwykle czasochłonne. 
+Dzięki udoskonalonemu procesowi akwizycji danych z kamery możliwe jest
+zrezygnowanie z analizowania obrazu na mikrokontrolerze i przeprowadzenie
+profesjonalnej lokalizacji twarzy za pomocą komputera. Jedynym
+ograniczeniem takiego podejścia jest przepustowość obecnego kanału
+komunikacyjnego. 
