@@ -15,8 +15,8 @@ dzięki której programista może kontrolować działanie różnych urządzeń
 peryferyjnych mikrokontrolera. Biblioteka wykorzystana przez twórcę Dark
 Explorera bazuje na prostych funkcjach wpisujących podawane wartości do
 odpowiednich rejestrów mikrokontrolera. Można powiedzieć, że jest to biblioteka
-nisko poziomowa. Wymaga ona dużej wiedzy na~temat urządzeń peryferyjnych z
-których mamy zamiar korzystać oraz rejestrów które nimi kontrolują. Praktycznie
+niskopoziomowa. Wymaga ona dużej wiedzy na~temat urządzeń peryferyjnych z
+których mamy zamiar korzystać oraz rejestrów które nimi sterują. Praktycznie
 nie jest możliwe oprogramowanie robota przy pomocy tej~biblioteki bez
 wcześniejszego dokładnego zaznajomienia się z notą katalogową mikrokontrolera
 AT91Sam7S256. Podczas rozwoju robota przydatnym byłoby wykorzystanie innej
@@ -48,13 +48,13 @@ wystarczający. W przyszłości trzeba zadbać o gęstsze partycjonowanie kodu
 \subsection{Aplikacja zarządzająca}
 Do kontrolowania robota została stworzona aplikacja graficzna (rys.
 \ref{fig:AplikacjaZarz}) działająca pod systemem Windows. Interfejs graficzny
-aplikacji jest atrakcyjny i przejrzysty. Pozwala ona na kontrole następujących funkcji robota:
+aplikacji jest atrakcyjny i przejrzysty. Pozwala ona na kontrolę następujących funkcji robota:
 \begin{itemize}
 \setlength{\parsep}{2pt}
 \setlength{\itemsep}{2mm}
 \setlength{\parskip}{4pt}
  \item kontrola kierunku i szybkości jazdy robota za pomocą wektora wodzącego oraz klawiatury
- \item kontrola wierzy obserwacyjnej
+ \item kontrola wieży obserwacyjnej
  \item włączanie oraz wyłączanie diody oświetlającej
  \item informacja o stanie akumulatorów
  \item zarządzanie trybem autonomicznym robota
@@ -74,7 +74,7 @@ zainstalowanym systemem operacyjnym innym niż Microsoft Windows. Dlatego też,
 konieczne będzie stworzenie aplikacji zarządzającej, którą będzie można
 modyfikować oraz uruchomić na~dowolnym systemie.
 
-W celu komunikacji z robotem, aplikacja zarządzająca wysyła do robota odpowiednie
+W celu komunikacji z robotem, aplikacja zarządzająca wysyła do niego odpowiednie
 komunikaty. Komunikaty te składają się z pojedynczego znaku i liczby. Możliwe, że
 w przypadku obsługi większej ilości urządzeń na Dark Explorerze, będzie konieczne
 stworzenie bardziej zaawansowanego protokołu komunikacyjnego. Zapewni to

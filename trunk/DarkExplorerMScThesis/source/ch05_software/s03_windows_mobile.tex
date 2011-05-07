@@ -8,19 +8,19 @@ urządzenia mobilnego. Wszystkie z wspomnianych urządzeń posiadają
 charakterystyczną dla siebie platformę software'ową. Do najlepiej znanych we
 współczesnym świecie zaliczyć można między innymi: Windows Mobile, iPhone,
 BlackBerry, Symbian OS, Android, Maemo, OpenMoko itp. Każda z wymienionych
-platform posiada inną genezę jak również ma swoje mocne i słabe strony.
+platform posiada inną genezę jak również ma swoje mocne i~słabe strony.
 
-Platformy takie jak Windows Mobile, BlackBerry czy iPhone ograniczone są do
-urządzeń dedykowanych docelowo do współpracy z wspomnianymi środowiskami. Obok
-różnorakich problemów z jakimi zmagają się wspomniane wcześniej platformy do
+Platformy takie jak Windows Mobile, BlackBerry czy iPhone ograniczone
+są~do~urządzeń dedykowanych docelowo do współpracy z wspomnianymi środowiskami.
+Obok różnorakich problemów z jakimi zmagają się wspomniane wcześniej platformy do
 jednego z najpoważniejszych zaliczyć można bardzo ograniczone w niektórych
 aspektach API\footnote{Application Programming Interface - interfejs
 programowania aplikacji, specyfikacja instrukcji pozwalających na dostęp do
 zasobów dostarczanych przez zewnętrzny program}. Nawet tak przenośna platforma
-jak Java na urządzeniach przenośnych nie zawsze się sprawdza ze względu na liczne
-braki oraz różnice w API zmuszające programistów do tworzenia kodu dedykowanego
-dla konkretnego urządzenia. Symbian oraz Windows Mobile wypadają na tym tle nieco
-lepiej ponieważ wspierają szerszą gamę urządzeń jak również ich API daje więcej
+jak Java na urządzeniach przenośnych nie zawsze się sprawdza ze~względu na liczne
+braki oraz różnice w~API zmuszające programistów do~tworzenia kodu dedykowanego
+dla konkretnego urządzenia. Symbian oraz Windows Mobile wypadają na~tym tle nieco
+lepiej ponieważ wspierają szerszą gamę urządzeń jak również ich~API daje więcej
 możliwości niż ma to miejsce na przykład w przypadku Javy. Głównym powodem
 takiego stanu rzeczy jest bardzo szeroki i różnorodny asortyment platform
 sprzętowych utrudniający stworzenie jednolitej i w pełni wykorzystującej
@@ -39,8 +39,9 @@ między innymi standard GSM\footnote{Global System for Mobile Communication,
 pierwotnie Groupe Special Mobile - najpopularniejszy obecnie standard telefonii
 komórkowej}, GPRS\footnote{General Packet Radio Service - technologia pakietowego
 przesyłania danych popularnie stosowana w sieciach GSM}, bluetooth oraz
-umożliwiały użytkownikom dostęp do sieci bezprzewodowych. W między czasie
-rozwojowi ulegały urządzenia typu SmartPhone które koncepcyjnie były bardzo
+umożliwiały użytkownikom dostęp do sieci bezprzewodowych. 
+
+W między czasie rozwojowi ulegały urządzenia typu SmartPhone które koncepcyjnie były bardzo
 zbliżone do Pocket PC jednakże były one bardziej zbliżone do telefonu niż
 komputera osobistego. Podstawową różnicą pomiędzy Smartphone i Pocket PC jest
 fakt iż urządzenia Pocket PC posiadają ekran dotykowy, a Smartphone wyposażone są
@@ -59,7 +60,7 @@ Tworzenie aplikacji działających na urządzeniach pod kontrolą systemu Window
 Mobile jest niemal tak samo proste jak tworzenie zwykłych aplikacji na komputery
 stacjonarne. Niemniej jednak do stworzenia w pełni funkcjonalnego środowiska
 rozwojowego (rys. \ref{fig:WMDevelopmentEnviroment}) konieczne jest przejście przez klika kroków przygotowawczych
-związanych z instalacją potrzebnych aplikacji narzędziowych.
+związanych z~instalacją potrzebnych aplikacji narzędziowych.
 
 \begin{figure}[ht!]
  \centering \includegraphics[height=100mm]{../images/ch03/wm_dev_env.png}
@@ -72,7 +73,7 @@ konieczne jest zainstalowanie Microsoft Visual Studio. Zaleca się aby Visual
 Studio było w wersji 2005 lub 2008. Niestety narzędzia umożliwiające rozwijanie
 aplikacji mobilnych nie są poprawnie wykrywane przez Visual Studio 2010 oraz
 poprzednie wydania w wersji Express. Dlatego też koniecznością jest instalacja
-środowiska w wersji Standard lub Professional. Każda z tych wersji może zostać
+środowiska w wersji Standard lub~Professional. Każda z tych wersji może zostać
 pobrana w wersji czasowej ze stron firmy Microsoft lub w wersji pełnej z
 MSDNAA\footnote{Microsoft Developer Network Academic Alliance - program firmy
 Microsoft skierowany do studentów i pracowników naukowych w ramach którego
@@ -80,7 +81,7 @@ uczestnicy mogą pozyskać darmowe kopie oprogramowania firmy Microsoft}. Visual
 Studio posłuży nam nie tylko do edycji kodu aplikacji ale pozwoli również w
 prosty sposób budować, debugować oraz przygotować instalator finalnej wersji
 aplikacji. Po poprawnym zainstalowaniu środowiska rozwojowego konieczne jest
-pobranie i zainstalowanie dostępnych paczek serwisowych dostępnych dla wybranej
+pobranie i zainstalowanie dostępnych paczek serwisowych dostępnych dla~wybranej
 wersji Visual Studio. Pozwoli to uniknąć nieprzyjemnych niespodzianek podczas
 instalacji bibliotek narzędziowych i późniejszej pracy.
 
@@ -103,12 +104,12 @@ obejmuje wszystkie dostępne środowiska. Wybór SDK można sprowadzić do
 następującej zasady. Jeżeli zamierzamy tworzyć oprogramowanie dla urządzeń
 Smartphone bez ekranu dotykowego w zupełności wystarczy nam wersja standardowa.
 Jeżeli natomiast planujemy napisane aplikacje uruchamiać na PocketPC lub
-dotykowych SmartPhon'ach będziemy potrzebować bibliotek systemu Windows Mobile
+dotykowych SmartPhone'ach będziemy potrzebować bibliotek systemu Windows Mobile
 Classic lub Professional, tak więc konieczne jest użycie SDK w wersji
 Professional. Tak jak w przypadku Visual Studio, również tutaj zaleca się
 instalację wszystkich dostępnych na stronie producenta aktualizacji i poprawek.
 Jest to szczególnie istotne podczas pracy z emulatorami urządzeń. Po
-zrealizowaniu tych kroków otrzymujemy w pełni funkcjonalne środowisko do rozwoju
+zrealizowaniu tych kroków otrzymujemy w~pełni funkcjonalne środowisko do rozwoju
 aplikacji mobilnych dla urządzeń smartphone.
 
 \subsubsection{Modele aplikacji}
@@ -116,18 +117,18 @@ Istnieje klika modeli rozwoju aplikacji dla Windows Mobile (rys. \ref{fig:WMDeve
 modelu został pozostawiony programiście. Pierwszy z nich służy do tworzenia
 aplikacji w kodzie natywnym. Aplikacje pisane zgodnie z tym modelem cechują się
 wysoką wydajnością, bezpośrednim dostępem do sprzętu oraz małym zużyciem zasobów.
-Do rozwoju tego rodzaju aplikacji korzysta się z reguły ze środowiska do
-rozwijania aplikacji z użyciem Embeded Visual C++. Główną wadą tego modelu jest
+Do~rozwoju tego rodzaju aplikacji korzysta się z reguły ze środowiska do
+rozwijania aplikacji z~użyciem Embeded Visual C++. Główną wadą tego modelu jest
 niska przenośność pomiędzy różnymi platformami zwłaszcza jeżeli aplikacja
 korzysta z urządzeń specyficznych dla danego modelu urządzenia. Docelowo więc za
 pomocą tego modelu tworzy się biblioteki i narzędzia ułatwiające tworzenie
 bardziej skomplikowanych aplikacji. Jeżeli więc interesuje nas tworzenie
-wysokopoziomowych aplikacji z GUI, skierowanych bezpośrednio do użytkowników,
-zaleca się tworzenie tego typu aplikacji za pomocą kodu zarządzalnego z użyciem
+wysokopoziomowych aplikacji z GUI, skierowanych bezpośrednio do~użytkowników,
+zaleca się tworzenie tego typu aplikacji za pomocą kodu zarządzalnego z~użyciem
 takich języków jak C\# czy Visual Basic.
 
 \begin{figure}[ht!]
- \centering \includegraphics[height=85mm]{../images/ch03/wm_app_models.png}
+ \centering \includegraphics[height=80mm]{../images/ch03/wm_app_models.png}
  \caption{Modele tworzenia aplikacji dla Windows Mobile.}
  \label{fig:WMDevelopmentModels}
 \end{figure}
@@ -139,14 +140,14 @@ mobilnych pracujących zarówno w modelu ze stałym połączeniem jak i bez. Spo
 część narzędzi dostępnych w ramach .NET Compact Framework jest również
 wykorzystywana do rozwoju aplikacji na komputery stacjonarne. Biblioteka została
 zaprojektowana docelowo na urządzenia o ograniczonych zasobach co w połączeniu z
-możliwościami języków z rodziny .NET oraz integracją z Visual Studio daje nam
+możliwościami języków z~rodziny .NET oraz integracją z Visual Studio daje nam
 profesjonalny zestaw narzędzi do tworzenia aplikacji mobilnych.
 
 Trzecim modelem tworzenia programów pod Windows Mobile jest wykorzystywanie kodu
 serwera do pracy z wieloma różnymi typami urządzeń poprzez jeden wspólny kod
 bazowy i model cienkiego klienta. Oczywiście tego typu podejście ma sens jedynie
 gdy możemy zagwarantować stabilny kanał komunikacyjny pomiędzy urządzeniem
-klienta, a serwerem. Każdy z przedstawionych modeli idealnie sprawdza się jeżeli
+klienta, a~serwerem. Każdy z przedstawionych modeli idealnie sprawdza się jeżeli
 tylko w prawidłowy sposób wybierzemy model najbardziej odpowiadający potrzebom
 naszej aplikacji.
 \subsubsection{Graficzny interfejs użytkownika}
@@ -154,7 +155,7 @@ Dzięki wygodnemu systemowi projektowania GUI dostępnego w Visual Studio, tworz
 interfejsu użytkownika dla platformy mobilnej jest niemal tak proste jak w
 przypadku tradycyjnych aplikacji, a jedyną różnicą jest ilość i rodzaj dostępnych
 kontrolek. Różnice te wynikają z faktu iż niektóre urządzenia mobilne posiadają
-ekrany dotykowe, a inne nie. Co za tym idzie, rozwój interfejsu użytkownika staje
+ekrany dotykowe, a~inne nie. Co za tym idzie, rozwój interfejsu użytkownika staje
 się bardziej skomplikowany zwłaszcza jeżeli interesuje nas rozwój aplikacji
 wspólnej dla obydwu platform sprzętowych. W tym miejscu nie może zabraknąć
 informacji, że oprogramowanie zbudowane dla PocketPC nie uruchomi się na
@@ -165,12 +166,12 @@ graficznych znanych z aplikacji desktopowych zostało usunięte z bibliotek Wind
 Mobile, aby zapewnić jej wydajność i niewielki rozmiar. Dlatego też pozostawiono
 tylko niezbędne, najprostsze komponenty. Ponieważ wydajność  i zasoby pamięciowe
 urządzeń stale rosną, również ilość narzędzi dostępnych w SDK jest systematycznie
-zwiększana, a co za tym idzie różnice pomiędzy kolejnymi wersjami .NET Compact
-Framework są bardzo duże. Dlatego też posiadanie jak najbardziej aktualnej wersji
+zwiększana, a~co~za~tym idzie różnice pomiędzy kolejnymi wersjami .NET Compact
+Framework są~bardzo duże. Dlatego też posiadanie jak najbardziej aktualnej wersji
 SDK ma niebagatelne znaczenie dla wygody tworzenia aplikacji. Podsumowując, rozwój
 GUI dla platformy mobilnej nie różni się bardzo od tworzenia interfejsu
 użytkownika dla aplikacji dekstopowej. Istnieje również możliwość rozwijania GUI
-w oparciu o silniki 3D. W chwili obecnych dostępne są takie rozwiązania jak GAPI
+w oparciu o silniki 3D.W chwili obecnych dostępne są takie rozwiązania jak GAPI
 (Game API), OpenGL ES (Embeded Systems), Open VG (Vector Grapics). Jednakże
 rozwój takich aplikacji jest niezwykle trudny gdyż wymaga od programisty
 tworzenia maksymalnie optymalnego kodu, ze względu na ograniczone możliwości
@@ -190,7 +191,8 @@ API dostarcza zestaw narzędzi umożliwiających nawiązywanie komunikacji
 bezprzewodowej pomiędzy telefonami jak i urządzeniami peryferyjnymi.
 
 \begin{figure}[h!]
- \centering \includegraphics[height=85mm]{../images/ch03/wm_comm_api.png}
+ \centering
+ \includegraphics[width=0.9\textwidth]{../images/ch03/wm_comm_api.png}
  \caption{Lista dostępnych na platformie Windows Mobile API komunikacyjnych}
  \label{fig:WMCommunicationAPI}
 \end{figure}
@@ -221,14 +223,14 @@ Microsoft Visual Studio umożliwia debugowanie aplikacji działających pod kont
 Windows Mobile niemal w taki sam sposób jak ma to miejsce w przypadku
 tradycyjnych aplikacji desktopowych. Ponadto programista ma do swojej dyspozycji
 następujące narzędzia: emulator, panel zarządzania emulowanymi urządzeniami,
-panel punktów przerwań i wątków. Niestety w Visual Studio nie uda się nam
+panel punktów przerwań i~wątków. Niestety w Visual Studio nie uda się nam
 jednocześnie debugować kodu natywnego i zarządzalnego. Możliwe jest natomiast
 uruchomienie zarówno projektu napisanego w Visual C++ jak i projektu opartego o
 kod zarządzalny, a dzięki funkcjonalności ,,Dołącz do procesu'' możliwe jest
-zdalne dołączenie się i monitorowanie procesu działającego na urządzeniu lub
+zdalne dołączenie się i monitorowanie procesu działającego na~urządzeniu lub
 emulatorze urządzenia. Narzędziem umożliwiającym komunikację pomiędzy urządzeniem
 a systemem jest ActiveSync instalowany wraz ze środowiskiem rozwojowym. Za pomocą
-narzędzia ActiveSync możemy łączyć się nie tylko z rzeczywistymi urządzeniami ale
+narzędzia ActiveSync możemy łączyć się nie tylko z~rzeczywistymi urządzeniami ale
 również z emulatorami. Umożliwia to pełną wirtualizację urządzeń mobilnych i
 znacznie ułatwia testowanie funkcjonalności zwłaszcza pomiędzy różnymi
 platformami urządzeń (SmartPhone, PocketPC). Jedynym ograniczeniem tego procesu
@@ -272,6 +274,7 @@ sprzętowej telefonu. Poprawne zakończenie instalacji zostanie potwierdzone pop
 komunikatu widocznego na rysunku \ref{fig:wm-install-6}. Po poprawnym
 zainstalowaniu aplikacji konieczne jest jeszcze skonfigurowanie połączenia
 bluetooth, aby program sterujący potrafił z niego poprawnie skorzystać. 
+
 W~tym celu należy uruchomić moduł bluetooth zarówno w telefonie jak i robocie.
 Następnie należy sparować urządzenia, aby umożliwić im bezpośrednią wymianę
 danych bez konieczności potwierdzania przesłania każdego komunikatu. Domyślnym
@@ -309,7 +312,7 @@ możliwości oferowanych przez aplikację.
  \caption{Kroki wymagane do przeprowadzenia poprawnej instalacji i konfiguracji mobilnej aplikacji sterującej}
  \label{fig:wm-install&conf}
 \end{figure}
-
+\newpage
 \subsubsection{Uruchomienie aplikacji sterującej}
 Jeżeli posiadamy już zainstalowaną i skonfigurowaną aplikację sterującą to
 możemy rozpocząć korzystanie z jej możliwości. W tym celu należy włączyć robota
@@ -319,9 +322,9 @@ widoczna jest na rysunku \ref{fig:wm-app-2}. Wybierając program z listy
 zainicjujemy proces jego uruchamiania. Po załadowaniu wszystkich komponentów
 aplikacji na ekranie wyświetli się okno główne aplikacji widoczne na rysunku
 \ref{fig:wm-app-3}. Aby uprościć dostęp do funkcji programu zostały one
-wszystkie zebrane w menu dostępnym w lewym dolnym rogu aplikacji. Wszystkie
+wszystkie zebrane w~menu dostępnym w lewym dolnym rogu aplikacji. Wszystkie
 dostępne opcje pogrupowano pod względem tematycznym, tak aby nawet użytkownik
-uruchamiający aplikację po raz pierwszy nie miał trudności z odszukaniem
+uruchamiający aplikację po~raz pierwszy nie miał trudności z odszukaniem
 interesujących go funkcji. 
 
  \begin{figure}[h!]
@@ -340,11 +343,10 @@ Aby uczynić aplikację jeszcze bardziej przyjazną użytkownikowi część funk
 dostępna jest również pod sprzętowymi przyciskami telefonu. Dobrym przykładem
 tego rodzaju funkcji jest sterowanie kierunkiem jazdy robota. Dostęp do tej
 funkcjonalności można uzyskać bezpośrednio za pomocą przycisków strzałek
-góra, dół, prawo, lewo. Ponad to naciskając przycisk środkowy użytkownik ma
-możliwość pobrania danych z kamery zgodnie z aktualną konfiguracją aplikacji.
+góra, dół, prawo, lewo. Ponad to~naciskając przycisk środkowy użytkownik ma
+możliwość pobrania danych z~kamery zgodnie z~aktualną konfiguracją aplikacji.
 Dodatkowym atutem programu jest możliwość sterownia kierunkiem jazdy robota za
 pomocą akcelerometru jeżeli urządzenie mobilne jest w takowy wyposażone.
 Aktualny stan robota oraz aplikacji prezentowany jest w pasku statusu widocznym
-u góry okna głównego aplikacji. Pozwala to użytkownikowi na bieżąco monitorować
-nie tylko stan aplikacji ale również to co w chwili obecnej dzieje się na
-robocie.
+u góry okna głównego aplikacji. Pozwala to użytkownikowi na~bieżąco monitorować
+nie tylko stan aplikacji ale również to co w chwili obecnej dzieje się na~robocie.

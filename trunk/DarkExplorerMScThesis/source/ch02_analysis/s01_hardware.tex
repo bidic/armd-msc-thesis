@@ -16,7 +16,8 @@ cyfrową VGA. Jego podstawowe możliwości to:
 \begin{itemize}
  \item jazda ze zmienną prędkością w przód, tył, lewo oraz prawo
  \item komunikacja z urządzeniami zewnętrznymi przy pomocy technologii bluetooth
- \item wykonywanie zdjęć z maksymalną rozdzielczością $160x100$ pikseli w kolorze oraz $320x200$ pikseli w odcieniach szarości
+ \item wykonywanie zdjęć z maksymalną rozdzielczością $160\times100$ pikseli w
+ kolorze oraz $320\times200$ pikseli w odcieniach szarości
  \item poruszanie wieżyczką na której zainstalowana jest kamera
  \item wykrywanie prostych wzorców przy pomocy analizy obrazu oraz podążanie za nimi
 \end{itemize}
@@ -24,7 +25,7 @@ cyfrową VGA. Jego podstawowe możliwości to:
 \subsection{Elementy elektroniczne}
 Dark Explorer został wyposażony w mikrokontroler zarządzający AT91Sam7s256 o~częstotliwości pracy zegara maksymalnie do 50 MHz oraz wbudowanej szybkiej
 pamięci SRAM 64 kB. Mikrokontroler ten jest bogaty w różnego rodzaju urządzenia
-peryferyjne takie jak na przykład: TWI\footnote{TWI -- Two Wire Interfece znany
+peryferyjne takie jak na przykład: TWI\footnote{TWI -- Two Wire Interface znany
 również jako $I^{2}C$, interfejs szeregowej komunikacji danych}, RTT\footnote{RTT
 -- Real Time Timer, służy do odmierzania dłuższych odcinków czasu},
 PDC\footnote{PDC -- Peripheral DMA Controller, kontroler DMA}, AIC\footnote{AIC
@@ -45,32 +46,34 @@ które pozwalają na~podłączanie i odłączanie poszczególnych urządzeń.
 \begin{figure}[!ht]
  \centering
  \includegraphics[height=85mm]{../images/ch02/320x200B&W.jpg}
- \caption{Obraz wykonany przy pomocy kamery zamontowanej w robocie. 320 x 200 pikseli w odcieniach szarości \cite{KmakMScThesis2009}}
+ \caption{Obraz wykonany przy pomocy kamery zamontowanej w robocie.
+ $320\times200$ pikseli w odcieniach szarości \cite{KmakMScThesis2009}}
  \label{fig:320x200BW}
 \end{figure}
 
 Twórca Dark Explorera wyposażył go w kamerę cyfrową o maksymalnej rozdzielczości
-$640x480$ pikseli. Jest to urządzenie $PO6040$ firmy Pixelplus. Można go
+$640\times480$ pikseli. Jest to urządzenie $PO6040$ firmy Pixelplus. Można go
 konfigurować przy pomocy interfejsu $I^{2}C$. W konfiguracji pierwotnej robot
-potrafi odbierać zdjęcia o~maksymalnej rozdzielczości $320x200$ pikseli w
-odcieniach szarości (rys. \ref{fig:320x200BW}) oraz $160x100$ pikseli w kolorze
-(rys. \ref{fig:160x100C}). Tak niskie rozdzielczości nie są wystarczające do
+potrafi odbierać zdjęcia o~maksymalnej rozdzielczości $320\times200$ pikseli w
+odcieniach szarości (rys. \ref{fig:320x200BW}) oraz $160\times100$ pikseli w
+kolorze (rys. \ref{fig:160x100C}). Tak niskie rozdzielczości nie są wystarczające do
 wykrywania i tym bardziej rozpoznawania twarzy na obrazie dlatego też konieczna
 jest poprawa tych parametrów.
 
 \begin{figure}[!h]
  \centering
  \includegraphics[height=85mm]{../images/ch02/160x100C.jpg}
- \caption{Obraz wykonany przy pomocy kamery zamontowanej w robocie. 160 x 100 pikseli w kolorze. \cite{KmakMScThesis2009}}
+ \caption{Obraz wykonany przy pomocy kamery zamontowanej w robocie.
+ $160\times100$ pikseli w kolorze. \cite{KmakMScThesis2009}}
  \label{fig:160x100C}
 \end{figure}
 
 W skład robota wchodzą także silniki napędowe, serwomechanizm, dioda
-oświetleniowa LED oraz moduł bluetooth. Wszystkie te elementy muszą być
-podłączone do~mikrokontrolera przez konkretne wejścia/wyjścia. Z tego powodu do dyspozycji osób
+oświetleniowa (LED\footnote{LED - Light Emitting Diode}) oraz moduł bluetooth.
+Wszystkie te elementy muszą być podłączone do~mikrokontrolera przez konkretne wejścia/wyjścia. Z tego powodu do dyspozycji osób
 przeprowadzających dalszy rozwój robota pozostało jedynie pięć wejść/wyjść
 cyfrowych oraz trzy wejścia analogowe. Jest to kolejna przeszkoda którą trzeba
-będzie pokonać.
+było pokonać.
 
 Robot mobilny komunikuje się z urządzeniami zewnętrznymi przy pomocy modułu
 bluetooth BTM-222 firmy Rayson. Maksymalna przepustowość danych z jaką potrafi
