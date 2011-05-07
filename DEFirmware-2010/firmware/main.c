@@ -467,7 +467,7 @@ int main(void) {
 	}
 
 	// wyjscie ze stanu reset
-	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, CAM_RESET);
+	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, CAM_RESET);
 
 	//TODO diódeczka :D :*
 
@@ -499,15 +499,15 @@ int main(void) {
 	AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, DIODA2);
 
 	//	int count = 0;
-	//	AT45DB321D_Initalize();
+//		AT45DB321D_Initalize();
 	//	AT45DB321D_SelfTest();
-	//	AT45DB321D_ClearChip();
+//		AT45DB321D_ClearChip();
 	//	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA2);
 	//	LcdClear();
 	//		LcdPrint("clear complete");
-	//	PO6030K_Initalize();
-	//	PO6030K_InitRegisters(&twid);
-	//	PO6030K_TakePicture();
+//		PO6030K_Initalize();
+//		PO6030K_InitRegisters(&twid);
+//		PO6030K_TakePicture();
 	//		LcdSetCursor(0x40);
 	//		LcdPrint("done");
 	int iAmountOfPackets = 0;

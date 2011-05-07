@@ -190,6 +190,7 @@ void AT45DB321D_Initalize() {
 
 	AT45_Configure(&sAt45, &sSpid, 1);
 	unsigned char status = AT45D_GetStatus(&sAt45);
+	AT45_FindDevice(&sAt45, status);
 
 	TRACE_INFO("Connected to device %s", AT45_FindDevice(&sAt45, status)->name);
 
