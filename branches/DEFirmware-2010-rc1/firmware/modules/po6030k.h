@@ -13,7 +13,6 @@
 #include <utility/assert.h>
 
 #include <drivers/twi/twid.h>
-#include "lib_AT91SAM7S256.h"
 #include "at45db321d.h"
 
 //adres kamery do zapisu przez TWI

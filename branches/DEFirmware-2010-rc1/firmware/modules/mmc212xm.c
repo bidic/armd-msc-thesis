@@ -1,4 +1,5 @@
 #include "mmc212xm.h"
+#include <twi/twi.h>
 
 double mag_offset[2] = {2083,2025.5};
 double mag_sensitivity[2]= {91,88};

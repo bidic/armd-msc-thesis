@@ -7,7 +7,6 @@
  **/
 
 #include <de_board.h>
-#include <de_pio.h>
 #include <utils.h>
 #include <peripherals.h>
 
@@ -23,7 +22,7 @@ extern volatile int xmin, xmax, ymin, ymax;
 ////////////////////////////////////////////////////////////////////////////////
 // Odebranie 8 bit�w danych z kamery
 ////////////////////////////////////////////////////////////////////////////////
-inline char CamRead(void) {
+/*inline char CamRead(void) {
 	register char data = 0;
 
 	data = (AT91F_PIO_GetInput(AT91C_BASE_PIOA) & (CAM_D2 | CAM_D3 | CAM_D4
@@ -139,7 +138,7 @@ void GetFrame(register char PodzielnikX, register char PodzielnikY,
 	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, DIODA1);
 //	printf("wsk = %d\n\r", wsk);
 } // end GetFrame()
-
+*/
 ////////////////////////////////////////////////////////////////////////////////
 // Funkcje pomocnicze
 // - obliczanie pozycji piksela w tablicy
