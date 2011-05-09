@@ -15,6 +15,9 @@
 #include <peripherals.h>
 #include <math.h>
 
+#include "peripherals/pio_helper.h"
+#include "peripherals/usart_helper.h"
+
 ////////////////////////////////////////////////////////////////////////////////
 // Globalne zmienne zewnetrzne
 ////////////////////////////////////////////////////////////////////////////////
@@ -27,8 +30,6 @@ extern char AutoPreview;
 extern char mem[];
 extern volatile int xmin, xmax, ymin, ymax;
 
-extern Pin pin_led_power;
-
 ////////////////////////////////////////////////////////////////////////////////
 // Analiza i rozpoznawanie
 ////////////////////////////////////////////////////////////////////////////////
@@ -39,7 +40,7 @@ inline int Rozpoznaj() {
 	char srednia_255, ZnalezionoObszar;
 	float odleglosc, tmp, obwod, rzut1, rzut2, rzut3, rzut4, roznica;
 	float wspolczynnik1, wspolczynnik2, wspolczynnik3;
-
+	Pin pin_led_power = PIN_LED_POWER;
 	roznica = 100000;
 
 	//wlaczenie diody
@@ -47,7 +48,8 @@ inline int Rozpoznaj() {
 	PIO_Clear(&pin_led_power);
 
 	//odebranie ramki 320x200
-	GetFrame(2, 2, 0);
+	//TODO
+	//GetFrame(2, 2, 0);
 
 	//wylaczenie diody
 //	AT91F_PIO_SetOutput(AT91C_BASE_PIOA, LED_POWER);

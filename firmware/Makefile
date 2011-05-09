@@ -102,17 +102,17 @@ VPATH += $(MEMO) $(MEMO)/spi-flash
 VPATH += modules algorithms peripherals
 VPATH += $(UTILITY)
 VPATH += $(PERIPH)/dbgu $(PERIPH)/pio $(PERIPH)/aic $(PERIPH)/adc $(PERIPH)/twi $(PERIPH)/pmc
-VPATH += $(PERIPH)/cp15 $(PERIPH)/pit $(PERIPH)/pwmc $(PERIPH)/usart $(PERIPH)/spi $(PERIPH)/rtt
+VPATH += $(PERIPH)/cp15 $(PERIPH)/pit $(PERIPH)/pwmc $(PERIPH)/usart $(PERIPH)/spi $(PERIPH)/rtt $(PERIPH)/rstc
 VPATH += $(BOARDS)/$(BOARD) $(BOARDS)/$(BOARD)/$(CHIP)
 
 # Objects built from C source files
 C_OBJECTS = main.o 
-C_OBJECTS += adc_helper.o pwm_helper.o pio_helper.o
+C_OBJECTS += adc_helper.o pwm_helper.o pio_helper.o usart_helper.o
 C_OBJECTS += obstacle_avoidance.o  pedometer.o reverse_track_reconstruction.o 
 C_OBJECTS += freescale_mma7260.o gyroscope.o sharp_gp2d12.o mmc212xm.o l3g4200d.o po6030k.o at45db321d.o cd4053b.o hy1602f6.o
 C_OBJECTS += at45d.o at45.o spi.o spid.o
 C_OBJECTS += peripherals.o rozpoznawanie.o utils.o
-C_OBJECTS += async.o twid.o
+C_OBJECTS += async.o twid.o rstc.o
 C_OBJECTS += math.o string.o stdio.o
 C_OBJECTS += pit.o dbgu.o pio.o twi.o pmc.o cp15.o pwmc.o usart.o adc.o aic.o rtt.o
 C_OBJECTS += board_memories.o board_lowlevel.o
