@@ -431,7 +431,7 @@ int main(void)
   PO6030K_Initalize();
   HY1602F6_Log("Taking a","picture ...");
   PO6030K_TakePicture();
-  HY1602F6_Init();
+//  HY1602F6_Init();
   HY1602F6_Log("Dark Explorer is","at your service");
   int iAmountOfPackets = 0;
 
