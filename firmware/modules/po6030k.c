@@ -20,6 +20,7 @@ extern Twid twid;
 
 void PO6030K_Initalize()
 {
+  Pin pin_cam_reset = PIN_CAM_RESET;
   unsigned int pck = 1;
   unsigned int mode = AT91C_PMC_CSS_MAIN_CLK | AT91C_PMC_PRES_CLK_64; //640x480 color
   //mode = AT91C_PMC_CSS_MAIN_CLK | AT91C_PMC_PRES_CLK_32; //320x240 color
@@ -30,6 +31,10 @@ void PO6030K_Initalize()
   AT91C_BASE_PMC->PMC_SCER = AT91C_PMC_PCK1; //enable pclk clock
   while(!(AT91C_BASE_PMC->PMC_SR & AT91C_PMC_PCK1RDY));
 
+  waitms(100);  //wait a while for camera registers reset
+  PIO_Set(&pin_cam_reset);
+
+  AT91C_BASE_PMC->PMC_SCDR = AT91C_PMC_PCK1;
 }
 
 void PO6030K_InitRegisters(Twid *twid)
@@ -79,9 +84,14 @@ void PO6030K_InitRegisters(Twid *twid)
   TRACE_DEBUG("\r\nSetting camera registers... \r\n");
   for (twiit = 0; twiit < 22; twiit++)
   {
-    TWID_Write(twid, PO6030K_DEVICE_ID, reg[twiit], 1, comm + twiit, 1, 0);
-    waitms(200);
+    int error = 0;
+    do
+    {
+      error = TWID_Write(twid, PO6030K_DEVICE_ID, reg[twiit], 1, comm + twiit, 1, 0);
+    }
+    while(error);
   }
+
   TRACE_DEBUG("\r\nCamera registers has been set. \r\n");
 }
 
@@ -128,11 +138,11 @@ void PO6030K_TakePicture()
   TRACE_DEBUG("\r\nTaking picture in progress, please stand by... \r\n");
   Pin pin_diode1 = PIN_DIODE1;
   Pin pin_diode2 = PIN_DIODE2;
-  Pin pin_cam_reset = PIN_CAM_RESET;
 
-  PIO_Set(&pin_cam_reset);
-  waitms(10);
   PO6030K_InitRegisters(&twid);
+
+  AT91C_BASE_PMC->PMC_SCER = AT91C_PMC_PCK1; //enable pclk clock
+  while(!(AT91C_BASE_PMC->PMC_SR & AT91C_PMC_PCK1RDY));
 
   Spid *pSpid = AT45DB321D_GetPointer()->pSpid;
   //zrob 2 razy zdjecie kamera zeby AE przystosowalo sie do swiatla
@@ -244,6 +254,7 @@ void PO6030K_TakePicture()
       + (idx * PAGE_SIZE), PAGE_SIZE, 0);
 
   PIO_Set(&pin_diode1);
-  PIO_Clear(&pin_cam_reset);
+  AT91C_BASE_PMC->PMC_SCDR = AT91C_PMC_PCK1; //enable pclk clock
+
   TRACE_DEBUG("\r\n... acquisition completed.");
 }
