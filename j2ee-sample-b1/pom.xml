@@ -20,5 +20,5 @@
     <module>gwt-client</module>
     <module>ear-app</module>
   </modules>
-  
+  <!-- test -->
 </project>
