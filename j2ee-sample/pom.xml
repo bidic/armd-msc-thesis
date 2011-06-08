@@ -14,7 +14,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-  
+  <!--  -->
   <modules>
     <module>ejb-example</module>
     <module>gwt-client</module>
